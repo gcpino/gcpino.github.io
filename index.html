@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spike — Systems Engineer</title>
-    <meta name="description" content="Systems Engineer focused on network stacks, embedded systems, and low-level software. Building reliable systems at scale.">
+    <title>Spike — Systems & Projects</title>
+    <meta name="description" content="Low-level systems projects in C, C++, and Python. HTTP servers, memory allocators, key-value stores, and network stacks built from scratch.">
     <meta name="author" content="Spike">
     <meta name="theme-color" content="#0c0c0e">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Spike — Systems Engineer">
-    <meta property="og:description" content="Network stacks, embedded TCP/IP, memory allocators, and key-value stores built from scratch in C and Rust.">
+    <meta property="og:title" content="Spike — Systems & Projects">
+    <meta property="og:description" content="Low-level systems projects in C, C++, and Python. Servers, allocators, and stores built from scratch.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gcpino.github.io">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Spike — Systems Engineer">
-    <meta name="twitter:description" content="Building reliable systems at scale. Network stacks, embedded systems, low-level software.">
+    <meta name="twitter:title" content="Spike — Systems & Projects">
+    <meta name="twitter:description" content="Building systems from scratch in C, C++, and Python.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -237,23 +237,6 @@
             transform: translateY(-1px);
         }
 
-        /* Typing effect */
-        .type-cursor {
-            font-weight: 300;
-            color: var(--accent);
-            animation: blink 1s step-end infinite;
-        }
-
-        /* Konami code flash */
-        .konami-flash {
-            animation: konami-flash 0.3s ease 3;
-        }
-
-        @keyframes konami-flash {
-            0%, 100% { background: var(--bg); }
-            50% { background: rgba(37, 99, 235, 0.15); }
-        }
-
         .btn-secondary {
             background: transparent;
             color: var(--text-secondary);
@@ -425,61 +408,6 @@
             border: 1px solid var(--border);
             border-radius: 4px;
             color: var(--text-muted);
-        }
-
-        /* Timeline */
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 6px; top: 8px; bottom: 8px;
-            width: 1px;
-            background: var(--border);
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-bottom: 2rem;
-        }
-
-        .timeline-item:last-child { padding-bottom: 0; }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -1.55rem; top: 6px;
-            width: 8px; height: 8px;
-            background: var(--bg);
-            border: 2px solid var(--accent);
-            border-radius: 50%;
-        }
-
-        .timeline-item.active::before {
-            background: var(--accent);
-            box-shadow: 0 0 10px var(--accent-glow);
-        }
-
-        .timeline-date {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            margin-bottom: 0.2rem;
-        }
-
-        .timeline-title {
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 0.2rem;
-        }
-
-        .timeline-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
         }
 
         /* Projects */
@@ -833,6 +761,23 @@
         .stagger-4 { transition-delay: 0.32s; }
         .stagger-5 { transition-delay: 0.40s; }
 
+        /* Typing effect */
+        .type-cursor {
+            font-weight: 300;
+            color: var(--accent);
+            animation: blink 1s step-end infinite;
+        }
+
+        /* Konami code flash */
+        .konami-flash {
+            animation: konami-flash 0.3s ease 3;
+        }
+
+        @keyframes konami-flash {
+            0%, 100% { background: var(--bg); }
+            50% { background: rgba(37, 99, 235, 0.15); }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .nav-links { display: none; }
@@ -841,19 +786,18 @@
             .project-row { grid-template-columns: 1fr; }
             .project-meta { align-items: flex-start; }
             .project-tags { justify-content: flex-start; }
-            .timeline { padding-left: 1.5rem; }
         }
     </style>
 </head>
 <body>
     <div id="scroll-progress"></div>
+    <canvas id="matrix-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.025;"></canvas>
 
     <nav>
         <a href="#" class="logo">Spike</a>
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
             <li><a href="#skills">Skills</a></li>
-            <li><a href="#experience">Experience</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -861,11 +805,10 @@
 
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-label">Systems Engineer & Developer</div>
+            <div class="hero-label">C / C++ / Python Developer</div>
             <h1><span id="type-text"></span><span class="type-cursor">|</span></h1>
             <p>
-                Focused on network stacks, embedded systems, and low-level software.
-                Based in northern Spain.
+                Building systems from scratch. Servers, allocators, stores, and protocol stacks — no frameworks, no dependencies.
             </p>
             <div class="hero-actions">
                 <a href="#projects" class="btn btn-primary">View Projects</a>
@@ -877,49 +820,46 @@
     <section id="about">
         <div class="section-header fade-up">
             <h2>About</h2>
-            <p>Engineer by trade. Builder by obsession.</p>
+            <p>Builder by obsession. No shortcuts.</p>
         </div>
         <div class="about-grid">
             <div class="about-visual fade-up">
                 <div class="code-block">
-                    <span class="cm">// current stack</span><br>
-                    <span class="kw">typedef struct</span> <span class="fn">stack</span> {<br>
-                    &nbsp;&nbsp;<span class="type">http_server_t</span>&nbsp;&nbsp;<span class="fn">forge</span>;<br>
-                    &nbsp;&nbsp;<span class="type">allocator_t</span>&nbsp;&nbsp;&nbsp;<span class="fn">bedrock</span>;<br>
-                    &nbsp;&nbsp;<span class="type">kv_store_t</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">vault</span>;<br>
-                    &nbsp;&nbsp;<span class="type">tcp_stack_t</span>&nbsp;&nbsp;&nbsp;<span class="fn">cyclone</span>;<br>
-                    } <span class="type">systems_t</span>;
+                    <span class="cm">/* current projects */</span><br>
+                    <span class="kw">struct</span> <span class="fn">projects</span> {<br>
+                    &nbsp;&nbsp;<span class="type">http_server_t</span>&nbsp;&nbsp;<span class="fn">forge</span>;&nbsp;&nbsp;<span class="cm">/* C11 */</span><br>
+                    &nbsp;&nbsp;<span class="type">allocator_t</span>&nbsp;&nbsp;&nbsp;<span class="fn">bedrock</span>;<span class="cm">/* C11 */</span><br>
+                    &nbsp;&nbsp;<span class="type">kv_store_t</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">vault</span>;&nbsp;&nbsp;<span class="cm">/* C11 */</span><br>
+                    };
                 </div>
             </div>
             <div class="about-text fade-up">
                 <p>
-                    I work where software meets hardware. My focus is on network protocol 
-                    implementation, embedded TCP/IP stacks, memory management, and systems 
-                    that need to run reliably under constraints.
+                    I build low-level systems from the ground up. No dependencies, no frameworks — 
+                    just the standard library and POSIX. My focus is on understanding every byte 
+                    and every syscall.
                 </p>
                 <p>
-                    Currently building <strong>forge</strong>, <strong>bedrock</strong>, and 
-                    <strong>vault</strong> — a suite of systems tools in C exploring HTTP servers, 
-                    custom allocators, and persistent KV stores. Also developing 
-                    <strong>cyclonetcp-rs</strong>, a pure Rust port of the CycloneTCP embedded 
-                    stack with full <code>no_std</code> support.
+                    Current work centers on <strong>C</strong> for systems programming (servers, allocators, stores), 
+                    <strong>C++</strong> for performance-critical components, and <strong>Python</strong> for 
+                    tooling, automation, and rapid prototyping.
                 </p>
                 <div class="about-meta">
                     <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="5">0</span>+</div>
-                        <div class="lbl">Years experience</div>
-                    </div>
-                    <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="100">0</span>+</div>
-                        <div class="lbl">Tests passing</div>
-                    </div>
-                    <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="8">0</span>K+</div>
-                        <div class="lbl">Lines of systems code</div>
+                        <div class="num"><span class="counter" data-target="3">0</span></div>
+                        <div class="lbl">Active projects</div>
                     </div>
                     <div class="meta-cell">
                         <div class="num"><span class="counter" data-target="3">0</span></div>
                         <div class="lbl">Core languages</div>
+                    </div>
+                    <div class="meta-cell">
+                        <div class="num"><span class="counter" data-target="2900">0</span></div>
+                        <div class="lbl">Total LOC</div>
+                    </div>
+                    <div class="meta-cell">
+                        <div class="num"><span class="counter" data-target="0">0</span></div>
+                        <div class="lbl">Dependencies</div>
                     </div>
                 </div>
             </div>
@@ -929,94 +869,67 @@
     <section id="skills">
         <div class="section-header fade-up">
             <h2>Skills</h2>
-            <p>Technologies and domains I work with daily.</p>
+            <p>Technologies I use to build from scratch.</p>
         </div>
         <div class="skills-list fade-up">
             <div class="skill-item">
-                <h4>Rust</h4>
-                <p>Systems programming with zero-cost abstractions. no_std, async, embedded.</p>
+                <h4>C / C++</h4>
+                <p>Systems programming, custom allocators, HTTP servers, and protocol stacks. C11, POSIX, bare-metal.</p>
                 <div class="skill-tags">
-                    <span>no_std</span>
-                    <span>Tokio</span>
-                    <span>embedded-hal</span>
+                    <span>C11</span>
+                    <span>POSIX</span>
+                    <span>epoll</span>
+                    <span>mmap</span>
+                </div>
+            </div>
+            <div class="skill-item">
+                <h4>Python</h4>
+                <p>Automation, testing frameworks, build tooling, and rapid prototyping for systems validation.</p>
+                <div class="skill-tags">
+                    <span>CPython</span>
+                    <span>ctypes</span>
+                    <span>asyncio</span>
+                    <span>pytest</span>
                 </div>
             </div>
             <div class="skill-item">
                 <h4>Networking</h4>
-                <p>TCP/IP stack implementation, protocol design, packet-level programming.</p>
+                <p>TCP/IP stack internals, protocol design, socket programming, and event-driven I/O.</p>
                 <div class="skill-tags">
                     <span>TCP/IP</span>
                     <span>UDP</span>
                     <span>ARP/ICMP</span>
-                </div>
-            </div>
-            <div class="skill-item">
-                <h4>C / C++</h4>
-                <p>Embedded firmware, custom allocators, servers, and performance-critical code.</p>
-                <div class="skill-tags">
-                    <span>C11</span>
-                    <span>POSIX</span>
-                    <span>bare-metal</span>
+                    <span>HTTP/1.1</span>
                 </div>
             </div>
             <div class="skill-item">
                 <h4>Linux & Infrastructure</h4>
-                <p>Server management, networking, containerization, CI/CD pipelines.</p>
+                <p>Kernel interfaces, server management, containerization, CI/CD pipelines.</p>
                 <div class="skill-tags">
+                    <span>Linux</span>
                     <span>Docker</span>
                     <span>Nginx</span>
                     <span>systemd</span>
                 </div>
             </div>
             <div class="skill-item">
-                <h4>Python</h4>
-                <p>Automation, tooling, data processing, and rapid prototyping.</p>
+                <h4>Data Structures</h4>
+                <p>Hash tables, linked lists, ring buffers, binary trees. Custom implementations for constrained environments.</p>
                 <div class="skill-tags">
-                    <span>asyncio</span>
-                    <span>automation</span>
-                    <span>scripting</span>
+                    <span>hash tables</span>
+                    <span>allocators</span>
+                    <span>WAL</span>
+                    <span>snapshots</span>
                 </div>
             </div>
             <div class="skill-item">
-                <h4>Embedded Systems</h4>
-                <p>Real-time constraints, hardware interfaces, memory-constrained environments.</p>
+                <h4>Build Systems</h4>
+                <p>Make, CMake, compiler flags, static analysis, profiling, and memory debugging.</p>
                 <div class="skill-tags">
-                    <span>ARM</span>
-                    <span>SPI/I2C</span>
-                    <span>RTOS</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="experience">
-        <div class="section-header fade-up">
-            <h2>Experience</h2>
-            <p>Recent trajectory and focus areas.</p>
-        </div>
-        <div class="timeline fade-up">
-            <div class="timeline-item active">
-                <div class="timeline-date">2024 — Present</div>
-                <div class="timeline-title">Systems & Network Engineering</div>
-                <div class="timeline-desc">
-                    Building low-level systems from scratch: HTTP/1.1 server (forge), memory allocator (bedrock), 
-                    persistent KV store (vault). Porting CycloneTCP to Rust (cyclonetcp-rs) for no_std environments.
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-date">2022 — 2024</div>
-                <div class="timeline-title">Infrastructure & DevOps</div>
-                <div class="timeline-desc">
-                    Linux server management, network configuration, container orchestration, 
-                    CI/CD pipeline design, and automation tooling for production environments.
-                </div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-date">2020 — 2022</div>
-                <div class="timeline-title">Embedded Development</div>
-                <div class="timeline-desc">
-                    Firmware development for ARM-based systems, driver implementation, 
-                    real-time communication protocols, and hardware bring-up.
+                    <span>Make</span>
+                    <span>CMake</span>
+                    <span>Valgrind</span>
+                    <span>gdb</span>
                 </div>
             </div>
         </div>
@@ -1025,7 +938,7 @@
     <section id="projects">
         <div class="section-header fade-up">
             <h2>Projects</h2>
-            <p>Selected systems work. Repositories available upon request.</p>
+            <p>Selected systems work. Built from scratch, zero dependencies.</p>
         </div>
         <div class="projects-list fade-up">
             <div class="project-row">
@@ -1137,7 +1050,7 @@
         <div class="contact-box fade-up">
             <h3>Get in touch</h3>
             <p>
-                Open to collaboration on systems, networking, and embedded projects.
+                Open to collaboration on systems, networking, and low-level projects.
             </p>
             <a href="mailto:spike@gcpino.dev" class="btn btn-primary">spike@gcpino.dev</a>
             <div class="contact-links">
@@ -1148,7 +1061,7 @@
     </section>
 
     <footer>
-        <p>Spike &mdash; Systems Engineer. Built with care.</p>
+        <p>Spike &mdash; Systems & Projects. Built from scratch.</p>
         <p class="footer-hint">Press <kbd style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;background:var(--bg-card);padding:0.1rem 0.3rem;border-radius:3px;border:1px solid var(--border);">~</kbd> for terminal</p>
     </footer>
 
@@ -1281,35 +1194,28 @@
                     printLine('  exit         close terminal');
                     break;
                 case 'ls':
-                    printLine('drwxr-xr-x  forge/     HTTP/1.1 server');
-                    printLine('drwxr-xr-x  bedrock/   memory allocator');
-                    printLine('drwxr-xr-x  vault/     KV store');
-                    printLine('drwxr-xr-x  cyclone/   TCP/IP stack (Rust)');
+                    printLine('drwxr-xr-x  forge/     HTTP/1.1 server (C11)');
+                    printLine('drwxr-xr-x  bedrock/   memory allocator (C11)');
+                    printLine('drwxr-xr-x  vault/     KV store (C11)');
                     break;
                 case 'cat':
                     const name = args[1];
                     if (projectData[name]) {
                         projectData[name].split('\n').forEach(l => printLine(l));
-                    } else if (name === 'cyclone') {
-                        printLine('cyclonetcp-rs v0.3.0');
-                        printLine('  Pure Rust port of CycloneTCP');
-                        printLine('  ~6K LOC | no_std | layers 2-4');
-                        printLine('  Status: 96 tests passing');
                     } else {
-                        printLine('cat: unknown project. Try: forge, bedrock, vault, cyclone', 'err');
+                        printLine('cat: unknown project. Try: forge, bedrock, vault', 'err');
                     }
                     break;
                 case 'whoami':
-                    printLine('Spike — Systems Engineer');
-                    printLine('Based in northern Spain');
-                    printLine('Focus: networks, embedded, low-level C/Rust');
+                    printLine('Spike — C / C++ / Python Developer');
+                    printLine('Focus: systems programming from scratch');
+                    printLine('Philosophy: zero dependencies, full control');
                     break;
                 case 'skills':
-                    printLine('Rust      [██████████] no_std, async, embedded');
-                    printLine('C         [█████████░] systems, allocators, servers');
+                    printLine('C         [██████████] systems, allocators, servers');
+                    printLine('C++       [███████░░░] performance, embedded');
+                    printLine('Python    [███████░░░] tooling, automation, testing');
                     printLine('Linux     [████████░░] kernel, networking, infra');
-                    printLine('Python    [██████░░░░] automation, tooling');
-                    printLine('Embedded  [███████░░░] ARM, bare-metal, RTOS');
                     break;
                 case 'contact':
                     printLine('email:  spike@gcpino.dev');
@@ -1532,6 +1438,5 @@
             return originalExecute(cmd);
         };
     </script>
-<canvas id="matrix-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.025;"></canvas>
 </body>
 </html>
