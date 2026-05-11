@@ -237,6 +237,23 @@
             transform: translateY(-1px);
         }
 
+        /* Typing effect */
+        .type-cursor {
+            font-weight: 300;
+            color: var(--accent);
+            animation: blink 1s step-end infinite;
+        }
+
+        /* Konami code flash */
+        .konami-flash {
+            animation: konami-flash 0.3s ease 3;
+        }
+
+        @keyframes konami-flash {
+            0%, 100% { background: var(--bg); }
+            50% { background: rgba(37, 99, 235, 0.15); }
+        }
+
         .btn-secondary {
             background: transparent;
             color: var(--text-secondary);
@@ -845,7 +862,7 @@
     <section class="hero">
         <div class="hero-content">
             <div class="hero-label">Systems Engineer & Developer</div>
-            <h1>Building reliable<br><em>systems at scale.</em></h1>
+            <h1><span id="type-text"></span><span class="type-cursor">|</span></h1>
             <p>
                 Focused on network stacks, embedded systems, and low-level software.
                 Based in northern Spain.
@@ -889,19 +906,19 @@
                 </p>
                 <div class="about-meta">
                     <div class="meta-cell">
-                        <div class="num">5+</div>
+                        <div class="num"><span class="counter" data-target="5">0</span>+</div>
                         <div class="lbl">Years experience</div>
                     </div>
                     <div class="meta-cell">
-                        <div class="num">100+</div>
+                        <div class="num"><span class="counter" data-target="100">0</span>+</div>
                         <div class="lbl">Tests passing</div>
                     </div>
                     <div class="meta-cell">
-                        <div class="num">8K+</div>
+                        <div class="num"><span class="counter" data-target="8">0</span>K+</div>
                         <div class="lbl">Lines of systems code</div>
                     </div>
                     <div class="meta-cell">
-                        <div class="num">3</div>
+                        <div class="num"><span class="counter" data-target="3">0</span></div>
                         <div class="lbl">Core languages</div>
                     </div>
                 </div>
@@ -1373,6 +1390,148 @@
         terminalOverlay.addEventListener('click', (e) => {
             if (e.target === terminalOverlay) closeTerminal();
         });
+
+        /* ===== Typing Effect ===== */
+        const phrases = ["Building reliable", "systems at scale."];
+        const typeEl = document.getElementById('type-text');
+        let phraseIdx = 0, charIdx = 0, deleting = false;
+
+        function typeLoop() {
+            const current = phrases[phraseIdx];
+            if (deleting) {
+                typeEl.innerHTML = current.substring(0, charIdx - 1);
+                charIdx--;
+            } else {
+                typeEl.innerHTML = current.substring(0, charIdx + 1);
+                charIdx++;
+            }
+
+            let speed = deleting ? 40 : 80;
+            if (!deleting && charIdx === current.length) {
+                speed = 1500;
+                deleting = true;
+            } else if (deleting && charIdx === 0) {
+                deleting = false;
+                phraseIdx = (phraseIdx + 1) % phrases.length;
+                speed = 400;
+            }
+            setTimeout(typeLoop, speed);
+        }
+        if (typeEl) setTimeout(typeLoop, 600);
+
+        /* ===== Stats Counter ===== */
+        const counters = document.querySelectorAll('.counter');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.target);
+                    const duration = 1200;
+                    const start = performance.now();
+                    function update(now) {
+                        const progress = Math.min((now - start) / duration, 1);
+                        const ease = 1 - Math.pow(1 - progress, 3);
+                        el.textContent = Math.floor(ease * target);
+                        if (progress < 1) requestAnimationFrame(update);
+                    }
+                    requestAnimationFrame(update);
+                    counterObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+        counters.forEach(c => counterObserver.observe(c));
+
+        /* ===== Matrix Rain ===== */
+        const matrixCanvas = document.getElementById('matrix-canvas');
+        if (matrixCanvas) {
+            const ctx = matrixCanvas.getContext('2d');
+            let cols, drops;
+            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ';
+
+            function resizeMatrix() {
+                matrixCanvas.width = window.innerWidth;
+                matrixCanvas.height = window.innerHeight;
+                cols = Math.floor(matrixCanvas.width / 16);
+                drops = new Array(cols).fill(1);
+            }
+            resizeMatrix();
+            window.addEventListener('resize', resizeMatrix);
+
+            function drawMatrix() {
+                ctx.fillStyle = 'rgba(12, 12, 14, 0.08)';
+                ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+                ctx.fillStyle = 'rgba(37, 99, 235, 0.25)';
+                ctx.font = '14px JetBrains Mono';
+                for (let i = 0; i < drops.length; i++) {
+                    const char = chars[Math.floor(Math.random() * chars.length)];
+                    ctx.fillText(char, i * 16, drops[i] * 16);
+                    if (drops[i] * 16 > matrixCanvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+                requestAnimationFrame(drawMatrix);
+            }
+            drawMatrix();
+        }
+
+        /* ===== Konami Code ===== */
+        const konamiSequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+        let konamiIdx = 0;
+        document.addEventListener('keydown', (e) => {
+            if (e.key === konamiSequence[konamiIdx]) {
+                konamiIdx++;
+                if (konamiIdx === konamiSequence.length) {
+                    konamiIdx = 0;
+                    document.body.classList.add('konami-flash');
+                    setTimeout(() => document.body.classList.remove('konami-flash'), 1000);
+                    openTerminal();
+                    setTimeout(() => {
+                        printLine(' ');
+                        printLine('=== KONAMI CODE DETECTED ===', 'ok');
+                        printLine('Access granted to sector 7-G.', 'info');
+                        printLine(' ');
+                        printLine('Special commands unlocked:');
+                        printLine('  snake        about this site');
+                        printLine('  easteregg    hidden message');
+                        currentInput = '';
+                        renderPrompt();
+                    }, 300);
+                }
+            } else {
+                konamiIdx = 0;
+            }
+        });
+
+        // Add special terminal commands for Konami mode
+        const originalExecute = executeCommand;
+        window.executeCommand = function(cmd) {
+            const input = cmd.trim().toLowerCase();
+            const args = input.split(/\s+/);
+            if (args[0] === 'snake') {
+                printLine(' ');
+                printLine('This portfolio was forged in the trenches of low-level programming.', 'info');
+                printLine('Built with vanilla HTML/CSS/JS. No frameworks. No bullshit.', 'info');
+                printLine('Press ~ anytime to access the terminal.', 'info');
+                printLine(' ');
+                currentInput = '';
+                renderPrompt();
+                return;
+            }
+            if (args[0] === 'easteregg') {
+                printLine(' ');
+                printLine('"The only way to do great work is to love what you do."', 'ok');
+                printLine('                    — Steve Jobs', 'info');
+                printLine(' ');
+                printLine('Also: the cake is a lie.', 'warn');
+                printLine(' ');
+                currentInput = '';
+                renderPrompt();
+                return;
+            }
+            return originalExecute(cmd);
+        };
     </script>
+<canvas id="matrix-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.025;"></canvas>
 </body>
 </html>
