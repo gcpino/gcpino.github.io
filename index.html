@@ -576,57 +576,48 @@
     <section id="projects">
         <div class="section-header fade-up">
             <h2>Projects</h2>
-            <p>Selected work. Production-grade and open source.</p>
+            <p>Selected systems work. Repositories available upon request.</p>
         </div>
-        <div class="projects-list">
-            <div class="project-row fade-up">
+        <div class="projects-list fade-up">
+            <div class="project-row">
                 <div>
-                    <h4><a href="https://github.com/gcpino/cyclonetcp-rs" target="_blank" rel="noopener">cyclonetcp-rs</a></h4>
-                    <p>
-                        Pure Rust port of the CycloneTCP embedded TCP/IP stack. 
-                        no_std-compatible layers 2-4: Ethernet, ARP, IPv4, ICMP, UDP, TCP.
-                    </p>
+                    <h4>forge</h4>
+                    <p>High-performance HTTP/1.1 server built from scratch in C. Event-driven I/O with epoll, POSIX thread pool for request handling, zero-copy sendfile, and a minimal routing layer. No external dependencies.</p>
                 </div>
                 <div class="project-meta">
-                    <a href="https://github.com/gcpino/cyclonetcp-rs" target="_blank" rel="noopener">GitHub &rarr;</a>
                     <div class="project-tags">
-                        <span>Rust</span>
-                        <span>no_std</span>
-                        <span>TCP/IP</span>
+                        <span>C11</span>
+                        <span>epoll</span>
+                        <span>HTTP/1.1</span>
+                        <span>threads</span>
                     </div>
                 </div>
             </div>
-            <div class="project-row fade-up">
+            <div class="project-row">
                 <div>
-                    <h4><a href="https://github.com/gcpino/SpikeTCP" target="_blank" rel="noopener">SpikeTCP</a></h4>
-                    <p>
-                        Custom TCP stack exploration and networking experiments. 
-                        Deep dives into protocol implementation and packet-level programming.
-                    </p>
+                    <h4>bedrock</h4>
+                    <p>Custom memory allocator implementing malloc, free, realloc, and calloc from scratch. Uses segregated free-lists for small allocations, a unified heap arena with first-fit search and coalescence for medium blocks, and direct mmap for large allocations. Thread-safe with a global mutex.</p>
                 </div>
                 <div class="project-meta">
-                    <a href="https://github.com/gcpino/SpikeTCP" target="_blank" rel="noopener">GitHub &rarr;</a>
                     <div class="project-tags">
-                        <span>C</span>
-                        <span>Networking</span>
-                        <span>Low-level</span>
+                        <span>C11</span>
+                        <span>mmap</span>
+                        <span>allocator</span>
+                        <span>pthread</span>
                     </div>
                 </div>
             </div>
-            <div class="project-row fade-up">
+            <div class="project-row">
                 <div>
-                    <h4><a href="https://github.com/gcpino/soliton-radar" target="_blank" rel="noopener">Soliton Radar</a></h4>
-                    <p>
-                        Async network discovery and port scanning toolkit. Ping sweep, TCP port scan,
-                        auto network detection. Output in JSON, CSV, or table. 8 tests, CI/CD.
-                    </p>
+                    <h4>vault</h4>
+                    <p>Persistent key-value store with a write-ahead log, snapshot support, and a TCP text protocol. Hash table with FNV-1a hashing, read-write locks for concurrency, and an epoll-driven server. Supports GET, SET, DEL, EXISTS, and KEYS.</p>
                 </div>
                 <div class="project-meta">
-                    <a href="https://github.com/gcpino/soliton-radar" target="_blank" rel="noopener">GitHub &rarr;</a>
                     <div class="project-tags">
-                        <span>Rust</span>
-                        <span>Network</span>
-                        <span>Monitoring</span>
+                        <span>C11</span>
+                        <span>WAL</span>
+                        <span>TCP</span>
+                        <span>epoll</span>
                     </div>
                 </div>
             </div>
