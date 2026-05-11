@@ -4,9 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spike — Systems Engineer</title>
+    <meta name="description" content="Systems Engineer focused on network stacks, embedded systems, and low-level software. Building reliable systems at scale.">
+    <meta name="author" content="Spike">
+    <meta name="theme-color" content="#0c0c0e">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Spike — Systems Engineer">
+    <meta property="og:description" content="Network stacks, embedded TCP/IP, memory allocators, and key-value stores built from scratch in C and Rust.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gcpino.github.io">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Spike — Systems Engineer">
+    <meta name="twitter:description" content="Building reliable systems at scale. Network stacks, embedded systems, low-level software.">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --bg: #0c0c0e;
@@ -19,6 +35,10 @@
             --text-muted: #5a5a60;
             --accent: #2563eb;
             --accent-soft: rgba(37, 99, 235, 0.12);
+            --accent-glow: rgba(37, 99, 235, 0.25);
+            --green: #22c55e;
+            --orange: #f59e0b;
+            --red: #ef4444;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,9 +52,36 @@
             line-height: 1.65;
             font-size: 15px;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         ::selection { background: var(--accent); color: #fff; }
+
+        /* Scroll progress */
+        #scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            height: 2px;
+            background: var(--accent);
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* Subtle grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        }
 
         /* Nav */
         nav {
@@ -56,7 +103,19 @@
             color: var(--text);
             text-decoration: none;
             letter-spacing: -0.02em;
+            position: relative;
         }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .logo:hover::after { width: 100%; }
 
         .nav-links {
             display: flex;
@@ -70,9 +129,21 @@
             font-weight: 400;
             font-size: 0.88rem;
             transition: color 0.2s;
+            position: relative;
         }
 
         .nav-links a:hover { color: var(--text); }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 1.5px;
+            background: var(--accent);
+            transition: width 0.25s ease;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
 
         /* Hero */
         .hero {
@@ -82,6 +153,8 @@
             padding: 8rem 6% 4rem;
             max-width: 1100px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-content { max-width: 640px; }
@@ -92,6 +165,23 @@
             color: var(--accent);
             margin-bottom: 1.25rem;
             letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-label::before {
+            content: '';
+            display: inline-block;
+            width: 6px; height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
 
         .hero h1 {
@@ -138,9 +228,14 @@
         .btn-primary {
             background: var(--accent);
             color: #fff;
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.15);
         }
 
-        .btn-primary:hover { background: #1d4ed8; }
+        .btn-primary:hover {
+            background: #1d4ed8;
+            box-shadow: 0 0 30px rgba(37, 99, 235, 0.25);
+            transform: translateY(-1px);
+        }
 
         .btn-secondary {
             background: transparent;
@@ -151,6 +246,7 @@
         .btn-secondary:hover {
             border-color: var(--border-hover);
             color: var(--text);
+            background: var(--bg-elevated);
         }
 
         /* Sections */
@@ -158,6 +254,8 @@
             padding: 5rem 6%;
             max-width: 1100px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .section-header {
@@ -206,7 +304,10 @@
         .meta-cell {
             background: var(--bg-card);
             padding: 1.25rem;
+            transition: background 0.2s;
         }
+
+        .meta-cell:hover { background: var(--bg-elevated); }
 
         .meta-cell .num {
             font-family: 'JetBrains Mono', monospace;
@@ -230,6 +331,17 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-visual::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(37, 99, 235, 0.06), transparent 60%);
+            pointer-events: none;
         }
 
         .code-block {
@@ -237,12 +349,16 @@
             font-size: 0.78rem;
             line-height: 1.8;
             color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
         }
 
         .code-block .kw { color: var(--accent); }
-        .code-block .str { color: #22c55e; }
+        .code-block .type { color: var(--orange); }
+        .code-block .str { color: var(--green); }
         .code-block .fn { color: #e8e8ec; }
         .code-block .cm { color: var(--text-muted); }
+        .code-block .num { color: #a78bfa; }
 
         /* Skills */
         .skills-list {
@@ -258,10 +374,13 @@
         .skill-item {
             background: var(--bg-card);
             padding: 1.5rem;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.2s;
         }
 
-        .skill-item:hover { background: var(--bg-elevated); }
+        .skill-item:hover {
+            background: var(--bg-elevated);
+            transform: translateY(-2px);
+        }
 
         .skill-item h4 {
             font-weight: 600;
@@ -291,6 +410,61 @@
             color: var(--text-muted);
         }
 
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px; top: 8px; bottom: 8px;
+            width: 1px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item:last-child { padding-bottom: 0; }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.55rem; top: 6px;
+            width: 8px; height: 8px;
+            background: var(--bg);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+        }
+
+        .timeline-item.active::before {
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .timeline-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-bottom: 0.2rem;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .timeline-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
         /* Projects */
         .projects-list {
             display: flex;
@@ -307,15 +481,36 @@
             grid-template-columns: 1fr auto;
             gap: 1.5rem;
             align-items: start;
-            transition: border-color 0.2s;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .project-row:hover { border-color: var(--border-hover); }
+        .project-row::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .project-row:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(37,99,235,0.08);
+        }
+
+        .project-row:hover::before { opacity: 1; }
 
         .project-row h4 {
             font-weight: 600;
             font-size: 1rem;
             margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .project-row h4 a {
@@ -329,6 +524,46 @@
             font-size: 0.88rem;
             color: var(--text-secondary);
             line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-features li {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .project-features li::before {
+            content: '->';
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            font-size: 0.7rem;
+        }
+
+        .project-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-stat {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            background: var(--bg);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
         }
 
         .project-meta {
@@ -358,6 +593,34 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
             color: var(--text-muted);
+            background: var(--bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .project-toggle {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 0;
+            margin-top: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .project-toggle:hover { color: var(--accent); }
+
+        .project-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+        }
+
+        .project-details.open {
+            max-height: 300px;
         }
 
         /* Contact */
@@ -367,18 +630,32 @@
             border-radius: 8px;
             padding: 3rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-box::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: 50%;
+            transform: translateX(-50%);
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.08), transparent 70%);
+            pointer-events: none;
         }
 
         .contact-box h3 {
             font-size: 1.3rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
+            position: relative;
         }
 
         .contact-box p {
             color: var(--text-secondary);
             margin-bottom: 1.5rem;
             font-size: 0.95rem;
+            position: relative;
         }
 
         .contact-links {
@@ -386,6 +663,7 @@
             justify-content: center;
             gap: 0.75rem;
             margin-top: 1.5rem;
+            position: relative;
         }
 
         .contact-links a {
@@ -401,6 +679,7 @@
         .contact-links a:hover {
             border-color: var(--border-hover);
             color: var(--text);
+            background: var(--bg-elevated);
         }
 
         /* Footer */
@@ -410,19 +689,132 @@
             border-top: 1px solid var(--border);
             color: var(--text-muted);
             font-size: 0.82rem;
+            position: relative;
+            z-index: 1;
         }
+
+        .footer-hint {
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        /* Terminal Easter Egg */
+        #terminal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        #terminal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .terminal-window {
+            width: min(720px, 92vw);
+            height: min(460px, 70vh);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 0.8rem;
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .terminal-btn {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+        }
+
+        .terminal-btn.red { background: var(--red); }
+        .terminal-btn.yellow { background: var(--orange); }
+        .terminal-btn.green { background: var(--green); }
+
+        .terminal-title {
+            margin-left: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-body {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .terminal-line {
+            margin-bottom: 0.15rem;
+            word-break: break-word;
+        }
+
+        .terminal-prompt {
+            color: var(--accent);
+        }
+
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 7px; height: 15px;
+            background: var(--accent);
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        .terminal-output .ok { color: var(--green); }
+        .terminal-output .warn { color: var(--orange); }
+        .terminal-output .err { color: var(--red); }
+        .terminal-output .info { color: var(--accent); }
 
         /* Animations */
         .fade-up {
             opacity: 0;
-            transform: translateY(16px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(20px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
         }
 
         .fade-up.visible {
             opacity: 1;
             transform: translateY(0);
         }
+
+        .stagger-1 { transition-delay: 0.08s; }
+        .stagger-2 { transition-delay: 0.16s; }
+        .stagger-3 { transition-delay: 0.24s; }
+        .stagger-4 { transition-delay: 0.32s; }
+        .stagger-5 { transition-delay: 0.40s; }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -432,15 +824,19 @@
             .project-row { grid-template-columns: 1fr; }
             .project-meta { align-items: flex-start; }
             .project-tags { justify-content: flex-start; }
+            .timeline { padding-left: 1.5rem; }
         }
     </style>
 </head>
 <body>
+    <div id="scroll-progress"></div>
+
     <nav>
         <a href="#" class="logo">Spike</a>
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
             <li><a href="#skills">Skills</a></li>
+            <li><a href="#experience">Experience</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
@@ -469,24 +865,27 @@
         <div class="about-grid">
             <div class="about-visual fade-up">
                 <div class="code-block">
-                    <span class="cm">// current focus</span><br>
-                    <span class="kw">let</span> <span class="fn">stack</span> = Stack::new()<br>
-                        .<span class="fn">ethernet</span>()<br>
-                        .<span class="fn">ipv4</span>()<br>
-                        .<span class="fn">tcp</span>()<br>
-                        .<span class="fn">no_std</span>()<br>
-                        .<span class="fn">build</span>();
+                    <span class="cm">// current stack</span><br>
+                    <span class="kw">typedef struct</span> <span class="fn">stack</span> {<br>
+                    &nbsp;&nbsp;<span class="type">http_server_t</span>&nbsp;&nbsp;<span class="fn">forge</span>;<br>
+                    &nbsp;&nbsp;<span class="type">allocator_t</span>&nbsp;&nbsp;&nbsp;<span class="fn">bedrock</span>;<br>
+                    &nbsp;&nbsp;<span class="type">kv_store_t</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">vault</span>;<br>
+                    &nbsp;&nbsp;<span class="type">tcp_stack_t</span>&nbsp;&nbsp;&nbsp;<span class="fn">cyclone</span>;<br>
+                    } <span class="type">systems_t</span>;
                 </div>
             </div>
             <div class="about-text fade-up">
                 <p>
                     I work where software meets hardware. My focus is on network protocol 
-                    implementation, embedded TCP/IP stacks, and systems that need to run 
-                    reliably under constraints.
+                    implementation, embedded TCP/IP stacks, memory management, and systems 
+                    that need to run reliably under constraints.
                 </p>
                 <p>
-                    Currently developing <strong>cyclonetcp-rs</strong>, a pure Rust port of 
-                    the CycloneTCP embedded stack with full <code>no_std</code> support.
+                    Currently building <strong>forge</strong>, <strong>bedrock</strong>, and 
+                    <strong>vault</strong> — a suite of systems tools in C exploring HTTP servers, 
+                    custom allocators, and persistent KV stores. Also developing 
+                    <strong>cyclonetcp-rs</strong>, a pure Rust port of the CycloneTCP embedded 
+                    stack with full <code>no_std</code> support.
                 </p>
                 <div class="about-meta">
                     <div class="meta-cell">
@@ -494,12 +893,12 @@
                         <div class="lbl">Years experience</div>
                     </div>
                     <div class="meta-cell">
-                        <div class="num">96</div>
+                        <div class="num">100+</div>
                         <div class="lbl">Tests passing</div>
                     </div>
                     <div class="meta-cell">
-                        <div class="num">6K+</div>
-                        <div class="lbl">Lines in cyclonetcp-rs</div>
+                        <div class="num">8K+</div>
+                        <div class="lbl">Lines of systems code</div>
                     </div>
                     <div class="meta-cell">
                         <div class="num">3</div>
@@ -536,10 +935,10 @@
             </div>
             <div class="skill-item">
                 <h4>C / C++</h4>
-                <p>Embedded firmware, drivers, and performance-critical code.</p>
+                <p>Embedded firmware, custom allocators, servers, and performance-critical code.</p>
                 <div class="skill-tags">
-                    <span>embedded</span>
-                    <span>drivers</span>
+                    <span>C11</span>
+                    <span>POSIX</span>
                     <span>bare-metal</span>
                 </div>
             </div>
@@ -573,6 +972,39 @@
         </div>
     </section>
 
+    <section id="experience">
+        <div class="section-header fade-up">
+            <h2>Experience</h2>
+            <p>Recent trajectory and focus areas.</p>
+        </div>
+        <div class="timeline fade-up">
+            <div class="timeline-item active">
+                <div class="timeline-date">2024 — Present</div>
+                <div class="timeline-title">Systems & Network Engineering</div>
+                <div class="timeline-desc">
+                    Building low-level systems from scratch: HTTP/1.1 server (forge), memory allocator (bedrock), 
+                    persistent KV store (vault). Porting CycloneTCP to Rust (cyclonetcp-rs) for no_std environments.
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">2022 — 2024</div>
+                <div class="timeline-title">Infrastructure & DevOps</div>
+                <div class="timeline-desc">
+                    Linux server management, network configuration, container orchestration, 
+                    CI/CD pipeline design, and automation tooling for production environments.
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">2020 — 2022</div>
+                <div class="timeline-title">Embedded Development</div>
+                <div class="timeline-desc">
+                    Firmware development for ARM-based systems, driver implementation, 
+                    real-time communication protocols, and hardware bring-up.
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="projects">
         <div class="section-header fade-up">
             <h2>Projects</h2>
@@ -583,6 +1015,25 @@
                 <div>
                     <h4>forge</h4>
                     <p>High-performance HTTP/1.1 server built from scratch in C. Event-driven I/O with epoll, POSIX thread pool for request handling, zero-copy sendfile, and a minimal routing layer. No external dependencies.</p>
+                    <ul class="project-features">
+                        <li>epoll-based event loop with edge-triggered mode</li>
+                        <li>Fixed-size thread pool with task queue</li>
+                        <li>Zero-copy static file serving via sendfile</li>
+                        <li>Graceful shutdown with pending request draining</li>
+                    </ul>
+                    <div class="project-stats">
+                        <span class="project-stat">~900 LOC</span>
+                        <span class="project-stat">C11</span>
+                        <span class="project-stat">Zero deps</span>
+                    </div>
+                    <div class="project-details" id="details-forge">
+                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
+                            Architecture: main thread accepts connections and pushes to a ring-buffer task queue. 
+                            Worker threads pop tasks and handle HTTP parsing + response generation. 
+                            Static files use Linux sendfile for kernel-space copy avoidance.
+                        </p>
+                    </div>
+                    <button class="project-toggle" onclick="toggleDetails('details-forge', this)">+ architecture</button>
                 </div>
                 <div class="project-meta">
                     <div class="project-tags">
@@ -593,10 +1044,30 @@
                     </div>
                 </div>
             </div>
+
             <div class="project-row">
                 <div>
                     <h4>bedrock</h4>
                     <p>Custom memory allocator implementing malloc, free, realloc, and calloc from scratch. Uses segregated free-lists for small allocations, a unified heap arena with first-fit search and coalescence for medium blocks, and direct mmap for large allocations. Thread-safe with a global mutex.</p>
+                    <ul class="project-features">
+                        <li>Segregated size-class bins (16B - 512B)</li>
+                        <li>Heap arena with first-fit + boundary-tag coalescence</li>
+                        <li>Direct mmap/munmap for allocations > 256 KB</li>
+                        <li>Thread-safe via pthread_mutex</li>
+                    </ul>
+                    <div class="project-stats">
+                        <span class="project-stat">~800 LOC</span>
+                        <span class="project-stat">C11</span>
+                        <span class="project-stat">mmap/brk</span>
+                    </div>
+                    <div class="project-details" id="details-bedrock">
+                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
+                            Block metadata uses boundary tags for O(1) coalescence. Small bins use LIFO free lists. 
+                            The heap arena grows via sbrk and coalesces adjacent freed blocks. 
+                            Large allocations bypass the heap entirely to reduce fragmentation.
+                        </p>
+                    </div>
+                    <button class="project-toggle" onclick="toggleDetails('details-bedrock', this)">+ architecture</button>
                 </div>
                 <div class="project-meta">
                     <div class="project-tags">
@@ -607,10 +1078,31 @@
                     </div>
                 </div>
             </div>
+
             <div class="project-row">
                 <div>
                     <h4>vault</h4>
                     <p>Persistent key-value store with a write-ahead log, snapshot support, and a TCP text protocol. Hash table with FNV-1a hashing, read-write locks for concurrency, and an epoll-driven server. Supports GET, SET, DEL, EXISTS, and KEYS.</p>
+                    <ul class="project-features">
+                        <li>WAL with fsync per write for durability</li>
+                        <li>Snapshot serialization to disk</li>
+                        <li>Linear-probing hash table with FNV-1a</li>
+                        <li>Text protocol over TCP with epoll server</li>
+                    </ul>
+                    <div class="project-stats">
+                        <span class="project-stat">~1200 LOC</span>
+                        <span class="project-stat">C11</span>
+                        <span class="project-stat">WAL + Snapshots</span>
+                    </div>
+                    <div class="project-details" id="details-vault">
+                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
+                            Every mutation appends to the WAL before updating the in-memory hash table. 
+                            On startup, the WAL is replayed to reconstruct state. Snapshots write the entire 
+                            hash table to a binary file atomically. The server uses epoll with edge-triggered I/O 
+                            and a thread-per-connection model with rwlocks for table access.
+                        </p>
+                    </div>
+                    <button class="project-toggle" onclick="toggleDetails('details-vault', this)">+ architecture</button>
                 </div>
                 <div class="project-meta">
                     <div class="project-tags">
@@ -640,9 +1132,33 @@
 
     <footer>
         <p>Spike &mdash; Systems Engineer. Built with care.</p>
+        <p class="footer-hint">Press <kbd style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;background:var(--bg-card);padding:0.1rem 0.3rem;border-radius:3px;border:1px solid var(--border);">~</kbd> for terminal</p>
     </footer>
 
+    <!-- Terminal Easter Egg -->
+    <div id="terminal-overlay">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-btn red" onclick="closeTerminal()"></div>
+                <div class="terminal-btn yellow"></div>
+                <div class="terminal-btn green"></div>
+                <span class="terminal-title">spike@portfolio — bash</span>
+            </div>
+            <div class="terminal-body" id="terminal-body">
+                <div class="terminal-line">Spike Systems Terminal — type <span class="info">help</span> for commands</div>
+                <div class="terminal-line"> </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Scroll progress
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+            document.getElementById('scroll-progress').style.width = (scrolled * 100) + '%';
+        });
+
+        // Fade up observer with stagger
         const fadeElements = document.querySelectorAll('.fade-up');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -650,9 +1166,213 @@
                     entry.target.classList.add('visible');
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        }, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
 
         fadeElements.forEach(el => observer.observe(el));
+
+        // Project details toggle
+        function toggleDetails(id, btn) {
+            const el = document.getElementById(id);
+            el.classList.toggle('open');
+            btn.textContent = el.classList.contains('open') ? '- architecture' : '+ architecture';
+        }
+
+        // Terminal Easter Egg
+        const terminalOverlay = document.getElementById('terminal-overlay');
+        const terminalBody = document.getElementById('terminal-body');
+        let terminalOpen = false;
+        let commandHistory = [];
+        let historyIndex = -1;
+        let currentInput = '';
+
+        const projectData = {
+            forge: `forge v0.1.0
+  HTTP/1.1 server in C11
+  ~900 LOC | epoll + thread pool + sendfile
+  Status: production-ready prototype`,
+            bedrock: `bedrock v0.1.0
+  Custom memory allocator in C11
+  ~800 LOC | segregated bins + heap arena + mmap
+  Status: tested, handles fragmentation`,
+            vault: `vault v0.1.0
+  Persistent KV store in C11
+  ~1200 LOC | WAL + snapshots + hash table + epoll
+  Status: durable, replay-tested`,
+        };
+
+        function openTerminal() {
+            terminalOverlay.classList.add('active');
+            terminalOpen = true;
+            renderPrompt();
+            scrollTerminal();
+        }
+
+        function closeTerminal() {
+            terminalOverlay.classList.remove('active');
+            terminalOpen = false;
+        }
+
+        function scrollTerminal() {
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        function printLine(text, cls) {
+            const div = document.createElement('div');
+            div.className = 'terminal-line terminal-output';
+            if (cls) div.innerHTML = `<span class="${cls}">${escapeHtml(text)}</span>`;
+            else div.innerHTML = text;
+            terminalBody.appendChild(div);
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+        }
+
+        function renderPrompt() {
+            const existing = terminalBody.querySelector('.terminal-input-line');
+            if (existing) existing.remove();
+
+            const line = document.createElement('div');
+            line.className = 'terminal-line terminal-input-line';
+            line.innerHTML = `<span class="terminal-prompt">$</span> <span id="term-input">${escapeHtml(currentInput)}</span><span class="terminal-cursor"></span>`;
+            terminalBody.appendChild(line);
+            scrollTerminal();
+        }
+
+        function executeCommand(cmd) {
+            const input = cmd.trim().toLowerCase();
+            if (!input) return;
+
+            commandHistory.push(cmd);
+            historyIndex = commandHistory.length;
+
+            printLine('$ ' + cmd);
+
+            const args = input.split(/\s+/);
+            const main = args[0];
+
+            switch (main) {
+                case 'help':
+                case '?':
+                    printLine('available commands:', 'info');
+                    printLine('  ls           list projects');
+                    printLine('  cat <name>   show project details (forge|bedrock|vault)');
+                    printLine('  whoami       about me');
+                    printLine('  skills       list skills');
+                    printLine('  contact      contact info');
+                    printLine('  clear        clear terminal');
+                    printLine('  exit         close terminal');
+                    break;
+                case 'ls':
+                    printLine('drwxr-xr-x  forge/     HTTP/1.1 server');
+                    printLine('drwxr-xr-x  bedrock/   memory allocator');
+                    printLine('drwxr-xr-x  vault/     KV store');
+                    printLine('drwxr-xr-x  cyclone/   TCP/IP stack (Rust)');
+                    break;
+                case 'cat':
+                    const name = args[1];
+                    if (projectData[name]) {
+                        projectData[name].split('\n').forEach(l => printLine(l));
+                    } else if (name === 'cyclone') {
+                        printLine('cyclonetcp-rs v0.3.0');
+                        printLine('  Pure Rust port of CycloneTCP');
+                        printLine('  ~6K LOC | no_std | layers 2-4');
+                        printLine('  Status: 96 tests passing');
+                    } else {
+                        printLine('cat: unknown project. Try: forge, bedrock, vault, cyclone', 'err');
+                    }
+                    break;
+                case 'whoami':
+                    printLine('Spike — Systems Engineer');
+                    printLine('Based in northern Spain');
+                    printLine('Focus: networks, embedded, low-level C/Rust');
+                    break;
+                case 'skills':
+                    printLine('Rust      [██████████] no_std, async, embedded');
+                    printLine('C         [█████████░] systems, allocators, servers');
+                    printLine('Linux     [████████░░] kernel, networking, infra');
+                    printLine('Python    [██████░░░░] automation, tooling');
+                    printLine('Embedded  [███████░░░] ARM, bare-metal, RTOS');
+                    break;
+                case 'contact':
+                    printLine('email:  spike@gcpino.dev');
+                    printLine('github: github.com/gcpino');
+                    printLine('linkedin: linkedin.com/in/gcpino');
+                    break;
+                case 'clear':
+                    terminalBody.innerHTML = '';
+                    break;
+                case 'exit':
+                case 'quit':
+                    closeTerminal();
+                    return;
+                case '':
+                    break;
+                default:
+                    printLine(main + ': command not found. Type help for available commands.', 'err');
+            }
+            currentInput = '';
+            renderPrompt();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '~' || e.key === '`') {
+                e.preventDefault();
+                if (terminalOpen) closeTerminal();
+                else openTerminal();
+                return;
+            }
+
+            if (!terminalOpen) return;
+
+            if (e.key === 'Escape') {
+                closeTerminal();
+                return;
+            }
+
+            if (e.key === 'Enter') {
+                executeCommand(currentInput);
+                return;
+            }
+
+            if (e.key === 'Backspace') {
+                currentInput = currentInput.slice(0, -1);
+                renderPrompt();
+                return;
+            }
+
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    currentInput = commandHistory[historyIndex] || '';
+                    renderPrompt();
+                }
+                return;
+            }
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    currentInput = commandHistory[historyIndex];
+                } else {
+                    historyIndex = commandHistory.length;
+                    currentInput = '';
+                }
+                renderPrompt();
+                return;
+            }
+
+            if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                currentInput += e.key;
+                renderPrompt();
+            }
+        });
+
+        terminalOverlay.addEventListener('click', (e) => {
+            if (e.target === terminalOverlay) closeTerminal();
+        });
     </script>
 </body>
 </html>
