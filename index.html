@@ -3,741 +3,441 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spike | Systems Engineer & Developer</title>
+    <title>Spike — Systems Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #111118;
-            --bg-card: #16161f;
-            --bg-hover: #1e1e2a;
-            --accent: #c41e3a;
-            --accent-glow: rgba(196, 30, 58, 0.3);
-            --accent-light: #e63950;
-            --text-primary: #f0f0f5;
-            --text-secondary: #8a8a9a;
-            --text-muted: #5a5a6a;
-            --border: #252530;
-            --border-light: #2a2a3a;
-            --success: #22c55e;
-            --gradient-start: #c41e3a;
-            --gradient-end: #8b1c3a;
+            --bg: #0c0c0e;
+            --bg-elevated: #141416;
+            --bg-card: #18181b;
+            --border: #232326;
+            --border-hover: #2e2e32;
+            --text: #e8e8ec;
+            --text-secondary: #909096;
+            --text-muted: #5a5a60;
+            --accent: #2563eb;
+            --accent-soft: rgba(37, 99, 235, 0.12);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
         }
 
-        ::selection {
-            background: var(--accent);
-            color: white;
-        }
+        ::selection { background: var(--accent); color: #fff; }
 
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent);
-        }
-
-        /* Navigation */
+        /* Nav */
         nav {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 1.2rem 4%;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 1.25rem 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(10, 10, 15, 0.85);
-            backdrop-filter: blur(20px);
+            background: rgba(12, 12, 14, 0.8);
+            backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            padding: 0.8rem 4%;
-            background: rgba(10, 10, 15, 0.95);
         }
 
         .logo {
-            font-weight: 800;
-            font-size: 1.4rem;
-            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text);
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.2); }
+            letter-spacing: -0.02em;
         }
 
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 2rem;
             list-style: none;
         }
 
         .nav-links a {
             color: var(--text-secondary);
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-            position: relative;
+            font-weight: 400;
+            font-size: 0.88rem;
+            transition: color 0.2s;
         }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
+        .nav-links a:hover { color: var(--text); }
 
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
+        /* Hero */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
-            position: relative;
-            padding: 0 4%;
-            overflow: hidden;
+            padding: 8rem 6% 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-        }
+        .hero-content { max-width: 640px; }
 
-        .hero-grid {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(196, 30, 58, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(196, 30, 58, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
-            -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
-        }
-
-        .hero-glow {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: float 8s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -55%) scale(1.1); }
-        }
-
-        .hero-content {
-            text-align: center;
-            z-index: 1;
-            max-width: 800px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1.2rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
+        .hero-label {
             font-family: 'JetBrains Mono', monospace;
-        }
-
-        .hero-badge .status-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--success);
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
+            font-size: 0.78rem;
+            color: var(--accent);
+            margin-bottom: 1.25rem;
+            letter-spacing: 0.05em;
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.25rem;
         }
 
-        .hero h1 .gradient-text {
-            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.25rem);
+        .hero h1 em {
+            font-style: normal;
             color: var(--text-secondary);
-            margin-bottom: 2.5rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
-        .hero-cta {
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 520px;
+            margin-bottom: 2rem;
+        }
+
+        .hero-actions {
             display: flex;
-            gap: 1rem;
-            justify-content: center;
+            gap: 0.75rem;
             flex-wrap: wrap;
         }
 
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.9rem 2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
+            gap: 0.4rem;
+            padding: 0.7rem 1.4rem;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.88rem;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
             cursor: pointer;
             border: none;
             font-family: inherit;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-            color: white;
-            box-shadow: 0 4px 20px var(--accent-glow);
+            background: var(--accent);
+            color: #fff;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px var(--accent-glow);
-        }
+        .btn-primary:hover { background: #1d4ed8; }
 
         .btn-secondary {
-            background: var(--bg-card);
-            color: var(--text-primary);
+            background: transparent;
+            color: var(--text-secondary);
             border: 1px solid var(--border);
         }
 
         .btn-secondary:hover {
-            background: var(--bg-hover);
-            border-color: var(--border-light);
-            transform: translateY(-2px);
+            border-color: var(--border-hover);
+            color: var(--text);
         }
 
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            animation: bounce 2s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-8px); }
-        }
-
-        .scroll-indicator svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Section Styles */
+        /* Sections */
         section {
-            padding: 6rem 4%;
-            max-width: 1200px;
+            padding: 5rem 6%;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
         .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 2.5rem;
         }
 
-        .section-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.75rem;
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
         }
 
-        .section-title {
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .section-desc {
+        .section-header p {
             color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-            font-size: 1.05rem;
+            margin-top: 0.4rem;
+            font-size: 0.95rem;
         }
 
-        /* About Section */
+        /* About */
         .about-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-image {
-            position: relative;
-        }
-
-        .about-image-frame {
-            width: 100%;
-            aspect-ratio: 1;
-            max-width: 400px;
-            margin: 0 auto;
-            border-radius: 20px;
-            background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .about-image-frame::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            background: linear-gradient(135deg, var(--accent), transparent 60%);
-            border-radius: 22px;
-            z-index: -1;
-            opacity: 0.5;
-        }
-
-        .about-image-inner {
-            font-size: 6rem;
-            opacity: 0.8;
-        }
-
-        .about-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            border-color: var(--border-light);
-            transform: translateY(-4px);
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent);
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-        }
-
-        .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 3rem;
+            align-items: start;
         }
 
         .about-text p {
             color: var(--text-secondary);
             margin-bottom: 1rem;
-            line-height: 1.8;
+            line-height: 1.75;
         }
 
-        /* Skills Section */
-        .skills-grid {
+        .about-text strong { color: var(--text); font-weight: 500; }
+
+        .about-meta {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 1.5rem;
         }
 
-        .skill-card {
+        .meta-cell {
+            background: var(--bg-card);
+            padding: 1.25rem;
+        }
+
+        .meta-cell .num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .meta-cell .lbl {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .about-visual {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 2rem;
-            transition: all 0.3s ease;
-            position: relative;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .code-block .kw { color: var(--accent); }
+        .code-block .str { color: #22c55e; }
+        .code-block .fn { color: #e8e8ec; }
+        .code-block .cm { color: var(--text-muted); }
+
+        /* Skills */
+        .skills-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 8px;
             overflow: hidden;
         }
 
-        .skill-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .skill-item {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            transition: background 0.2s;
         }
 
-        .skill-card:hover {
-            border-color: var(--border-light);
-            transform: translateY(-4px);
+        .skill-item:hover { background: var(--bg-elevated); }
+
+        .skill-item h4 {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
         }
 
-        .skill-card:hover::before {
-            opacity: 1;
-        }
-
-        .skill-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .skill-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-        }
-
-        .skill-desc {
-            font-size: 0.9rem;
+        .skill-item p {
+            font-size: 0.85rem;
             color: var(--text-secondary);
-            margin-bottom: 1.25rem;
+            margin-bottom: 0.75rem;
         }
 
         .skill-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
 
-        .skill-tag {
-            padding: 0.3rem 0.8rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            font-size: 0.75rem;
+        .skill-tags span {
             font-family: 'JetBrains Mono', monospace;
-            color: var(--text-secondary);
-        }
-
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .project-card {
-            background: var(--bg-card);
+            font-size: 0.7rem;
+            padding: 0.2rem 0.55rem;
+            background: var(--bg);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s ease;
+            border-radius: 4px;
+            color: var(--text-muted);
+        }
+
+        /* Projects */
+        .projects-list {
             display: flex;
             flex-direction: column;
+            gap: 1rem;
         }
 
-        .project-card:hover {
-            border-color: var(--border-light);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .project-header {
-            padding: 1.5rem 1.5rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .project-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-hover));
+        .project-row {
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .project-links {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .project-link {
-            width: 36px;
-            height: 36px;
             border-radius: 8px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1.5rem;
+            align-items: start;
+            transition: border-color 0.2s;
+        }
+
+        .project-row:hover { border-color: var(--border-hover); }
+
+        .project-row h4 {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.35rem;
+        }
+
+        .project-row h4 a {
+            color: var(--text);
             text-decoration: none;
-            transition: all 0.3s ease;
         }
 
-        .project-link:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-        }
+        .project-row h4 a:hover { color: var(--accent); }
 
-        .project-body {
-            padding: 1.25rem 1.5rem;
-            flex: 1;
-        }
-
-        .project-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-desc {
-            font-size: 0.9rem;
+        .project-row p {
+            font-size: 0.88rem;
             color: var(--text-secondary);
             line-height: 1.6;
         }
 
-        .project-footer {
-            padding: 0 1.5rem 1.5rem;
+        .project-meta {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: flex-end;
             gap: 0.5rem;
         }
 
-        .project-tag {
-            padding: 0.25rem 0.7rem;
-            background: var(--bg-secondary);
-            border-radius: 100px;
-            font-size: 0.75rem;
+        .project-meta a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.2s;
+        }
+
+        .project-meta a:hover { color: var(--text); }
+
+        .project-tags {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .project-tags span {
             font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
             color: var(--text-muted);
         }
 
-        /* Contact Section */
-        .contact-section {
-            text-align: center;
-            background: linear-gradient(180deg, transparent, var(--bg-secondary));
-            border-radius: 24px;
-            padding: 4rem 2rem;
-            margin-top: 2rem;
-        }
-
-        .contact-title {
-            font-size: clamp(1.5rem, 3vw, 2.2rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .contact-desc {
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .social-link {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+        /* Contact */
+        .contact-box {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
         }
 
-        .social-link:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-            transform: translateY(-3px);
+        .contact-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-box p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .contact-links a {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .contact-links a:hover {
+            border-color: var(--border-hover);
+            color: var(--text);
         }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 3rem 4%;
+            padding: 3rem 6%;
             border-top: 1px solid var(--border);
             color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        footer a {
-            color: var(--text-secondary);
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            color: var(--accent);
+            font-size: 0.82rem;
         }
 
         /* Animations */
-        .fade-in {
+        .fade-up {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: translateY(16px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
         }
 
-        .fade-in.visible {
+        .fade-up.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .about-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-cta {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn {
-                width: 100%;
-                max-width: 280px;
-                justify-content: center;
-            }
-        }
-
-        /* Terminal typing effect */
-        .typewriter {
-            font-family: 'JetBrains Mono', monospace;
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: 2px solid var(--accent);
-            animation: typing 3s steps(30) forwards, blink 0.8s step-end infinite;
-        }
-
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        @keyframes blink {
-            50% { border-color: transparent; }
+            .nav-links { display: none; }
+            .hero { padding-top: 6rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .project-row { grid-template-columns: 1fr; }
+            .project-meta { align-items: flex-start; }
+            .project-tags { justify-content: flex-start; }
         }
     </style>
 </head>
 <body>
-    <nav id="navbar">
-        <a href="#" class="logo">
-            <span class="logo-dot"></span>
-            SPIKE
-        </a>
+    <nav>
+        <a href="#" class="logo">Spike</a>
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
             <li><a href="#skills">Skills</a></li>
@@ -747,340 +447,221 @@
     </nav>
 
     <section class="hero">
-        <div class="hero-bg">
-            <div class="hero-grid"></div>
-            <div class="hero-glow"></div>
-        </div>
         <div class="hero-content">
-            <div class="hero-badge">
-                <span class="status-dot"></span>
-                Available for opportunities
-            </div>
-            <h1>
-                Building <span class="gradient-text">systems</span><br>
-                that matter
-            </h1>
-            <p class="hero-subtitle">
-                Systems Engineer & Developer. Crafting robust network stacks, 
-                embedded solutions, and high-performance software from Cantabria, Spain.
+            <div class="hero-label">Systems Engineer & Developer</div>
+            <h1>Building reliable<br><em>systems at scale.</em></h1>
+            <p>
+                Focused on network stacks, embedded systems, and low-level software.
+                Based in northern Spain.
             </p>
-            <div class="hero-cta">
-                <a href="#projects" class="btn btn-primary">
-                    View Projects
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </a>
-                <a href="#contact" class="btn btn-secondary">
-                    Get in Touch
-                </a>
+            <div class="hero-actions">
+                <a href="#projects" class="btn btn-primary">View Projects</a>
+                <a href="#contact" class="btn btn-secondary">Contact</a>
             </div>
-        </div>
-        <div class="scroll-indicator">
-            <span>Scroll</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
         </div>
     </section>
 
     <section id="about">
-        <div class="section-header fade-in">
-            <div class="section-label">01 / About</div>
-            <h2 class="section-title">Who I am</h2>
-            <p class="section-desc">Engineer by trade, builder by passion. I turn complex problems into elegant solutions.</p>
+        <div class="section-header fade-up">
+            <h2>About</h2>
+            <p>Engineer by trade. Builder by obsession.</p>
         </div>
         <div class="about-grid">
-            <div class="about-image fade-in">
-                <div class="about-image-frame">
-                    <div class="about-image-inner">⚡</div>
-                </div>
-                <div class="about-stats">
-                    <div class="stat-card">
-                        <div class="stat-number">5+</div>
-                        <div class="stat-label">Years Coding</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">10+</div>
-                        <div class="stat-label">Projects</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">3</div>
-                        <div class="stat-label">Languages</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">∞</div>
-                        <div class="stat-label">Curiosity</div>
-                    </div>
+            <div class="about-visual fade-up">
+                <div class="code-block">
+                    <span class="cm">// current focus</span><br>
+                    <span class="kw">let</span> <span class="fn">stack</span> = Stack::new()<br>
+                        .<span class="fn">ethernet</span>()<br>
+                        .<span class="fn">ipv4</span>()<br>
+                        .<span class="fn">tcp</span>()<br>
+                        .<span class="fn">no_std</span>()<br>
+                        .<span class="fn">build</span>();
                 </div>
             </div>
-            <div class="about-text fade-in">
-                <h3>Systems, networks & low-level magic</h3>
+            <div class="about-text fade-up">
                 <p>
-                    I'm a developer obsessed with how things work under the hood. From TCP/IP stacks 
-                    written in Rust to embedded networking solutions, I thrive in the space where 
-                    software meets hardware.
+                    I work where software meets hardware. My focus is on network protocol 
+                    implementation, embedded TCP/IP stacks, and systems that need to run 
+                    reliably under constraints.
                 </p>
                 <p>
-                    Based in Cantabria, Spain, I split my time between building open-source network 
-                    tools, exploring systems programming, and cheering for Atlético de Madrid. 
-                    Every line of code is a play, and I play to win.
+                    Currently developing <strong>cyclonetcp-rs</strong>, a pure Rust port of 
+                    the CycloneTCP embedded stack with full <code>no_std</code> support.
                 </p>
-                <p>
-                    Currently focused on <strong>cyclonetcp-rs</strong> — a pure Rust port of the 
-                    CycloneTCP embedded stack, bringing no_std networking to the Rust ecosystem.
-                </p>
+                <div class="about-meta">
+                    <div class="meta-cell">
+                        <div class="num">5+</div>
+                        <div class="lbl">Years experience</div>
+                    </div>
+                    <div class="meta-cell">
+                        <div class="num">96</div>
+                        <div class="lbl">Tests passing</div>
+                    </div>
+                    <div class="meta-cell">
+                        <div class="num">6K+</div>
+                        <div class="lbl">Lines in cyclonetcp-rs</div>
+                    </div>
+                    <div class="meta-cell">
+                        <div class="num">3</div>
+                        <div class="lbl">Core languages</div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <section id="skills">
-        <div class="section-header fade-in">
-            <div class="section-label">02 / Skills</div>
-            <h2 class="section-title">Tech Arsenal</h2>
-            <p class="section-desc">Tools and technologies I wield to build reliable systems.</p>
+        <div class="section-header fade-up">
+            <h2>Skills</h2>
+            <p>Technologies and domains I work with daily.</p>
         </div>
-        <div class="skills-grid">
-            <div class="skill-card fade-in">
-                <div class="skill-icon">🦀</div>
-                <div class="skill-title">Rust</div>
-                <div class="skill-desc">Systems programming with memory safety. no_std, embedded, async — the full stack.</div>
+        <div class="skills-list fade-up">
+            <div class="skill-item">
+                <h4>Rust</h4>
+                <p>Systems programming with zero-cost abstractions. no_std, async, embedded.</p>
                 <div class="skill-tags">
-                    <span class="skill-tag">no_std</span>
-                    <span class="skill-tag">Tokio</span>
-                    <span class="skill-tag">embedded</span>
+                    <span>no_std</span>
+                    <span>Tokio</span>
+                    <span>embedded-hal</span>
                 </div>
             </div>
-            <div class="skill-card fade-in">
-                <div class="skill-icon">🌐</div>
-                <div class="skill-title">Networking</div>
-                <div class="skill-desc">TCP/IP stack implementation, protocol design, and low-level packet crafting.</div>
+            <div class="skill-item">
+                <h4>Networking</h4>
+                <p>TCP/IP stack implementation, protocol design, packet-level programming.</p>
                 <div class="skill-tags">
-                    <span class="skill-tag">TCP/IP</span>
-                    <span class="skill-tag">UDP</span>
-                    <span class="skill-tag">ARP/ICMP</span>
+                    <span>TCP/IP</span>
+                    <span>UDP</span>
+                    <span>ARP/ICMP</span>
                 </div>
             </div>
-            <div class="skill-card fade-in">
-                <div class="skill-icon">⚙️</div>
-                <div class="skill-title">C / C++</div>
-                <div class="skill-desc">Embedded development, driver code, and performance-critical applications.</div>
+            <div class="skill-item">
+                <h4>C / C++</h4>
+                <p>Embedded firmware, drivers, and performance-critical code.</p>
                 <div class="skill-tags">
-                    <span class="skill-tag">embedded</span>
-                    <span class="skill-tag">drivers</span>
-                    <span class="skill-tag">RTOS</span>
+                    <span>embedded</span>
+                    <span>drivers</span>
+                    <span>bare-metal</span>
                 </div>
             </div>
-            <div class="skill-card fade-in">
-                <div class="skill-icon">🐍</div>
-                <div class="skill-title">Python</div>
-                <div class="skill-desc">Automation, scripting, data processing, and rapid prototyping.</div>
+            <div class="skill-item">
+                <h4>Linux & Infrastructure</h4>
+                <p>Server management, networking, containerization, CI/CD pipelines.</p>
                 <div class="skill-tags">
-                    <span class="skill-tag">asyncio</span>
-                    <span class="skill-tag">automation</span>
-                    <span class="skill-tag">scripting</span>
+                    <span>Docker</span>
+                    <span>Nginx</span>
+                    <span>systemd</span>
                 </div>
             </div>
-            <div class="skill-card fade-in">
-                <div class="skill-icon">🐧</div>
-                <div class="skill-title">Linux & DevOps</div>
-                <div class="skill-desc">Server management, containerization, CI/CD, and infrastructure as code.</div>
+            <div class="skill-item">
+                <h4>Python</h4>
+                <p>Automation, tooling, data processing, and rapid prototyping.</p>
                 <div class="skill-tags">
-                    <span class="skill-tag">Docker</span>
-                    <span class="skill-tag">Nginx</span>
-                    <span class="skill-tag">systemd</span>
+                    <span>asyncio</span>
+                    <span>automation</span>
+                    <span>scripting</span>
                 </div>
             </div>
-            <div class="skill-card fade-in">
-                <div class="skill-icon">🔧</div>
-                <div class="skill-title">Embedded Systems</div>
-                <div class="skill-desc">Bare-metal programming, real-time constraints, and hardware interfaces.</div>
+            <div class="skill-item">
+                <h4>Embedded Systems</h4>
+                <p>Real-time constraints, hardware interfaces, memory-constrained environments.</p>
                 <div class="skill-tags">
-                    <span class="skill-tag">ARM</span>
-                    <span class="skill-tag">SPI/I2C</span>
-                    <span class="skill-tag">UART</span>
+                    <span>ARM</span>
+                    <span>SPI/I2C</span>
+                    <span>RTOS</span>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="projects">
-        <div class="section-header fade-in">
-            <div class="section-label">03 / Projects</div>
-            <h2 class="section-title">Featured Work</h2>
-            <p class="section-desc">A selection of projects that define my craft.</p>
+        <div class="section-header fade-up">
+            <h2>Projects</h2>
+            <p>Selected work. Production-grade and open source.</p>
         </div>
-        <div class="projects-grid">
-            <div class="project-card fade-in">
-                <div class="project-header">
-                    <div class="project-icon">🌀</div>
-                    <div class="project-links">
-                        <a href="https://github.com/gcpino/cyclonetcp-rs" class="project-link" target="_blank" rel="noopener" title="View on GitHub">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="project-body">
-                    <div class="project-title">cyclonetcp-rs</div>
-                    <div class="project-desc">
+        <div class="projects-list">
+            <div class="project-row fade-up">
+                <div>
+                    <h4><a href="https://github.com/gcpino/cyclonetcp-rs" target="_blank" rel="noopener">cyclonetcp-rs</a></h4>
+                    <p>
                         Pure Rust port of the CycloneTCP embedded TCP/IP stack. 
-                        no_std-compatible networking from Ethernet to TCP, with 96+ tests and 6K+ LOC.
-                    </div>
+                        no_std-compatible layers 2-4: Ethernet, ARP, IPv4, ICMP, UDP, TCP.
+                    </p>
                 </div>
-                <div class="project-footer">
-                    <span class="project-tag">Rust</span>
-                    <span class="project-tag">no_std</span>
-                    <span class="project-tag">TCP/IP</span>
-                    <span class="project-tag">embedded</span>
+                <div class="project-meta">
+                    <a href="https://github.com/gcpino/cyclonetcp-rs" target="_blank" rel="noopener">GitHub &rarr;</a>
+                    <div class="project-tags">
+                        <span>Rust</span>
+                        <span>no_std</span>
+                        <span>TCP/IP</span>
+                    </div>
                 </div>
             </div>
-
-            <div class="project-card fade-in">
-                <div class="project-header">
-                    <div class="project-icon">📡</div>
-                    <div class="project-links">
-                        <a href="https://github.com/gcpino/SpikeTCP" class="project-link" target="_blank" rel="noopener" title="View on GitHub">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="project-body">
-                    <div class="project-title">SpikeTCP</div>
-                    <div class="project-desc">
+            <div class="project-row fade-up">
+                <div>
+                    <h4><a href="https://github.com/gcpino/SpikeTCP" target="_blank" rel="noopener">SpikeTCP</a></h4>
+                    <p>
                         Custom TCP stack exploration and networking experiments. 
                         Deep dives into protocol implementation and packet-level programming.
-                    </div>
+                    </p>
                 </div>
-                <div class="project-footer">
-                    <span class="project-tag">C</span>
-                    <span class="project-tag">Networking</span>
-                    <span class="project-tag">Low-level</span>
+                <div class="project-meta">
+                    <a href="https://github.com/gcpino/SpikeTCP" target="_blank" rel="noopener">GitHub &rarr;</a>
+                    <div class="project-tags">
+                        <span>C</span>
+                        <span>Networking</span>
+                        <span>Low-level</span>
+                    </div>
                 </div>
             </div>
-
-            <div class="project-card fade-in">
-                <div class="project-header">
-                    <div class="project-icon">🔮</div>
-                    <div class="project-links">
-                        <a href="https://github.com/gcpino/soliton-radar" class="project-link" target="_blank" rel="noopener" title="View on GitHub">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        </a>
-                    </div>
+            <div class="project-row fade-up">
+                <div>
+                    <h4><a href="https://github.com/gcpino/soliton-radar" target="_blank" rel="noopener">Soliton Radar</a></h4>
+                    <p>
+                        Network discovery and monitoring tool. Scans, maps, and visualizes 
+                        connected devices in real-time.
+                    </p>
                 </div>
-                <div class="project-body">
-                    <div class="project-title">Soliton Radar</div>
-                    <div class="project-desc">
-                        A network discovery and monitoring tool inspired by MGS lore. 
-                        Scans, maps, and visualizes connected devices in real-time.
+                <div class="project-meta">
+                    <a href="https://github.com/gcpino/soliton-radar" target="_blank" rel="noopener">GitHub &rarr;</a>
+                    <div class="project-tags">
+                        <span>Rust</span>
+                        <span>Network</span>
+                        <span>Monitoring</span>
                     </div>
-                </div>
-                <div class="project-footer">
-                    <span class="project-tag">Rust</span>
-                    <span class="project-tag">Network</span>
-                    <span class="project-tag">Monitoring</span>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="contact">
-        <div class="contact-section fade-in">
-            <div class="section-label">04 / Contact</div>
-            <h2 class="contact-title">Let's build something together</h2>
-            <p class="contact-desc">
-                Whether it's a new protocol, an embedded challenge, or just to talk shop — 
-                my codec is always open.
+        <div class="contact-box fade-up">
+            <h3>Get in touch</h3>
+            <p>
+                Open to collaboration on systems, networking, and embedded projects.
             </p>
-            <a href="mailto:spike@gcpino.dev" class="btn btn-primary">
-                Start a Conversation
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
-            <div class="social-links">
-                <a href="https://github.com/gcpino" class="social-link" target="_blank" rel="noopener" title="GitHub">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                </a>
-                <a href="https://x.com/gcpino" class="social-link" target="_blank" rel="noopener" title="X / Twitter">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </a>
-                <a href="https://linkedin.com/in/gcpino" class="social-link" target="_blank" rel="noopener" title="LinkedIn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                </a>
+            <a href="mailto:spike@gcpino.dev" class="btn btn-primary">spike@gcpino.dev</a>
+            <div class="contact-links">
+                <a href="https://github.com/gcpino" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://linkedin.com/in/gcpino" target="_blank" rel="noopener">LinkedIn</a>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>Built with precision by <a href="https://github.com/gcpino">Spike</a> · Hosted on <a href="https://pages.github.com">GitHub Pages</a></p>
-        <p style="margin-top: 0.5rem;">Atlético de Madrid 🔴⚪ · Cantabria, Spain</p>
+        <p>Spike &mdash; Systems Engineer. Built with care.</p>
     </footer>
 
     <script>
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Fade-in animation on scroll
-        const fadeElements = document.querySelectorAll('.fade-in');
-        const fadeObserver = new IntersectionObserver((entries) => {
+        const fadeElements = document.querySelectorAll('.fade-up');
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-        fadeElements.forEach(el => fadeObserver.observe(el));
-
-        // Smooth scroll for nav links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Parallax effect on hero glow
-        document.addEventListener('mousemove', (e) => {
-            const glow = document.querySelector('.hero-glow');
-            if (glow) {
-                const x = (e.clientX / window.innerWidth - 0.5) * 30;
-                const y = (e.clientY / window.innerHeight - 0.5) * 30;
-                glow.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
-            }
-        });
-
-        // Counter animation
-        const counters = document.querySelectorAll('.stat-number');
-        const counterObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const el = entry.target;
-                    const text = el.textContent;
-                    if (!isNaN(parseInt(text))) {
-                        const target = parseInt(text);
-                        let current = 0;
-                        const increment = target / 40;
-                        const timer = setInterval(() => {
-                            current += increment;
-                            if (current >= target) {
-                                el.textContent = text;
-                                clearInterval(timer);
-                            } else {
-                                el.textContent = Math.floor(current) + (text.includes('+') ? '+' : '');
-                            }
-                        }, 30);
-                    }
-                    counterObserver.unobserve(el);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        counters.forEach(c => counterObserver.observe(c));
+        fadeElements.forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
