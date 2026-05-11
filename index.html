@@ -836,6 +836,9 @@
                     &nbsp;&nbsp;<span class="type">raytracer_t</span>&nbsp;&nbsp;<span class="fn">trace</span>;&nbsp;&nbsp;<span class="cm">/* C99 */</span><br>
                     &nbsp;&nbsp;<span class="type">rasterizer_t</span>&nbsp;<span class="fn">aster</span>;&nbsp;&nbsp;<span class="cm">/* Python */</span><br>
                     &nbsp;&nbsp;<span class="type">fluid_sim_t</span>&nbsp;&nbsp;<span class="fn">wave</span>;&nbsp;&nbsp;<span class="cm">/* C++17 */</span><br>
+                    &nbsp;&nbsp;<span class="type">sha256_t</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">hash</span>;&nbsp;&nbsp;<span class="cm">/* C99 */</span><br>
+                    &nbsp;&nbsp;<span class="type">aead_t</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">cipher</span>;<span class="cm">/* C99 */</span><br>
+                    &nbsp;&nbsp;<span class="type">compress_t</span>&nbsp;&nbsp;&nbsp;<span class="fn">zip</span>;&nbsp;&nbsp;<span class="cm">/* C++17 */</span><br>
                     };
                 </div>
             </div>
@@ -846,13 +849,13 @@
                     and every syscall.
                 </p>
                 <p>
-                    Current work: nine projects exploring systems programming, networking, 
-                    machine learning, and computer graphics — all built from scratch with 
+                    Current work: twelve projects exploring systems programming, networking, 
+                    machine learning, computer graphics, and cryptography — all built from scratch with 
                     <strong>zero dependencies</strong>.
                 </p>
                 <div class="about-meta">
                     <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="9">0</span></div>
+                        <div class="num"><span class="counter" data-target="12">0</span></div>
                         <div class="lbl">Active projects</div>
                     </div>
                     <div class="meta-cell">
@@ -860,7 +863,7 @@
                         <div class="lbl">Core languages</div>
                     </div>
                     <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="5200">0</span></div>
+                        <div class="num"><span class="counter" data-target="6700">0</span></div>
                         <div class="lbl">Total LOC</div>
                     </div>
                     <div class="meta-cell">
@@ -1283,6 +1286,127 @@
         </div>
     </section>
 
+    <section id="crypto">
+        <div class="section-header fade-up">
+            <h2>Cryptography & Compression</h2>
+            <p>Hash functions, authenticated encryption, and lossless compression. Zero external crypto libs.</p>
+        </div>
+
+        <div class="projects-list fade-up">
+            <div class="project-row">
+                <div>
+                    <h4>hash</h4>
+                    <p>SHA-256 implemented from scratch in C99. Full message padding, 64-round schedule with additive constants, and official NIST test vectors including the 1-million-'a' boundary case.</p>
+                    <ul class="project-features">
+                        <li>Complete SHA-256: padding, schedule, compression</li>
+                        <li>64 additive round constants (K)</li>
+                        <li>Big-endian message schedule expansion</li>
+                        <li>NIST test vectors: empty, abc, 448-bit, 1M x 'a'</li>
+                        <li>Self-contained single file</li>
+                    </ul>
+                    <div class="project-stats">
+                        <span class="project-stat">~150 LOC</span>
+                        <span class="project-stat">C99</span>
+                        <span class="project-stat">Zero deps</span>
+                    </div>
+                    <div class="project-details" id="details-hash">
+                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
+                            The input is padded with a 1-bit, followed by enough zeros to leave 
+                            64 bits for the length, producing 512-bit chunks. Each chunk expands 
+                            into 64 32-bit words via sigma rotations. The 8 working variables are 
+                            mixed for 64 rounds using Ch, Maj, and Sigma functions before being 
+                            added to the hash state.
+                        </p>
+                    </div>
+                    <button class="project-toggle" onclick="toggleDetails('details-hash', this)">+ architecture</button>
+                </div>
+                <div class="project-meta">
+                    <div class="project-tags">
+                        <span>C99</span>
+                        <span>SHA-256</span>
+                        <span>cryptography</span>
+                        <span>NIST</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-row">
+                <div>
+                    <h4>cipher</h4>
+                    <p>ChaCha20 stream cipher with Poly1305 message authentication (AEAD) implemented from scratch in C99. RFC 8439 compliant construction with encrypt-then-MAC, streaming AAD processing, and tamper detection.</p>
+                    <ul class="project-features">
+                        <li>Full ChaCha20: quarter-round, 20 rounds, 64-byte keystream blocks</li>
+                        <li>Poly1305: 130-bit prime field (5×26-bit limbs), clamped key</li>
+                        <li>AEAD: AAD + ciphertext + length-block MAC</li>
+                        <li>Tamper resistance: single-bit flip rejects decryption</li>
+                        <li>Zero external dependencies</li>
+                    </ul>
+                    <div class="project-stats">
+                        <span class="project-stat">~250 LOC</span>
+                        <span class="project-stat">C99</span>
+                        <span class="project-stat">Zero deps</span>
+                    </div>
+                    <div class="project-details" id="details-cipher">
+                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
+                            The Poly1305 key is derived from a ChaCha20 block with counter 0. 
+                            Plaintext is encrypted with ChaCha20 starting at counter 1. Poly1305 
+                            authenticates AAD (padded), ciphertext (padded), and the 16-byte 
+                            little-endian length block. A 16-byte tag verifies integrity before 
+                            decryption proceeds.
+                        </p>
+                    </div>
+                    <button class="project-toggle" onclick="toggleDetails('details-cipher', this)">+ architecture</button>
+                </div>
+                <div class="project-meta">
+                    <div class="project-tags">
+                        <span>C99</span>
+                        <span>ChaCha20</span>
+                        <span>Poly1305</span>
+                        <span>AEAD</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-row">
+                <div>
+                    <h4>zip</h4>
+                    <p>LZ77 + Huffman compressor and decompressor in C++17. Sliding-window dictionary matching followed by canonical prefix-code entropy coding. No zlib, no libzip.</p>
+                    <ul class="project-features">
+                        <li>LZ77: 4KB sliding window, 18-byte lookahead</li>
+                        <li>Brute-force match search with length-distance tokens</li>
+                        <li>Huffman: min-heap tree, canonical codes, decode trie</li>
+                        <li>Self-describing format with magic and headers</li>
+                        <li>Round-trip verify: byte-exact decompression</li>
+                    </ul>
+                    <div class="project-stats">
+                        <span class="project-stat">~280 LOC</span>
+                        <span class="project-stat">C++17</span>
+                        <span class="project-stat">Zero deps</span>
+                    </div>
+                    <div class="project-details" id="details-zip">
+                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
+                            The compressor scans for the longest repeated substring within a 4KB 
+                            backward window, emitting length-distance references or raw literals. 
+                            The token stream is serialized with flag bytes and compressed via 
+                            Huffman canonical codes. The decoder rebuilds the prefix tree from 
+                            256 code-length bytes and walks the bitstream to recover the original 
+                            LZ77 stream exactly.
+                        </p>
+                    </div>
+                    <button class="project-toggle" onclick="toggleDetails('details-zip', this)">+ architecture</button>
+                </div>
+                <div class="project-meta">
+                    <div class="project-tags">
+                        <span>C++17</span>
+                        <span>LZ77</span>
+                        <span>Huffman</span>
+                        <span>compression</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="contact">
         <div class="contact-box fade-up">
             <h3>Get in touch</h3>
@@ -1389,6 +1513,18 @@
   2D fluid simulation in C++17
   ~250 LOC | Navier-Stokes + advection + projection
   Status: outputs 30 frames`,
+            hash: `hash v0.1.0
+  SHA-256 from scratch in C99
+  ~150 LOC | padding + schedule + 64 rounds
+  Status: passes NIST vectors`,
+            cipher: `cipher v0.1.0
+  ChaCha20-Poly1305 AEAD in C99
+  ~250 LOC | stream cipher + 130-bit MAC
+  Status: tamper-resistant`,
+            zip: `zip v0.1.0
+  LZ77 + Huffman compressor in C++17
+  ~280 LOC | sliding window + canonical codes
+  Status: round-trip verified`,
         };
 
         function openTerminal() {
@@ -1447,7 +1583,7 @@
                 case '?':
                     printLine('available commands:', 'info');
                     printLine('  ls           list projects');
-                    printLine('  cat <name>   show project details (forge|bedrock|vault)');
+                    printLine('  cat <name>   show project details (forge|bedrock|vault|synapse|ember|cachet|trace|aster|wave|hash|cipher|zip)');
                     printLine('  whoami       about me');
                     printLine('  skills       list skills');
                     printLine('  contact      contact info');
@@ -1464,13 +1600,16 @@
                     printLine('drwxr-xr-x  trace/     ray tracer (C99)');
                     printLine('drwxr-xr-x  aster/     3D rasterizer (Python)');
                     printLine('drwxr-xr-x  wave/      fluid sim (C++17)');
+                    printLine('drwxr-xr-x  hash/      SHA-256 (C99)');
+                    printLine('drwxr-xr-x  cipher/    AEAD crypto (C99)');
+                    printLine('drwxr-xr-x  zip/       compressor (C++17)');
                     break;
                 case 'cat':
                     const name = args[1];
                     if (projectData[name]) {
                         projectData[name].split('\n').forEach(l => printLine(l));
                     } else {
-                        printLine('cat: unknown project. Try: forge, bedrock, vault, synapse, ember, cachet, trace, aster, wave', 'err');
+                        printLine('cat: unknown project. Try: forge, bedrock, vault, synapse, ember, cachet, trace, aster, wave, hash, cipher, zip', 'err');
                     }
                     break;
                 case 'whoami':
