@@ -830,6 +830,9 @@
                     &nbsp;&nbsp;<span class="type">http_server_t</span>&nbsp;&nbsp;<span class="fn">forge</span>;&nbsp;&nbsp;<span class="cm">/* C11 */</span><br>
                     &nbsp;&nbsp;<span class="type">allocator_t</span>&nbsp;&nbsp;&nbsp;<span class="fn">bedrock</span>;<span class="cm">/* C11 */</span><br>
                     &nbsp;&nbsp;<span class="type">kv_store_t</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">vault</span>;&nbsp;&nbsp;<span class="cm">/* C11 */</span><br>
+                    &nbsp;&nbsp;<span class="type">nn_t</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">synapse</span>;<span class="cm">/* Python */</span><br>
+                    &nbsp;&nbsp;<span class="type">py_server_t</span>&nbsp;&nbsp;<span class="fn">ember</span>;&nbsp;&nbsp;<span class="cm">/* Python */</span><br>
+                    &nbsp;&nbsp;<span class="type">py_kv_t</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">cachet</span>;<span class="cm">/* Python */</span><br>
                     };
                 </div>
             </div>
@@ -840,13 +843,13 @@
                     and every syscall.
                 </p>
                 <p>
-                    Current work centers on <strong>C</strong> for systems programming (servers, allocators, stores), 
-                    <strong>C++</strong> for performance-critical components, and <strong>Python</strong> for 
-                    tooling, automation, and rapid prototyping.
+                    Current work: six projects exploring systems programming — three in 
+                    <strong>C</strong> (forge, bedrock, vault) and three in <strong>Python</strong> 
+                    (synapse, ember, cachet). All built from scratch with zero dependencies.
                 </p>
                 <div class="about-meta">
                     <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="3">0</span></div>
+                        <div class="num"><span class="counter" data-target="6">0</span></div>
                         <div class="lbl">Active projects</div>
                     </div>
                     <div class="meta-cell">
@@ -854,7 +857,7 @@
                         <div class="lbl">Core languages</div>
                     </div>
                     <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="2900">0</span></div>
+                        <div class="num"><span class="counter" data-target="3800">0</span></div>
                         <div class="lbl">Total LOC</div>
                     </div>
                     <div class="meta-cell">
@@ -938,8 +941,10 @@
     <section id="projects">
         <div class="section-header fade-up">
             <h2>Projects</h2>
-            <p>Selected systems work. Built from scratch, zero dependencies.</p>
+            <p>Built from scratch, zero dependencies. Grouped by language.</p>
         </div>
+
+        <h3 style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;">C / C++</h3>
         <div class="projects-list fade-up">
             <div class="project-row">
                 <div>
@@ -1044,6 +1049,115 @@
                 </div>
             </div>
         </div>
+
+        <h3 style="font-size:0.85rem;color:var(--text-muted);margin:3rem 0 1rem;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;">Python</h3>
+        <div class="projects-list fade-up">
+            <div class="project-row">
+                <div>
+                    <h4>synapse</h4>
+                    <p>Neural network library built from scratch in pure Python. Implements feedforward networks with backpropagation, ReLU and sigmoid activations, MSE loss, and mini-batch gradient descent. No NumPy, no PyTorch — just the Python standard library.</p>
+                    <ul class="project-features">
+                        <li>Fully-connected layers with Xavier initialization</li>
+                        <li>Backpropagation with chain rule</li>
+                        <li>ReLU, Sigmoid, Tanh activations</li>
+                        <li>Mini-batch SGD with configurable learning rate</li>
+                        <li>Trains and evaluates on synthetic datasets</li>
+                    </ul>
+                    <div class="project-stats">
+                        <span class="project-stat">~500 LOC</span>
+                        <span class="project-stat">Python 3</span>
+                        <span class="project-stat">Zero deps</span>
+                    </div>
+                    <div class="project-details" id="details-synapse">
+                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
+                            Implements matrix operations (dot product, transpose, element-wise) from scratch using nested lists.
+                            Forward pass computes weighted sums and activations layer by layer. Backward pass applies the chain rule
+                            to compute gradients w.r.t. weights and biases. Supports configurable layer sizes, batch sizes, and epochs.
+                        </p>
+                    </div>
+                    <button class="project-toggle" onclick="toggleDetails('details-synapse', this)">+ architecture</button>
+                </div>
+                <div class="project-meta">
+                    <div class="project-tags">
+                        <span>Python</span>
+                        <span>NN</span>
+                        <span>backprop</span>
+                        <span>from-scratch</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-row">
+                <div>
+                    <h4>ember</h4>
+                    <p>Minimal HTTP/1.1 server built in pure Python using only socket and select. Handles concurrent connections via select()-based I/O multiplexing, parses HTTP requests manually, and serves static files. No asyncio, no frameworks.</p>
+                    <ul class="project-features">
+                        <li>select()-based I/O multiplexing</li>
+                        <li>Manual HTTP/1.1 request parsing</li>
+                        <li>Static file serving with MIME types</li>
+                        <li>Keep-alive and connection management</li>
+                        <li>Single-threaded, event-driven</li>
+                    </ul>
+                    <div class="project-stats">
+                        <span class="project-stat">~400 LOC</span>
+                        <span class="project-stat">Python 3</span>
+                        <span class="project-stat">socket + select</span>
+                    </div>
+                    <div class="project-details" id="details-ember">
+                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
+                            Uses socket in non-blocking mode with select() to multiplex read/write events across 
+                            multiple client connections. Parses HTTP requests line-by-line using bytes operations. 
+                            Response builder constructs proper HTTP/1.1 headers with Content-Length and Connection.
+                        </p>
+                    </div>
+                    <button class="project-toggle" onclick="toggleDetails('details-ember', this)">+ architecture</button>
+                </div>
+                <div class="project-meta">
+                    <div class="project-tags">
+                        <span>Python</span>
+                        <span>HTTP/1.1</span>
+                        <span>select</span>
+                        <span>socket</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-row">
+                <div>
+                    <h4>cachet</h4>
+                    <p>In-memory key-value store with LRU eviction, TTL support, and a simple text protocol over TCP. Built with threading.Lock for concurrency and socketserver for the networking layer. Pure Python, zero dependencies.</p>
+                    <ul class="project-features">
+                        <li>LRU eviction using ordered dict (stdlib collections)</li>
+                        <li>TTL per key with automatic expiration</li>
+                        <li>TCP text protocol (SET, GET, DEL, KEYS, FLUSH)</li>
+                        <li>Thread-safe with fine-grained locking</li>
+                        <li>Optional AOF persistence (append-only file)</li>
+                    </ul>
+                    <div class="project-stats">
+                        <span class="project-stat">~350 LOC</span>
+                        <span class="project-stat">Python 3</span>
+                        <span class="project-stat">LRU + TTL</span>
+                    </div>
+                    <div class="project-details" id="details-cachet">
+                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
+                            Uses collections.OrderedDict for O(1) LRU operations (move_to_end + popitem).
+                            TTL is managed via a background thread that scans for expired keys. The TCP server
+                            uses socketserver.ThreadingTCPServer with a custom request handler that parses
+                            the text protocol and dispatches to the KV engine.
+                        </p>
+                    </div>
+                    <button class="project-toggle" onclick="toggleDetails('details-cachet', this)">+ architecture</button>
+                </div>
+                <div class="project-meta">
+                    <div class="project-tags">
+                        <span>Python</span>
+                        <span>LRU</span>
+                        <span>TCP</span>
+                        <span>TTL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section id="contact">
@@ -1128,6 +1242,18 @@
   Persistent KV store in C11
   ~1200 LOC | WAL + snapshots + hash table + epoll
   Status: durable, replay-tested`,
+            synapse: `synapse v0.1.0
+  Neural network in pure Python
+  ~300 LOC | backprop + ReLU/Sigmoid/Tanh + SGD
+  Status: 100% accuracy on XOR`,
+            ember: `ember v0.1.0
+  HTTP/1.1 server in pure Python
+  ~250 LOC | socket + select + non-blocking I/O
+  Status: concurrent, keep-alive support`,
+            cachet: `cachet v0.1.0
+  In-memory KV store in pure Python
+  ~270 LOC | LRU + TTL + AOF persistence + TCP
+  Status: tested, thread-safe`,
         };
 
         function openTerminal() {
@@ -1197,13 +1323,16 @@
                     printLine('drwxr-xr-x  forge/     HTTP/1.1 server (C11)');
                     printLine('drwxr-xr-x  bedrock/   memory allocator (C11)');
                     printLine('drwxr-xr-x  vault/     KV store (C11)');
+                    printLine('drwxr-xr-x  synapse/   neural network (Python)');
+                    printLine('drwxr-xr-x  ember/     HTTP/1.1 server (Python)');
+                    printLine('drwxr-xr-x  cachet/    KV store (Python)');
                     break;
                 case 'cat':
                     const name = args[1];
                     if (projectData[name]) {
                         projectData[name].split('\n').forEach(l => printLine(l));
                     } else {
-                        printLine('cat: unknown project. Try: forge, bedrock, vault', 'err');
+                        printLine('cat: unknown project. Try: forge, bedrock, vault, synapse, ember, cachet', 'err');
                     }
                     break;
                 case 'whoami':
