@@ -52,6 +52,9 @@ def test_portfolio():
     # Check placeholders are present
     assert "/* TODO: Add projects one by one */" in content, "Todo comment not found in C struct or project card"
     assert "No projects listed yet." in content, "Empty project row description not found"
+    
+    # 6. Check LinkedIn handle is gcorpas
+    assert 'linkedin.com/in/gcorpas' in content, "LinkedIn handle not updated to gcorpas"
 
     print("All portfolio tests PASSED successfully!")
 
