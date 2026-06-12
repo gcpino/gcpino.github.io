@@ -6,7 +6,7 @@
     <title>Guillermo — Systems & Projects</title>
     <meta
       name="description"
-      content="Low-level systems projects in C, C++, and Python. HTTP servers, memory allocators, key-value stores, and network stacks built from scratch."
+      content="Low-level systems projects in C and Python. HTTP servers, memory allocators, key-value stores, and network stacks built from scratch."
     />
     <meta name="author" content="Guillermo" />
     <meta name="theme-color" content="#0f172a" />
@@ -15,7 +15,7 @@
     <meta property="og:title" content="Guillermo — Systems & Projects" />
     <meta
       property="og:description"
-      content="Low-level systems projects in C, C++, and Python. Servers, allocators, and stores built from scratch."
+      content="Low-level systems projects in C and Python. Servers, allocators, and stores built from scratch."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://gcpino.github.io" />
@@ -25,7 +25,7 @@
     <meta name="twitter:title" content="Guillermo — Systems & Projects" />
     <meta
       name="twitter:description"
-      content="Building systems from scratch in C, C++, and Python."
+      content="Building systems from scratch in C and Python."
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -982,7 +982,7 @@
 
     <section class="hero">
       <div class="hero-content">
-        <div class="hero-label">C / C++ / Python Developer</div>
+        <div class="hero-label">C / Python Developer</div>
         <h1><span id="type-text"></span><span class="type-cursor">|</span></h1>
         <p>
           Building systems from scratch. Servers, allocators, stores, and
@@ -1006,12 +1006,10 @@
       <div class="about-grid">
         <div class="about-visual fade-up">
           <div class="code-block">
-            <span class="cm">/* current projects */</span><br />
-            <span class="kw">struct</span>
-            <span class="fn">projects</span> {<br />
-            &nbsp;&nbsp;<span class="cm"
-              >/* TODO: Add projects one by one */</span
-            ><br />
+            <span class="cm">/* system developer */</span><br />
+            <span class="kw">struct</span> <span class="type">engineer</span> {<br />
+            &nbsp;&nbsp;<span class="type">const char*</span>&nbsp;&nbsp;<span class="fn">name</span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/* "Guillermo" */</span><br />
+            &nbsp;&nbsp;<span class="type">const char*</span>&nbsp;&nbsp;<span class="fn">focus</span>;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/* "Systems" */</span><br />
             };
           </div>
         </div>
@@ -1020,18 +1018,11 @@
                     I build low-level systems from the ground up. With a background in Physics, I combine computational simulation, mathematical modeling, and systems engineering to design clean, performant software with zero dependencies.
                 </p>
           <p>
-            Current work: Building systems from scratch exploring systems
-            programming, networking, machine learning, computer graphics, and
-            cryptography — all built with
+            Focused on building software from scratch, exploring systems programming,
+            networking, data structures, and mathematical modeling — all designed with
             <strong>zero dependencies</strong>.
           </p>
           <div class="about-meta">
-            <div class="meta-cell">
-              <div class="num">
-                <span class="counter" data-target="0">0</span>
-              </div>
-              <div class="lbl">Active projects</div>
-            </div>
             <div class="meta-cell">
               <div class="num">
                 <span class="counter" data-target="3">0</span>
@@ -1042,13 +1033,17 @@
               <div class="num">
                 <span class="counter" data-target="0">0</span>
               </div>
-              <div class="lbl">Total LOC</div>
+              <div class="lbl">Dependencies</div>
             </div>
             <div class="meta-cell">
               <div class="num">
                 <span class="counter" data-target="0">0</span>
               </div>
-              <div class="lbl">Dependencies</div>
+              <div class="lbl">Frameworks</div>
+            </div>
+            <div class="meta-cell">
+              <div class="num">100%</div>
+              <div class="lbl">Control</div>
             </div>
           </div>
         </div>
@@ -1062,7 +1057,7 @@
       </div>
       <div class="skills-list fade-up">
         <div class="skill-item">
-          <h4>C / C++</h4>
+          <h4>C</h4>
           <p>
             Systems programming, custom allocators, HTTP servers, and protocol
             stacks. C11, POSIX, bare-metal.
@@ -1364,13 +1359,12 @@
             }
             break;
           case "whoami":
-            printLine("Guillermo — C / C++ / Python Developer");
+            printLine("Guillermo — C / Python Developer");
             printLine("Focus: systems programming from scratch");
             printLine("Philosophy: zero dependencies, full control");
             break;
           case "skills":
             printLine("C         [██████████] systems, allocators, servers");
-            printLine("C++       [██████▇░░░] performance, embedded, fluids");
             printLine("Python    [██████▇░░░] tooling, automation, ML, raster");
             printLine("Linux     [████████░░] kernel, networking, infra");
             break;
