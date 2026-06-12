@@ -7,6 +7,9 @@ def test_portfolio():
     
     with open(html_path, "r", encoding="utf-8") as f:
         content = f.read()
+        
+    # Check physical CV file exists
+    assert os.path.exists("cv.pdf"), "cv.pdf file does not exist in the root folder"
     
     # 1. Check name is Guillermo
     assert "Guillermo — Systems & Projects" in content, "Title name not updated"
