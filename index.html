@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spike — Systems & Projects</title>
+    <title>Guillermo — Systems & Projects</title>
     <meta name="description" content="Low-level systems projects in C, C++, and Python. HTTP servers, memory allocators, key-value stores, and network stacks built from scratch.">
-    <meta name="author" content="Spike">
-    <meta name="theme-color" content="#0c0c0e">
+    <meta name="author" content="Guillermo">
+    <meta name="theme-color" content="#0f172a">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Spike — Systems & Projects">
+    <meta property="og:title" content="Guillermo — Systems & Projects">
     <meta property="og:description" content="Low-level systems projects in C, C++, and Python. Servers, allocators, and stores built from scratch.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gcpino.github.io">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Spike — Systems & Projects">
+    <meta name="twitter:title" content="Guillermo — Systems & Projects">
     <meta name="twitter:description" content="Building systems from scratch in C, C++, and Python.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,18 +25,18 @@
 
     <style>
         :root {
-            --bg: #0c0c0e;
-            --bg-elevated: #141416;
-            --bg-card: #18181b;
-            --border: #232326;
-            --border-hover: #2e2e32;
-            --text: #e8e8ec;
-            --text-secondary: #909096;
-            --text-muted: #5a5a60;
-            --accent: #2563eb;
-            --accent-soft: rgba(37, 99, 235, 0.12);
-            --accent-glow: rgba(37, 99, 235, 0.25);
-            --green: #22c55e;
+            --bg: #0f172a;
+            --bg-elevated: #1e293b;
+            --bg-card: #1e293b;
+            --border: #334155;
+            --border-hover: #475569;
+            --text: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-soft: rgba(59, 130, 246, 0.12);
+            --accent-glow: rgba(59, 130, 246, 0.25);
+            --green: #10b981;
             --orange: #f59e0b;
             --red: #ef4444;
         }
@@ -92,7 +92,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(12, 12, 14, 0.8);
+            background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border);
         }
@@ -340,7 +340,7 @@
             position: absolute;
             top: -50%; left: -50%;
             width: 200%; height: 200%;
-            background: radial-gradient(circle at 30% 30%, rgba(37, 99, 235, 0.06), transparent 60%);
+            background: radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.06), transparent 60%);
             pointer-events: none;
         }
 
@@ -356,7 +356,7 @@
         .code-block .kw { color: var(--accent); }
         .code-block .type { color: var(--orange); }
         .code-block .str { color: var(--green); }
-        .code-block .fn { color: #e8e8ec; }
+        .code-block .fn { color: var(--text); }
         .code-block .cm { color: var(--text-muted); }
         .code-block .num { color: #a78bfa; }
 
@@ -585,7 +585,7 @@
             top: -50%; left: 50%;
             transform: translateX(-50%);
             width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.08), transparent 70%);
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.08), transparent 70%);
             pointer-events: none;
         }
 
@@ -649,7 +649,7 @@
         #terminal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.85);
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(8px);
             z-index: 10000;
             display: none;
@@ -794,12 +794,13 @@
     <canvas id="matrix-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.025;"></canvas>
 
     <nav>
-        <a href="#" class="logo">Spike</a>
+        <a href="#" class="logo">Guillermo</a>
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li><a href="cv.pdf" target="_blank" style="color: var(--accent); font-weight: 500;">CV</a></li>
         </ul>
     </nav>
 
@@ -812,6 +813,7 @@
             </p>
             <div class="hero-actions">
                 <a href="#projects" class="btn btn-primary">View Projects</a>
+                <a href="cv.pdf" target="_blank" class="btn btn-secondary">Download CV</a>
                 <a href="#contact" class="btn btn-secondary">Contact</a>
             </div>
         </div>
@@ -827,18 +829,7 @@
                 <div class="code-block">
                     <span class="cm">/* current projects */</span><br>
                     <span class="kw">struct</span> <span class="fn">projects</span> {<br>
-                    &nbsp;&nbsp;<span class="type">http_server_t</span>&nbsp;&nbsp;<span class="fn">forge</span>;&nbsp;&nbsp;<span class="cm">/* C11 */</span><br>
-                    &nbsp;&nbsp;<span class="type">allocator_t</span>&nbsp;&nbsp;&nbsp;<span class="fn">bedrock</span>;<span class="cm">/* C11 */</span><br>
-                    &nbsp;&nbsp;<span class="type">kv_store_t</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">vault</span>;&nbsp;&nbsp;<span class="cm">/* C11 */</span><br>
-                    &nbsp;&nbsp;<span class="type">nn_t</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">synapse</span>;<span class="cm">/* Python */</span><br>
-                    &nbsp;&nbsp;<span class="type">py_server_t</span>&nbsp;&nbsp;<span class="fn">ember</span>;&nbsp;&nbsp;<span class="cm">/* Python */</span><br>
-                    &nbsp;&nbsp;<span class="type">py_kv_t</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">cachet</span>;<span class="cm">/* Python */</span><br>
-                    &nbsp;&nbsp;<span class="type">raytracer_t</span>&nbsp;&nbsp;<span class="fn">trace</span>;&nbsp;&nbsp;<span class="cm">/* C99 */</span><br>
-                    &nbsp;&nbsp;<span class="type">rasterizer_t</span>&nbsp;<span class="fn">aster</span>;&nbsp;&nbsp;<span class="cm">/* Python */</span><br>
-                    &nbsp;&nbsp;<span class="type">fluid_sim_t</span>&nbsp;&nbsp;<span class="fn">wave</span>;&nbsp;&nbsp;<span class="cm">/* C++17 */</span><br>
-                    &nbsp;&nbsp;<span class="type">sha256_t</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">hash</span>;&nbsp;&nbsp;<span class="cm">/* C99 */</span><br>
-                    &nbsp;&nbsp;<span class="type">aead_t</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">cipher</span>;<span class="cm">/* C99 */</span><br>
-                    &nbsp;&nbsp;<span class="type">compress_t</span>&nbsp;&nbsp;&nbsp;<span class="fn">zip</span>;&nbsp;&nbsp;<span class="cm">/* C++17 */</span><br>
+                    &nbsp;&nbsp;<span class="cm">/* TODO: Add projects one by one */</span><br>
                     };
                 </div>
             </div>
@@ -849,13 +840,13 @@
                     and every syscall.
                 </p>
                 <p>
-                    Current work: twelve projects exploring systems programming, networking, 
-                    machine learning, computer graphics, and cryptography — all built from scratch with 
+                    Current work: Building systems from scratch exploring systems programming, networking, 
+                    machine learning, computer graphics, and cryptography — all built with 
                     <strong>zero dependencies</strong>.
                 </p>
                 <div class="about-meta">
                     <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="12">0</span></div>
+                        <div class="num"><span class="counter" data-target="0">0</span></div>
                         <div class="lbl">Active projects</div>
                     </div>
                     <div class="meta-cell">
@@ -863,7 +854,7 @@
                         <div class="lbl">Core languages</div>
                     </div>
                     <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="6700">0</span></div>
+                        <div class="num"><span class="counter" data-target="0">0</span></div>
                         <div class="lbl">Total LOC</div>
                     </div>
                     <div class="meta-cell">
@@ -947,441 +938,16 @@
     <section id="projects">
         <div class="section-header fade-up">
             <h2>Projects</h2>
-            <p>Built from scratch, zero dependencies. Grouped by domain.</p>
+            <p>Built from scratch, zero dependencies.</p>
         </div>
 
-        <h3 style="font-size:0.85rem;color:var(--text-muted);margin:3rem 0 1rem;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;">Systems Programming</h3>
         <div class="projects-list fade-up">
-            <div class="project-row">
-                <div>
-                    <h4>forge</h4>
-                    <p>High-performance HTTP/1.1 server built from scratch in C. Event-driven I/O with epoll, POSIX thread pool for request handling, zero-copy sendfile, and a minimal routing layer. No external dependencies.</p>
-                    <ul class="project-features">
-                        <li>epoll-based event loop with edge-triggered mode</li>
-                        <li>Fixed-size thread pool with task queue</li>
-                        <li>Zero-copy static file serving via sendfile</li>
-                        <li>Graceful shutdown with pending request draining</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="project-stat">~900 LOC</span>
-                        <span class="project-stat">C11</span>
-                        <span class="project-stat">Zero deps</span>
-                    </div>
-                    <div class="project-details" id="details-forge">
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-                            Architecture: main thread accepts connections and pushes to a ring-buffer task queue. 
-                            Worker threads pop tasks and handle HTTP parsing + response generation. 
-                            Static files use Linux sendfile for kernel-space copy avoidance.
-                        </p>
-                    </div>
-                    <button class="project-toggle" onclick="toggleDetails('details-forge', this)">+ architecture</button>
-                </div>
-                <div class="project-meta">
-                    <div class="project-tags">
-                        <span>C11</span>
-                        <span>epoll</span>
-                        <span>HTTP/1.1</span>
-                        <span>threads</span>
-                    </div>
-                </div>
-            </div>
-            <div class="project-row">
-                <div>
-                    <h4>bedrock</h4>
-                    <p>Custom memory allocator implementing malloc, free, realloc, and calloc from scratch. Uses segregated free-lists for small allocations, a unified heap arena with first-fit search and coalescence for medium blocks, and direct mmap for large allocations. Thread-safe with a global mutex.</p>
-                    <ul class="project-features">
-                        <li>Segregated size-class bins (16B - 512B)</li>
-                        <li>Heap arena with first-fit + boundary-tag coalescence</li>
-                        <li>Direct mmap/munmap for allocations > 256 KB</li>
-                        <li>Thread-safe via pthread_mutex</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="project-stat">~800 LOC</span>
-                        <span class="project-stat">C11</span>
-                        <span class="project-stat">mmap/brk</span>
-                    </div>
-                    <div class="project-details" id="details-bedrock">
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-                            Block metadata uses boundary tags for O(1) coalescence. Small bins use LIFO free lists. 
-                            The heap arena grows via sbrk and coalesces adjacent freed blocks. 
-                            Large allocations bypass the heap entirely to reduce fragmentation.
-                        </p>
-                    </div>
-                    <button class="project-toggle" onclick="toggleDetails('details-bedrock', this)">+ architecture</button>
-                </div>
-                <div class="project-meta">
-                    <div class="project-tags">
-                        <span>C11</span>
-                        <span>mmap</span>
-                        <span>allocator</span>
-                        <span>pthread</span>
-                    </div>
-                </div>
-            </div>
-            <div class="project-row">
-                <div>
-                    <h4>vault</h4>
-                    <p>Persistent key-value store with a write-ahead log, snapshot support, and a TCP text protocol. Hash table with FNV-1a hashing, read-write locks for concurrency, and an epoll-driven server. Supports GET, SET, DEL, EXISTS, and KEYS.</p>
-                    <ul class="project-features">
-                        <li>WAL with fsync per write for durability</li>
-                        <li>Snapshot serialization to disk</li>
-                        <li>Linear-probing hash table with FNV-1a</li>
-                        <li>Text protocol over TCP with epoll server</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="project-stat">~1200 LOC</span>
-                        <span class="project-stat">C11</span>
-                        <span class="project-stat">WAL + Snapshots</span>
-                    </div>
-                    <div class="project-details" id="details-vault">
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-                            Every mutation appends to the WAL before updating the in-memory hash table. 
-                            On startup, the WAL is replayed to reconstruct state. Snapshots write the entire 
-                            hash table to a binary file atomically. The server uses epoll with edge-triggered I/O 
-                            and a thread-per-connection model with rwlocks for table access.
-                        </p>
-                    </div>
-                    <button class="project-toggle" onclick="toggleDetails('details-vault', this)">+ architecture</button>
-                </div>
-                <div class="project-meta">
-                    <div class="project-tags">
-                        <span>C11</span>
-                        <span>WAL</span>
-                        <span>TCP</span>
-                        <span>epoll</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h3 style="font-size:0.85rem;color:var(--text-muted);margin:3rem 0 1rem;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;">Computer Graphics</h3>
-        <div class="projects-list fade-up">
-            <div class="project-row">
-                <div>
-                    <h4>trace</h4>
-                    <p>Minimal ray tracer in C. Renders spheres with recursive reflections, Phong shading (ambient, diffuse, specular), and shadow rays. Outputs a binary PPM image. Pure C99 with only libm.</p>
-                    <ul class="project-features">
-                        <li>Ray-sphere intersection with quadratic solver</li>
-                        <li>Phong illumination model</li>
-                        <li>Recursive reflections (up to 3 bounces)</li>
-                        <li>Shadow rays for occlusion</li>
-                        <li>Binary PPM output</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="project-stat">~250 LOC</span>
-                        <span class="project-stat">C99</span>
-                        <span class="project-stat">libm only</span>
-                    </div>
-                    <div class="project-details" id="details-trace">
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-                            For each pixel, a primary ray is cast from the camera through the viewport. 
-                            The closest sphere intersection determines the hit point. The normal at that 
-                            point is used for Phong shading with multiple lights. Shadow rays check for 
-                            occluders. Reflective materials spawn secondary rays recursively.
-                        </p>
-                    </div>
-                    <button class="project-toggle" onclick="toggleDetails('details-trace', this)">+ architecture</button>
-                </div>
-                <div class="project-meta">
-                    <div class="project-tags">
-                        <span>C99</span>
-                        <span>ray-tracing</span>
-                        <span>Phong</span>
-                        <span>PPM</span>
-                    </div>
-                </div>
-            </div>
-            <div class="project-row">
-                <div>
-                    <h4>aster</h4>
-                    <p>Software 3D rasterizer in pure Python. Renders a rotating cube with a full transformation pipeline (model, view, projection, viewport), edge-function rasterization, Z-buffer, and flat shading.</p>
-                    <ul class="project-features">
-                        <li>4x4 matrix math (translate, rotate, perspective)</li>
-                        <li>MVP transformation pipeline</li>
-                        <li>Edge-function triangle rasterization</li>
-                        <li>Z-buffer hidden surface removal</li>
-                        <li>Backface culling</li>
-                        <li>Flat shading with diffuse light</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="project-stat">~250 LOC</span>
-                        <span class="project-stat">Python 3</span>
-                        <span class="project-stat">Zero deps</span>
-                    </div>
-                    <div class="project-details" id="details-aster">
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-                            Vertices are transformed through model, view, and projection matrices. 
-                            After perspective divide, NDC coordinates are mapped to screen space. 
-                            Triangles are rasterized using edge functions with barycentric interpolation 
-                            of Z for depth testing. Flat shading computes a single intensity per triangle 
-                            from the face normal and light direction.
-                        </p>
-                    </div>
-                    <button class="project-toggle" onclick="toggleDetails('details-aster', this)">+ architecture</button>
-                </div>
-                <div class="project-meta">
-                    <div class="project-tags">
-                        <span>Python</span>
-                        <span>rasterizer</span>
-                        <span>Z-buffer</span>
-                        <span>PPM</span>
-                    </div>
-                </div>
-            </div>
-            <div class="project-row">
-                <div>
-                    <h4>wave</h4>
-                    <p>2D fluid simulation in C++ using a simplified Navier-Stokes solver. Advection, diffusion, and pressure projection produce divergence-free velocity fields. Density is transported through the field and rendered as grayscale PPM frames.</p>
-                    <ul class="project-features">
-                        <li>Semi-Lagrangian advection</li>
-                        <li>Gauss-Seidel diffusion</li>
-                        <li>Pressure projection (divergence-free)</li>
-                        <li>Density transport visualization</li>
-                        <li>Multi-frame PPM output</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="project-stat">~250 LOC</span>
-                        <span class="project-stat">C++17</span>
-                        <span class="project-stat">Zero deps</span>
-                    </div>
-                    <div class="project-details" id="details-wave">
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-                            The velocity field is advanced by adding forces, diffusing viscosity, 
-                            and projecting to a divergence-free state via a pressure Poisson solver 
-                            (Gauss-Seidel). Density is advected through the resulting velocity field 
-                            using semi-Lagrangian backtracing. Each frame writes the density field 
-                            as a grayscale PPM image.
-                        </p>
-                    </div>
-                    <button class="project-toggle" onclick="toggleDetails('details-wave', this)">+ architecture</button>
-                </div>
-                <div class="project-meta">
-                    <div class="project-tags">
-                        <span>C++17</span>
-                        <span>fluids</span>
-                        <span>Navier-Stokes</span>
-                        <span>PPM</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h3 style="font-size:0.85rem;color:var(--text-muted);margin:3rem 0 1rem;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;">Cryptography & Compression</h3>
-        <div class="projects-list fade-up">
-            <div class="project-row">
-                <div>
-                    <h4>hash</h4>
-                    <p>SHA-256 implemented from scratch in C99. Full message padding, 64-round schedule with additive constants, and official NIST test vectors including the 1-million-'a' boundary case.</p>
-                    <ul class="project-features">
-                        <li>Complete SHA-256: padding, schedule, compression</li>
-                        <li>64 additive round constants (K)</li>
-                        <li>Big-endian message schedule expansion</li>
-                        <li>NIST test vectors: empty, abc, 448-bit, 1M x 'a'</li>
-                        <li>Self-contained single file</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="project-stat">~150 LOC</span>
-                        <span class="project-stat">C99</span>
-                        <span class="project-stat">Zero deps</span>
-                    </div>
-                    <div class="project-details" id="details-hash">
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-                            The input is padded with a 1-bit, followed by enough zeros to leave 
-                            64 bits for the length, producing 512-bit chunks. Each chunk expands 
-                            into 64 32-bit words via sigma rotations. The 8 working variables are 
-                            mixed for 64 rounds using Ch, Maj, and Sigma functions before being 
-                            added to the hash state.
-                        </p>
-                    </div>
-                    <button class="project-toggle" onclick="toggleDetails('details-hash', this)">+ architecture</button>
-                </div>
-                <div class="project-meta">
-                    <div class="project-tags">
-                        <span>C99</span>
-                        <span>SHA-256</span>
-                        <span>cryptography</span>
-                        <span>NIST</span>
-                    </div>
-                </div>
-            </div>
-            <div class="project-row">
-                <div>
-                    <h4>cipher</h4>
-                    <p>ChaCha20 stream cipher with Poly1305 message authentication (AEAD) implemented from scratch in C99. RFC 8439 compliant construction with encrypt-then-MAC, streaming AAD processing, and tamper detection.</p>
-                    <ul class="project-features">
-                        <li>Full ChaCha20: quarter-round, 20 rounds, 64-byte keystream blocks</li>
-                        <li>Poly1305: 130-bit prime field (5×26-bit limbs), clamped key</li>
-                        <li>AEAD: AAD + ciphertext + length-block MAC</li>
-                        <li>Tamper resistance: single-bit flip rejects decryption</li>
-                        <li>Zero external dependencies</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="project-stat">~250 LOC</span>
-                        <span class="project-stat">C99</span>
-                        <span class="project-stat">Zero deps</span>
-                    </div>
-                    <div class="project-details" id="details-cipher">
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-                            The Poly1305 key is derived from a ChaCha20 block with counter 0. 
-                            Plaintext is encrypted with ChaCha20 starting at counter 1. Poly1305 
-                            authenticates AAD (padded), ciphertext (padded), and the 16-byte 
-                            little-endian length block. A 16-byte tag verifies integrity before 
-                            decryption proceeds.
-                        </p>
-                    </div>
-                    <button class="project-toggle" onclick="toggleDetails('details-cipher', this)">+ architecture</button>
-                </div>
-                <div class="project-meta">
-                    <div class="project-tags">
-                        <span>C99</span>
-                        <span>ChaCha20</span>
-                        <span>Poly1305</span>
-                        <span>AEAD</span>
-                    </div>
-                </div>
-            </div>
-            <div class="project-row">
-                <div>
-                    <h4>zip</h4>
-                    <p>LZ77 + Huffman compressor and decompressor in C++17. Sliding-window dictionary matching followed by canonical prefix-code entropy coding. No zlib, no libzip.</p>
-                    <ul class="project-features">
-                        <li>LZ77: 4KB sliding window, 18-byte lookahead</li>
-                        <li>Brute-force match search with length-distance tokens</li>
-                        <li>Huffman: min-heap tree, canonical codes, decode trie</li>
-                        <li>Self-describing format with magic and headers</li>
-                        <li>Round-trip verify: byte-exact decompression</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="project-stat">~280 LOC</span>
-                        <span class="project-stat">C++17</span>
-                        <span class="project-stat">Zero deps</span>
-                    </div>
-                    <div class="project-details" id="details-zip">
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-                            The compressor scans for the longest repeated substring within a 4KB 
-                            backward window, emitting length-distance references or raw literals. 
-                            The token stream is serialized with flag bytes and compressed via 
-                            Huffman canonical codes. The decoder rebuilds the prefix tree from 
-                            256 code-length bytes and walks the bitstream to recover the original 
-                            LZ77 stream exactly.
-                        </p>
-                    </div>
-                    <button class="project-toggle" onclick="toggleDetails('details-zip', this)">+ architecture</button>
-                </div>
-                <div class="project-meta">
-                    <div class="project-tags">
-                        <span>C++17</span>
-                        <span>LZ77</span>
-                        <span>Huffman</span>
-                        <span>compression</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h3 style="font-size:0.85rem;color:var(--text-muted);margin:3rem 0 1rem;font-family:'JetBrains Mono',monospace;letter-spacing:0.05em;">Networking & Machine Learning</h3>
-        <div class="projects-list fade-up">
-            <div class="project-row">
-                <div>
-                    <h4>synapse</h4>
-                    <p>Neural network library built from scratch in pure Python. Implements feedforward networks with backpropagation, ReLU and sigmoid activations, MSE loss, and mini-batch gradient descent. No NumPy, no PyTorch — just the Python standard library.</p>
-                    <ul class="project-features">
-                        <li>Fully-connected layers with Xavier initialization</li>
-                        <li>Backpropagation with chain rule</li>
-                        <li>ReLU, Sigmoid, Tanh activations</li>
-                        <li>Mini-batch SGD with configurable learning rate</li>
-                        <li>Trains and evaluates on synthetic datasets</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="project-stat">~500 LOC</span>
-                        <span class="project-stat">Python 3</span>
-                        <span class="project-stat">Zero deps</span>
-                    </div>
-                    <div class="project-details" id="details-synapse">
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-                            Implements matrix operations (dot product, transpose, element-wise) from scratch using nested lists.
-                            Forward pass computes weighted sums and activations layer by layer. Backward pass applies the chain rule
-                            to compute gradients w.r.t. weights and biases. Supports configurable layer sizes, batch sizes, and epochs.
-                        </p>
-                    </div>
-                    <button class="project-toggle" onclick="toggleDetails('details-synapse', this)">+ architecture</button>
-                </div>
-                <div class="project-meta">
-                    <div class="project-tags">
-                        <span>Python</span>
-                        <span>NN</span>
-                        <span>backprop</span>
-                        <span>from-scratch</span>
-                    </div>
-                </div>
-            </div>
-            <div class="project-row">
-                <div>
-                    <h4>ember</h4>
-                    <p>Minimal HTTP/1.1 server built in pure Python using only socket and select. Handles concurrent connections via select()-based I/O multiplexing, parses HTTP requests manually, and serves static files. No asyncio, no frameworks.</p>
-                    <ul class="project-features">
-                        <li>select()-based I/O multiplexing</li>
-                        <li>Manual HTTP/1.1 request parsing</li>
-                        <li>Static file serving with MIME types</li>
-                        <li>Keep-alive and connection management</li>
-                        <li>Single-threaded, event-driven</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="project-stat">~400 LOC</span>
-                        <span class="project-stat">Python 3</span>
-                        <span class="project-stat">socket + select</span>
-                    </div>
-                    <div class="project-details" id="details-ember">
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-                            Uses socket in non-blocking mode with select() to multiplex read/write events across 
-                            multiple client connections. Parses HTTP requests line-by-line using bytes operations. 
-                            Response builder constructs proper HTTP/1.1 headers with Content-Length and Connection.
-                        </p>
-                    </div>
-                    <button class="project-toggle" onclick="toggleDetails('details-ember', this)">+ architecture</button>
-                </div>
-                <div class="project-meta">
-                    <div class="project-tags">
-                        <span>Python</span>
-                        <span>HTTP/1.1</span>
-                        <span>select</span>
-                        <span>socket</span>
-                    </div>
-                </div>
-            </div>
-            <div class="project-row">
-                <div>
-                    <h4>cachet</h4>
-                    <p>In-memory key-value store with LRU eviction, TTL support, and a simple text protocol over TCP. Built with threading.Lock for concurrency and socketserver for the networking layer. Pure Python, zero dependencies.</p>
-                    <ul class="project-features">
-                        <li>LRU eviction using ordered dict (stdlib collections)</li>
-                        <li>TTL per key with automatic expiration</li>
-                        <li>TCP text protocol (SET, GET, DEL, KEYS, FLUSH)</li>
-                        <li>Thread-safe with fine-grained locking</li>
-                        <li>Optional AOF persistence (append-only file)</li>
-                    </ul>
-                    <div class="project-stats">
-                        <span class="project-stat">~350 LOC</span>
-                        <span class="project-stat">Python 3</span>
-                        <span class="project-stat">LRU + TTL</span>
-                    </div>
-                    <div class="project-details" id="details-cachet">
-                        <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-                            Uses collections.OrderedDict for O(1) LRU operations (move_to_end + popitem).
-                            TTL is managed via a background thread that scans for expired keys. The TCP server
-                            uses socketserver.ThreadingTCPServer with a custom request handler that parses
-                            the text protocol and dispatches to the KV engine.
-                        </p>
-                    </div>
-                    <button class="project-toggle" onclick="toggleDetails('details-cachet', this)">+ architecture</button>
-                </div>
-                <div class="project-meta">
-                    <div class="project-tags">
-                        <span>Python</span>
-                        <span>LRU</span>
-                        <span>TCP</span>
-                        <span>TTL</span>
-                    </div>
+            <div class="project-row" style="grid-template-columns: 1fr; border-style: dashed; opacity: 0.85;">
+                <div style="font-family: 'JetBrains Mono', monospace; padding: 1rem 0;">
+                    <span style="color: var(--text-muted); display: block; margin-bottom: 0.5rem;">/* TODO: Add projects one by one */</span>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        No projects listed yet. Currently refactoring the showcase to add items individually.
+                    </p>
                 </div>
             </div>
         </div>
@@ -1393,16 +959,17 @@
             <p>
                 Open to collaboration on systems, networking, and low-level projects.
             </p>
-            <a href="mailto:spike@gcpino.dev" class="btn btn-primary">spike@gcpino.dev</a>
+            <a href="mailto:guillermo@gcpino.dev" class="btn btn-primary">guillermo@gcpino.dev</a>
             <div class="contact-links">
                 <a href="https://github.com/gcpino" target="_blank" rel="noopener">GitHub</a>
                 <a href="https://linkedin.com/in/gcpino" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="cv.pdf" target="_blank" rel="noopener">CV / Resume</a>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>Spike &mdash; Systems & Projects. Built from scratch.</p>
+        <p>Guillermo &mdash; Systems & Projects. Built from scratch.</p>
         <p class="footer-hint">Press <kbd style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;background:var(--bg-card);padding:0.1rem 0.3rem;border-radius:3px;border:1px solid var(--border);">~</kbd> for terminal</p>
     </footer>
 
@@ -1413,10 +980,10 @@
                 <div class="terminal-btn red" onclick="closeTerminal()"></div>
                 <div class="terminal-btn yellow"></div>
                 <div class="terminal-btn green"></div>
-                <span class="terminal-title">spike@portfolio — bash</span>
+                <span class="terminal-title">guillermo@portfolio — bash</span>
             </div>
             <div class="terminal-body" id="terminal-body">
-                <div class="terminal-line">Spike Systems Terminal — type <span class="info">help</span> for commands</div>
+                <div class="terminal-line">Guillermo Systems Terminal — type <span class="info">help</span> for commands</div>
                 <div class="terminal-line"> </div>
             </div>
         </div>
@@ -1456,56 +1023,7 @@
         let historyIndex = -1;
         let currentInput = '';
 
-        const projectData = {
-            forge: `forge v0.1.0
-  HTTP/1.1 server in C11
-  ~900 LOC | epoll + thread pool + sendfile
-  Status: production-ready prototype`,
-            bedrock: `bedrock v0.1.0
-  Custom memory allocator in C11
-  ~800 LOC | segregated bins + heap arena + mmap
-  Status: tested, handles fragmentation`,
-            vault: `vault v0.1.0
-  Persistent KV store in C11
-  ~1200 LOC | WAL + snapshots + hash table + epoll
-  Status: durable, replay-tested`,
-            synapse: `synapse v0.1.0
-  Neural network in pure Python
-  ~300 LOC | backprop + ReLU/Sigmoid/Tanh + SGD
-  Status: 100% accuracy on XOR`,
-            ember: `ember v0.1.0
-  HTTP/1.1 server in pure Python
-  ~250 LOC | socket + select + non-blocking I/O
-  Status: concurrent, keep-alive support`,
-            cachet: `cachet v0.1.0
-  In-memory KV store in pure Python
-  ~270 LOC | LRU + TTL + AOF persistence + TCP
-  Status: tested, thread-safe`,
-            trace: `trace v0.1.0
-  Ray tracer in C99
-  ~250 LOC | Phong shading + reflections + shadows
-  Status: renders 800x600 PPM`,
-            aster: `aster v0.1.0
-  3D software rasterizer in Python
-  ~250 LOC | MVP pipeline + Z-buffer + flat shading
-  Status: renders 400x300 PPM`,
-            wave: `wave v0.1.0
-  2D fluid simulation in C++17
-  ~250 LOC | Navier-Stokes + advection + projection
-  Status: outputs 30 frames`,
-            hash: `hash v0.1.0
-  SHA-256 from scratch in C99
-  ~150 LOC | padding + schedule + 64 rounds
-  Status: passes NIST vectors`,
-            cipher: `cipher v0.1.0
-  ChaCha20-Poly1305 AEAD in C99
-  ~250 LOC | stream cipher + 130-bit MAC
-  Status: tamper-resistant`,
-            zip: `zip v0.1.0
-  LZ77 + Huffman compressor in C++17
-  ~280 LOC | sliding window + canonical codes
-  Status: round-trip verified`,
-        };
+        const projectData = {};
 
         function openTerminal() {
             terminalOverlay.classList.add('active');
@@ -1563,7 +1081,7 @@
                 case '?':
                     printLine('available commands:', 'info');
                     printLine('  ls           list projects');
-                    printLine('  cat <name>   show project details (forge|bedrock|vault|synapse|ember|cachet|trace|aster|wave|hash|cipher|zip)');
+                    printLine('  cat <name>   show project details');
                     printLine('  whoami       about me');
                     printLine('  skills       list skills');
                     printLine('  contact      contact info');
@@ -1571,29 +1089,18 @@
                     printLine('  exit         close terminal');
                     break;
                 case 'ls':
-                    printLine('drwxr-xr-x  forge/     HTTP/1.1 server (C11)');
-                    printLine('drwxr-xr-x  bedrock/   memory allocator (C11)');
-                    printLine('drwxr-xr-x  vault/     KV store (C11)');
-                    printLine('drwxr-xr-x  synapse/   neural network (Python)');
-                    printLine('drwxr-xr-x  ember/     HTTP/1.1 server (Python)');
-                    printLine('drwxr-xr-x  cachet/    KV store (Python)');
-                    printLine('drwxr-xr-x  trace/     ray tracer (C99)');
-                    printLine('drwxr-xr-x  aster/     3D rasterizer (Python)');
-                    printLine('drwxr-xr-x  wave/      fluid sim (C++17)');
-                    printLine('drwxr-xr-x  hash/      SHA-256 (C99)');
-                    printLine('drwxr-xr-x  cipher/    AEAD crypto (C99)');
-                    printLine('drwxr-xr-x  zip/       compressor (C++17)');
+                    printLine('total 0');
                     break;
                 case 'cat':
                     const name = args[1];
-                    if (projectData[name]) {
-                        projectData[name].split('\n').forEach(l => printLine(l));
+                    if (!name) {
+                        printLine('usage: cat <project_name>');
                     } else {
-                        printLine('cat: unknown project. Try: forge, bedrock, vault, synapse, ember, cachet, trace, aster, wave, hash, cipher, zip', 'err');
+                        printLine(`cat: ${name}: No such file or directory`, 'err');
                     }
                     break;
                 case 'whoami':
-                    printLine('Spike — C / C++ / Python Developer');
+                    printLine('Guillermo — C / C++ / Python Developer');
                     printLine('Focus: systems programming from scratch');
                     printLine('Philosophy: zero dependencies, full control');
                     break;
@@ -1604,7 +1111,7 @@
                     printLine('Linux     [████████░░] kernel, networking, infra');
                     break;
                 case 'contact':
-                    printLine('email:  spike@gcpino.dev');
+                    printLine('email:  guillermo@gcpino.dev');
                     printLine('github: github.com/gcpino');
                     printLine('linkedin: linkedin.com/in/gcpino');
                     break;
@@ -1750,9 +1257,9 @@
             window.addEventListener('resize', resizeMatrix);
 
             function drawMatrix() {
-                ctx.fillStyle = 'rgba(12, 12, 14, 0.08)';
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.08)';
                 ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-                ctx.fillStyle = 'rgba(37, 99, 235, 0.25)';
+                ctx.fillStyle = 'rgba(59, 130, 246, 0.25)';
                 ctx.font = '14px JetBrains Mono';
                 for (let i = 0; i < drops.length; i++) {
                     const char = chars[Math.floor(Math.random() * chars.length)];
