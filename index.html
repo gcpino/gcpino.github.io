@@ -1,1335 +1,1632 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Guillermo — Systems & Projects</title>
-    <meta name="description" content="Low-level systems projects in C, C++, and Python. HTTP servers, memory allocators, key-value stores, and network stacks built from scratch.">
-    <meta name="author" content="Guillermo">
-    <meta name="theme-color" content="#0f172a">
+    <meta
+      name="description"
+      content="Low-level systems projects in C, C++, and Python. HTTP servers, memory allocators, key-value stores, and network stacks built from scratch."
+    />
+    <meta name="author" content="Guillermo" />
+    <meta name="theme-color" content="#0f172a" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Guillermo — Systems & Projects">
-    <meta property="og:description" content="Low-level systems projects in C, C++, and Python. Servers, allocators, and stores built from scratch.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://gcpino.github.io">
+    <meta property="og:title" content="Guillermo — Systems & Projects" />
+    <meta
+      property="og:description"
+      content="Low-level systems projects in C, C++, and Python. Servers, allocators, and stores built from scratch."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gcpino.github.io" />
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Guillermo — Systems & Projects">
-    <meta name="twitter:description" content="Building systems from scratch in C, C++, and Python.">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Guillermo — Systems & Projects" />
+    <meta
+      name="twitter:description"
+      content="Building systems from scratch in C, C++, and Python."
+    />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
-        :root {
-            --bg: #0f172a;
-            --bg-elevated: #1e293b;
-            --bg-card: #1e293b;
-            --border: #334155;
-            --border-hover: #475569;
-            --text: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
-            --accent: #3b82f6;
-            --accent-soft: rgba(59, 130, 246, 0.12);
-            --accent-glow: rgba(59, 130, 246, 0.25);
-            --green: #10b981;
-            --orange: #f59e0b;
-            --red: #ef4444;
+      :root {
+        --bg: #0f172a;
+        --bg-elevated: #1e293b;
+        --bg-card: #1e293b;
+        --border: #334155;
+        --border-hover: #475569;
+        --text: #f8fafc;
+        --text-secondary: #cbd5e1;
+        --text-muted: #94a3b8;
+        --accent: #3b82f6;
+        --accent-soft: rgba(59, 130, 246, 0.12);
+        --accent-glow: rgba(59, 130, 246, 0.25);
+        --green: #10b981;
+        --orange: #f59e0b;
+        --red: #ef4444;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.65;
+        font-size: 15px;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+      }
+
+      ::selection {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      /* Scroll progress */
+      #scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 2px;
+        background: var(--accent);
+        z-index: 1000;
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+
+      /* Subtle grid background */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.015) 1px,
+            transparent 1px
+          );
+        background-size: 60px 60px;
+        pointer-events: none;
+        z-index: 0;
+        mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          black 15%,
+          black 85%,
+          transparent 100%
+        );
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          transparent 0%,
+          black 15%,
+          black 85%,
+          transparent 100%
+        );
+      }
+
+      /* Nav */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 1.25rem 6%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .logo {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--text);
+        text-decoration: none;
+        letter-spacing: -0.02em;
+        position: relative;
+      }
+
+      .logo::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--accent);
+        transition: width 0.3s ease;
+      }
+
+      .logo:hover::after {
+        width: 100%;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 400;
+        font-size: 0.88rem;
+        transition: color 0.2s;
+        position: relative;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 1.5px;
+        background: var(--accent);
+        transition: width 0.25s ease;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      /* Hero */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 8rem 6% 4rem;
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero-content {
+        max-width: 640px;
+      }
+
+      .hero-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        color: var(--accent);
+        margin-bottom: 1.25rem;
+        letter-spacing: 0.05em;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .hero-label::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background: var(--accent);
+        border-radius: 50%;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.65;
-            font-size: 15px;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
+        50% {
+          opacity: 0.4;
         }
+      }
 
-        ::selection { background: var(--accent); color: #fff; }
+      .hero h1 {
+        font-size: clamp(2.2rem, 5vw, 3.6rem);
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -0.03em;
+        margin-bottom: 1.25rem;
+      }
 
-        /* Scroll progress */
-        #scroll-progress {
-            position: fixed;
-            top: 0; left: 0;
-            height: 2px;
-            background: var(--accent);
-            z-index: 1000;
-            width: 0%;
-            transition: width 0.1s linear;
+      .hero h1 em {
+        font-style: normal;
+        color: var(--text-secondary);
+      }
+
+      .hero p {
+        color: var(--text-secondary);
+        font-size: 1.05rem;
+        max-width: 520px;
+        margin-bottom: 2rem;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.7rem 1.4rem;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 0.88rem;
+        text-decoration: none;
+        transition: all 0.2s;
+        cursor: pointer;
+        border: none;
+        font-family: inherit;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.15);
+      }
+
+      .btn-primary:hover {
+        background: #1d4ed8;
+        box-shadow: 0 0 30px rgba(37, 99, 235, 0.25);
+        transform: translateY(-1px);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--text-secondary);
+        border: 1px solid var(--border);
+      }
+
+      .btn-secondary:hover {
+        border-color: var(--border-hover);
+        color: var(--text);
+        background: var(--bg-elevated);
+      }
+
+      /* Sections */
+      section {
+        padding: 5rem 6%;
+        max-width: 1100px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      .section-header {
+        margin-bottom: 2.5rem;
+      }
+
+      .section-header h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+      }
+
+      .section-header p {
+        color: var(--text-secondary);
+        margin-top: 0.4rem;
+        font-size: 0.95rem;
+      }
+
+      /* About */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.3fr;
+        gap: 3rem;
+        align-items: start;
+      }
+
+      .about-text p {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        line-height: 1.75;
+      }
+
+      .about-text strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      .about-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        margin-top: 1.5rem;
+      }
+
+      .meta-cell {
+        background: var(--bg-card);
+        padding: 1.25rem;
+        transition: background 0.2s;
+      }
+
+      .meta-cell:hover {
+        background: var(--bg-elevated);
+      }
+
+      .meta-cell .num {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--text);
+      }
+
+      .meta-cell .lbl {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        margin-top: 0.2rem;
+      }
+
+      .about-visual {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 2rem;
+        min-height: 280px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .about-visual::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(59, 130, 246, 0.06),
+          transparent 60%
+        );
+        pointer-events: none;
+      }
+
+      .code-block {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        line-height: 1.8;
+        color: var(--text-secondary);
+        position: relative;
+        z-index: 1;
+      }
+
+      .code-block .kw {
+        color: var(--accent);
+      }
+      .code-block .type {
+        color: var(--orange);
+      }
+      .code-block .str {
+        color: var(--green);
+      }
+      .code-block .fn {
+        color: var(--text);
+      }
+      .code-block .cm {
+        color: var(--text-muted);
+      }
+      .code-block .num {
+        color: #a78bfa;
+      }
+
+      /* Skills */
+      .skills-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .skill-item {
+        background: var(--bg-card);
+        padding: 1.5rem;
+        transition:
+          background 0.2s,
+          transform 0.2s;
+      }
+
+      .skill-item:hover {
+        background: var(--bg-elevated);
+        transform: translateY(-2px);
+      }
+
+      .skill-item h4 {
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 0.4rem;
+      }
+
+      .skill-item p {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        margin-bottom: 0.75rem;
+      }
+
+      .skill-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+
+      .skill-tags span {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        padding: 0.2rem 0.55rem;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        color: var(--text-muted);
+      }
+
+      /* Projects */
+      .projects-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .project-row {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 1.5rem;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 1.5rem;
+        align-items: start;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .project-row::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .project-row:hover {
+        border-color: var(--border-hover);
+        transform: translateY(-2px);
+        box-shadow:
+          0 8px 32px rgba(0, 0, 0, 0.3),
+          0 0 0 1px rgba(37, 99, 235, 0.08);
+      }
+
+      .project-row:hover::before {
+        opacity: 1;
+      }
+
+      .project-row h4 {
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 0.35rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .project-row h4 a {
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      .project-row h4 a:hover {
+        color: var(--accent);
+      }
+
+      .project-row p {
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 0.75rem;
+      }
+
+      .project-features {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .project-features li {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .project-features li::before {
+        content: "->";
+        font-family: "JetBrains Mono", monospace;
+        color: var(--accent);
+        font-size: 0.7rem;
+      }
+
+      .project-stats {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .project-stat {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        background: var(--bg);
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+      }
+
+      .project-meta {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.5rem;
+      }
+
+      .project-meta a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.8rem;
+        transition: color 0.2s;
+      }
+
+      .project-meta a:hover {
+        color: var(--text);
+      }
+
+      .project-tags {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .project-tags span {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        background: var(--bg);
+        padding: 0.15rem 0.4rem;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+      }
+
+      .project-toggle {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        cursor: pointer;
+        padding: 0;
+        margin-top: 0.5rem;
+        transition: color 0.2s;
+      }
+
+      .project-toggle:hover {
+        color: var(--accent);
+      }
+
+      .project-details {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+      }
+
+      .project-details.open {
+        max-height: 300px;
+      }
+
+      /* Contact */
+      .contact-box {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 3rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .contact-box::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(
+          circle,
+          rgba(59, 130, 246, 0.08),
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+
+      .contact-box h3 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        position: relative;
+      }
+
+      .contact-box p {
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+        position: relative;
+      }
+
+      .contact-links {
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+        position: relative;
+      }
+
+      .contact-links a {
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: all 0.2s;
+      }
+
+      .contact-links a:hover {
+        border-color: var(--border-hover);
+        color: var(--text);
+        background: var(--bg-elevated);
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 3rem 6%;
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 0.82rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      .footer-hint {
+        margin-top: 0.5rem;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        opacity: 0.5;
+      }
+
+      /* Terminal Easter Egg */
+      #terminal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 10000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      #terminal-overlay.active {
+        display: flex;
+        opacity: 1;
+      }
+
+      .terminal-window {
+        width: min(720px, 92vw);
+        height: min(460px, 70vh);
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+
+      .terminal-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 0.8rem;
+        background: var(--bg-elevated);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .terminal-btn {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .terminal-btn.red {
+        background: var(--red);
+      }
+      .terminal-btn.yellow {
+        background: var(--orange);
+      }
+      .terminal-btn.green {
+        background: var(--green);
+      }
+
+      .terminal-title {
+        margin-left: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .terminal-body {
+        flex: 1;
+        padding: 1rem;
+        overflow-y: auto;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.82rem;
+        line-height: 1.7;
+        color: var(--text-secondary);
+      }
+
+      .terminal-line {
+        margin-bottom: 0.15rem;
+        word-break: break-word;
+      }
+
+      .terminal-prompt {
+        color: var(--accent);
+      }
+
+      .terminal-input-line {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .terminal-cursor {
+        display: inline-block;
+        width: 7px;
+        height: 15px;
+        background: var(--accent);
+        animation: blink 1s step-end infinite;
+        vertical-align: middle;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0;
         }
+      }
 
-        /* Subtle grid background */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-            z-index: 0;
-            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+      .terminal-output .ok {
+        color: var(--green);
+      }
+      .terminal-output .warn {
+        color: var(--orange);
+      }
+      .terminal-output .err {
+        color: var(--red);
+      }
+      .terminal-output .info {
+        color: var(--accent);
+      }
+
+      /* Animations */
+      .fade-up {
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s ease;
+      }
+
+      .fade-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .stagger-1 {
+        transition-delay: 0.08s;
+      }
+      .stagger-2 {
+        transition-delay: 0.16s;
+      }
+      .stagger-3 {
+        transition-delay: 0.24s;
+      }
+      .stagger-4 {
+        transition-delay: 0.32s;
+      }
+      .stagger-5 {
+        transition-delay: 0.4s;
+      }
+
+      /* Typing effect */
+      .type-cursor {
+        font-weight: 300;
+        color: var(--accent);
+        animation: blink 1s step-end infinite;
+      }
+
+      /* Konami code flash */
+      .konami-flash {
+        animation: konami-flash 0.3s ease 3;
+      }
+
+      @keyframes konami-flash {
+        0%,
+        100% {
+          background: var(--bg);
         }
-
-        /* Nav */
-        nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 100;
-            padding: 1.25rem 6%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border);
+        50% {
+          background: rgba(37, 99, 235, 0.15);
         }
+      }
 
-        .logo {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--text);
-            text-decoration: none;
-            letter-spacing: -0.02em;
-            position: relative;
-        }
-
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -4px; left: 0;
-            width: 0; height: 2px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
-
-        .logo:hover::after { width: 100%; }
-
+      /* Responsive */
+      @media (max-width: 768px) {
         .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
+          display: none;
         }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 0.88rem;
-            transition: color 0.2s;
-            position: relative;
-        }
-
-        .nav-links a:hover { color: var(--text); }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px; left: 0;
-            width: 0; height: 1.5px;
-            background: var(--accent);
-            transition: width 0.25s ease;
-        }
-
-        .nav-links a:hover::after { width: 100%; }
-
-        /* Hero */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 8rem 6% 4rem;
-            max-width: 1100px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
+          padding-top: 6rem;
         }
-
-        .hero-content { max-width: 640px; }
-
-        .hero-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.78rem;
-            color: var(--accent);
-            margin-bottom: 1.25rem;
-            letter-spacing: 0.05em;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .hero-label::before {
-            content: '';
-            display: inline-block;
-            width: 6px; height: 6px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        .hero h1 {
-            font-size: clamp(2.2rem, 5vw, 3.6rem);
-            font-weight: 700;
-            line-height: 1.15;
-            letter-spacing: -0.03em;
-            margin-bottom: 1.25rem;
-        }
-
-        .hero h1 em {
-            font-style: normal;
-            color: var(--text-secondary);
-        }
-
-        .hero p {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-            max-width: 520px;
-            margin-bottom: 2rem;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.7rem 1.4rem;
-            border-radius: 6px;
-            font-weight: 500;
-            font-size: 0.88rem;
-            text-decoration: none;
-            transition: all 0.2s;
-            cursor: pointer;
-            border: none;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #fff;
-            box-shadow: 0 0 20px rgba(37, 99, 235, 0.15);
-        }
-
-        .btn-primary:hover {
-            background: #1d4ed8;
-            box-shadow: 0 0 30px rgba(37, 99, 235, 0.25);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--border-hover);
-            color: var(--text);
-            background: var(--bg-elevated);
-        }
-
-        /* Sections */
-        section {
-            padding: 5rem 6%;
-            max-width: 1100px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .section-header {
-            margin-bottom: 2.5rem;
-        }
-
-        .section-header h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-        }
-
-        .section-header p {
-            color: var(--text-secondary);
-            margin-top: 0.4rem;
-            font-size: 0.95rem;
-        }
-
-        /* About */
         .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.3fr;
-            gap: 3rem;
-            align-items: start;
+          grid-template-columns: 1fr;
         }
-
-        .about-text p {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.75;
-        }
-
-        .about-text strong { color: var(--text); font-weight: 500; }
-
-        .about-meta {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1px;
-            background: var(--border);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: 1.5rem;
-        }
-
-        .meta-cell {
-            background: var(--bg-card);
-            padding: 1.25rem;
-            transition: background 0.2s;
-        }
-
-        .meta-cell:hover { background: var(--bg-elevated); }
-
-        .meta-cell .num {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.4rem;
-            font-weight: 500;
-            color: var(--text);
-        }
-
-        .meta-cell .lbl {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            margin-top: 0.2rem;
-        }
-
-        .about-visual {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            min-height: 280px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .about-visual::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.06), transparent 60%);
-            pointer-events: none;
-        }
-
-        .code-block {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.78rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-            position: relative;
-            z-index: 1;
-        }
-
-        .code-block .kw { color: var(--accent); }
-        .code-block .type { color: var(--orange); }
-        .code-block .str { color: var(--green); }
-        .code-block .fn { color: var(--text); }
-        .code-block .cm { color: var(--text-muted); }
-        .code-block .num { color: #a78bfa; }
-
-        /* Skills */
-        .skills-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1px;
-            background: var(--border);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .skill-item {
-            background: var(--bg-card);
-            padding: 1.5rem;
-            transition: background 0.2s, transform 0.2s;
-        }
-
-        .skill-item:hover {
-            background: var(--bg-elevated);
-            transform: translateY(-2px);
-        }
-
-        .skill-item h4 {
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 0.4rem;
-        }
-
-        .skill-item p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.75rem;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-        }
-
-        .skill-tags span {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            padding: 0.2rem 0.55rem;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            color: var(--text-muted);
-        }
-
-        /* Projects */
-        .projects-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
         .project-row {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 1.5rem;
-            align-items: start;
-            transition: all 0.25s ease;
-            position: relative;
-            overflow: hidden;
+          grid-template-columns: 1fr;
         }
-
-        .project-row::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .project-row:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(37,99,235,0.08);
-        }
-
-        .project-row:hover::before { opacity: 1; }
-
-        .project-row h4 {
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 0.35rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .project-row h4 a {
-            color: var(--text);
-            text-decoration: none;
-        }
-
-        .project-row h4 a:hover { color: var(--accent); }
-
-        .project-row p {
-            font-size: 0.88rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 0.75rem;
-        }
-
-        .project-features {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .project-features li {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .project-features li::before {
-            content: '->';
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--accent);
-            font-size: 0.7rem;
-        }
-
-        .project-stats {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .project-stat {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            background: var(--bg);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-        }
-
         .project-meta {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 0.5rem;
+          align-items: flex-start;
         }
-
-        .project-meta a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.8rem;
-            transition: color 0.2s;
-        }
-
-        .project-meta a:hover { color: var(--text); }
-
         .project-tags {
-            display: flex;
-            gap: 0.4rem;
-            flex-wrap: wrap;
-            justify-content: flex-end;
+          justify-content: flex-start;
         }
-
-        .project-tags span {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            background: var(--bg);
-            padding: 0.15rem 0.4rem;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-        }
-
-        .project-toggle {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            cursor: pointer;
-            padding: 0;
-            margin-top: 0.5rem;
-            transition: color 0.2s;
-        }
-
-        .project-toggle:hover { color: var(--accent); }
-
-        .project-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.35s ease;
-        }
-
-        .project-details.open {
-            max-height: 300px;
-        }
-
-        /* Contact */
-        .contact-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 3rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .contact-box::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: 50%;
-            transform: translateX(-50%);
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.08), transparent 70%);
-            pointer-events: none;
-        }
-
-        .contact-box h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            position: relative;
-        }
-
-        .contact-box p {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem;
-            position: relative;
-        }
-
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-            position: relative;
-        }
-
-        .contact-links a {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: all 0.2s;
-        }
-
-        .contact-links a:hover {
-            border-color: var(--border-hover);
-            color: var(--text);
-            background: var(--bg-elevated);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 3rem 6%;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.82rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer-hint {
-            margin-top: 0.5rem;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            opacity: 0.5;
-        }
-
-        /* Terminal Easter Egg */
-        #terminal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-
-        #terminal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .terminal-window {
-            width: min(720px, 92vw);
-            height: min(460px, 70vh);
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-
-        .terminal-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 0.8rem;
-            background: var(--bg-elevated);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .terminal-btn {
-            width: 10px; height: 10px;
-            border-radius: 50%;
-        }
-
-        .terminal-btn.red { background: var(--red); }
-        .terminal-btn.yellow { background: var(--orange); }
-        .terminal-btn.green { background: var(--green); }
-
-        .terminal-title {
-            margin-left: 0.5rem;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .terminal-body {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.82rem;
-            line-height: 1.7;
-            color: var(--text-secondary);
-        }
-
-        .terminal-line {
-            margin-bottom: 0.15rem;
-            word-break: break-word;
-        }
-
-        .terminal-prompt {
-            color: var(--accent);
-        }
-
-        .terminal-input-line {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .terminal-cursor {
-            display: inline-block;
-            width: 7px; height: 15px;
-            background: var(--accent);
-            animation: blink 1s step-end infinite;
-            vertical-align: middle;
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-
-        .terminal-output .ok { color: var(--green); }
-        .terminal-output .warn { color: var(--orange); }
-        .terminal-output .err { color: var(--red); }
-        .terminal-output .info { color: var(--accent); }
-
-        /* Animations */
-        .fade-up {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .stagger-1 { transition-delay: 0.08s; }
-        .stagger-2 { transition-delay: 0.16s; }
-        .stagger-3 { transition-delay: 0.24s; }
-        .stagger-4 { transition-delay: 0.32s; }
-        .stagger-5 { transition-delay: 0.40s; }
-
-        /* Typing effect */
-        .type-cursor {
-            font-weight: 300;
-            color: var(--accent);
-            animation: blink 1s step-end infinite;
-        }
-
-        /* Konami code flash */
-        .konami-flash {
-            animation: konami-flash 0.3s ease 3;
-        }
-
-        @keyframes konami-flash {
-            0%, 100% { background: var(--bg); }
-            50% { background: rgba(37, 99, 235, 0.15); }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero { padding-top: 6rem; }
-            .about-grid { grid-template-columns: 1fr; }
-            .project-row { grid-template-columns: 1fr; }
-            .project-meta { align-items: flex-start; }
-            .project-tags { justify-content: flex-start; }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="scroll-progress"></div>
-    <canvas id="matrix-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.025;"></canvas>
+    <canvas
+      id="matrix-canvas"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.025;
+      "
+    ></canvas>
 
     <nav>
-        <a href="#" class="logo">Guillermo</a>
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="cv.pdf" target="_blank" style="color: var(--accent); font-weight: 500;">CV</a></li>
-        </ul>
+      <a href="#" class="logo">Guillermo</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li>
+          <a
+            href="cv.pdf"
+            target="_blank"
+            style="color: var(--accent); font-weight: 500"
+            >CV</a
+          >
+        </li>
+      </ul>
     </nav>
 
     <section class="hero">
-        <div class="hero-content">
-            <div class="hero-label">C / C++ / Python Developer</div>
-            <h1><span id="type-text"></span><span class="type-cursor">|</span></h1>
-            <p>
-                Building systems from scratch. Servers, allocators, stores, and protocol stacks — no frameworks, no dependencies.
-            </p>
-            <div class="hero-actions">
-                <a href="#projects" class="btn btn-primary">View Projects</a>
-                <a href="cv.pdf" target="_blank" class="btn btn-secondary">Download CV</a>
-                <a href="#contact" class="btn btn-secondary">Contact</a>
-            </div>
+      <div class="hero-content">
+        <div class="hero-label">C / C++ / Python Developer</div>
+        <h1><span id="type-text"></span><span class="type-cursor">|</span></h1>
+        <p>
+          Building systems from scratch. Servers, allocators, stores, and
+          protocol stacks — no frameworks, no dependencies.
+        </p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">View Projects</a>
+          <a href="cv.pdf" target="_blank" class="btn btn-secondary"
+            >Download CV</a
+          >
+          <a href="#contact" class="btn btn-secondary">Contact</a>
         </div>
+      </div>
     </section>
 
     <section id="about">
-        <div class="section-header fade-up">
-            <h2>About</h2>
-            <p>Builder by obsession. No shortcuts.</p>
+      <div class="section-header fade-up">
+        <h2>About</h2>
+        <p>Builder by obsession. No shortcuts.</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-visual fade-up">
+          <div class="code-block">
+            <span class="cm">/* current projects */</span><br />
+            <span class="kw">struct</span>
+            <span class="fn">projects</span> {<br />
+            &nbsp;&nbsp;<span class="cm"
+              >/* TODO: Add projects one by one */</span
+            ><br />
+            };
+          </div>
         </div>
-        <div class="about-grid">
-            <div class="about-visual fade-up">
-                <div class="code-block">
-                    <span class="cm">/* current projects */</span><br>
-                    <span class="kw">struct</span> <span class="fn">projects</span> {<br>
-                    &nbsp;&nbsp;<span class="cm">/* TODO: Add projects one by one */</span><br>
-                    };
-                </div>
+        <div class="about-text fade-up">
+          <p>
+            I build low-level systems from the ground up. No dependencies, no
+            frameworks — just the standard library and POSIX. My focus is on
+            understanding every byte and every syscall.
+          </p>
+          <p>
+            Current work: Building systems from scratch exploring systems
+            programming, networking, machine learning, computer graphics, and
+            cryptography — all built with
+            <strong>zero dependencies</strong>.
+          </p>
+          <div class="about-meta">
+            <div class="meta-cell">
+              <div class="num">
+                <span class="counter" data-target="0">0</span>
+              </div>
+              <div class="lbl">Active projects</div>
             </div>
-            <div class="about-text fade-up">
-                <p>
-                    I build low-level systems from the ground up. No dependencies, no frameworks — 
-                    just the standard library and POSIX. My focus is on understanding every byte 
-                    and every syscall.
-                </p>
-                <p>
-                    Current work: Building systems from scratch exploring systems programming, networking, 
-                    machine learning, computer graphics, and cryptography — all built with 
-                    <strong>zero dependencies</strong>.
-                </p>
-                <div class="about-meta">
-                    <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="0">0</span></div>
-                        <div class="lbl">Active projects</div>
-                    </div>
-                    <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="3">0</span></div>
-                        <div class="lbl">Core languages</div>
-                    </div>
-                    <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="0">0</span></div>
-                        <div class="lbl">Total LOC</div>
-                    </div>
-                    <div class="meta-cell">
-                        <div class="num"><span class="counter" data-target="0">0</span></div>
-                        <div class="lbl">Dependencies</div>
-                    </div>
-                </div>
+            <div class="meta-cell">
+              <div class="num">
+                <span class="counter" data-target="3">0</span>
+              </div>
+              <div class="lbl">Core languages</div>
             </div>
+            <div class="meta-cell">
+              <div class="num">
+                <span class="counter" data-target="0">0</span>
+              </div>
+              <div class="lbl">Total LOC</div>
+            </div>
+            <div class="meta-cell">
+              <div class="num">
+                <span class="counter" data-target="0">0</span>
+              </div>
+              <div class="lbl">Dependencies</div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <section id="skills">
-        <div class="section-header fade-up">
-            <h2>Skills</h2>
-            <p>Technologies I use to build from scratch.</p>
+      <div class="section-header fade-up">
+        <h2>Skills</h2>
+        <p>Technologies I use to build from scratch.</p>
+      </div>
+      <div class="skills-list fade-up">
+        <div class="skill-item">
+          <h4>C / C++</h4>
+          <p>
+            Systems programming, custom allocators, HTTP servers, and protocol
+            stacks. C11, POSIX, bare-metal.
+          </p>
+          <div class="skill-tags">
+            <span>C11</span>
+            <span>POSIX</span>
+            <span>epoll</span>
+            <span>mmap</span>
+          </div>
         </div>
-        <div class="skills-list fade-up">
-            <div class="skill-item">
-                <h4>C / C++</h4>
-                <p>Systems programming, custom allocators, HTTP servers, and protocol stacks. C11, POSIX, bare-metal.</p>
-                <div class="skill-tags">
-                    <span>C11</span>
-                    <span>POSIX</span>
-                    <span>epoll</span>
-                    <span>mmap</span>
-                </div>
-            </div>
-            <div class="skill-item">
-                <h4>Python</h4>
-                <p>Automation, testing frameworks, build tooling, and rapid prototyping for systems validation.</p>
-                <div class="skill-tags">
-                    <span>CPython</span>
-                    <span>ctypes</span>
-                    <span>asyncio</span>
-                    <span>pytest</span>
-                </div>
-            </div>
-            <div class="skill-item">
-                <h4>Networking</h4>
-                <p>TCP/IP stack internals, protocol design, socket programming, and event-driven I/O.</p>
-                <div class="skill-tags">
-                    <span>TCP/IP</span>
-                    <span>UDP</span>
-                    <span>ARP/ICMP</span>
-                    <span>HTTP/1.1</span>
-                </div>
-            </div>
-            <div class="skill-item">
-                <h4>Linux & Infrastructure</h4>
-                <p>Kernel interfaces, server management, containerization, CI/CD pipelines.</p>
-                <div class="skill-tags">
-                    <span>Linux</span>
-                    <span>Docker</span>
-                    <span>Nginx</span>
-                    <span>systemd</span>
-                </div>
-            </div>
-            <div class="skill-item">
-                <h4>Data Structures</h4>
-                <p>Hash tables, linked lists, ring buffers, binary trees. Custom implementations for constrained environments.</p>
-                <div class="skill-tags">
-                    <span>hash tables</span>
-                    <span>allocators</span>
-                    <span>WAL</span>
-                    <span>snapshots</span>
-                </div>
-            </div>
-            <div class="skill-item">
-                <h4>Build Systems</h4>
-                <p>Make, CMake, compiler flags, static analysis, profiling, and memory debugging.</p>
-                <div class="skill-tags">
-                    <span>Make</span>
-                    <span>CMake</span>
-                    <span>Valgrind</span>
-                    <span>gdb</span>
-                </div>
-            </div>
+        <div class="skill-item">
+          <h4>Python</h4>
+          <p>
+            Automation, testing frameworks, build tooling, and rapid prototyping
+            for systems validation.
+          </p>
+          <div class="skill-tags">
+            <span>CPython</span>
+            <span>ctypes</span>
+            <span>asyncio</span>
+            <span>pytest</span>
+          </div>
         </div>
+        <div class="skill-item">
+          <h4>Networking</h4>
+          <p>
+            TCP/IP stack internals, protocol design, socket programming, and
+            event-driven I/O.
+          </p>
+          <div class="skill-tags">
+            <span>TCP/IP</span>
+            <span>UDP</span>
+            <span>ARP/ICMP</span>
+            <span>HTTP/1.1</span>
+          </div>
+        </div>
+        <div class="skill-item">
+          <h4>Linux & Infrastructure</h4>
+          <p>
+            Kernel interfaces, server management, containerization, CI/CD
+            pipelines.
+          </p>
+          <div class="skill-tags">
+            <span>Linux</span>
+            <span>Docker</span>
+            <span>Nginx</span>
+            <span>systemd</span>
+          </div>
+        </div>
+        <div class="skill-item">
+          <h4>Data Structures</h4>
+          <p>
+            Hash tables, linked lists, ring buffers, binary trees. Custom
+            implementations for constrained environments.
+          </p>
+          <div class="skill-tags">
+            <span>hash tables</span>
+            <span>allocators</span>
+            <span>WAL</span>
+            <span>snapshots</span>
+          </div>
+        </div>
+        <div class="skill-item">
+          <h4>Build Systems</h4>
+          <p>
+            Make, CMake, compiler flags, static analysis, profiling, and memory
+            debugging.
+          </p>
+          <div class="skill-tags">
+            <span>Make</span>
+            <span>CMake</span>
+            <span>Valgrind</span>
+            <span>gdb</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section id="projects">
-        <div class="section-header fade-up">
-            <h2>Projects</h2>
-            <p>Built from scratch, zero dependencies.</p>
-        </div>
+      <div class="section-header fade-up">
+        <h2>Projects</h2>
+        <p>Built from scratch, zero dependencies.</p>
+      </div>
 
-        <div class="projects-list fade-up">
-            <div class="project-row" style="grid-template-columns: 1fr; border-style: dashed; opacity: 0.85;">
-                <div style="font-family: 'JetBrains Mono', monospace; padding: 1rem 0;">
-                    <span style="color: var(--text-muted); display: block; margin-bottom: 0.5rem;">/* TODO: Add projects one by one */</span>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                        No projects listed yet. Currently refactoring the showcase to add items individually.
-                    </p>
-                </div>
-            </div>
+      <div class="projects-list fade-up">
+        <div
+          class="project-row"
+          style="
+            grid-template-columns: 1fr;
+            border-style: dashed;
+            opacity: 0.85;
+          "
+        >
+          <div
+            style="
+              font-family: &quot;JetBrains Mono&quot;, monospace;
+              padding: 1rem 0;
+            "
+          >
+            <span
+              style="
+                color: var(--text-muted);
+                display: block;
+                margin-bottom: 0.5rem;
+              "
+              >/* TODO: Add projects one by one */</span
+            >
+            <p style="color: var(--text-secondary); font-size: 0.9rem">
+              No projects listed yet. Currently refactoring the showcase to add
+              items individually.
+            </p>
+          </div>
         </div>
+      </div>
     </section>
 
     <section id="contact">
-        <div class="contact-box fade-up">
-            <h3>Get in touch</h3>
-            <p>
-                Open to collaboration on systems, networking, and low-level projects.
-            </p>
-            <a href="mailto:guillermo@gcpino.dev" class="btn btn-primary">guillermo@gcpino.dev</a>
-            <div class="contact-links">
-                <a href="https://github.com/gcpino" target="_blank" rel="noopener">GitHub</a>
-                <a href="https://linkedin.com/in/gcpino" target="_blank" rel="noopener">LinkedIn</a>
-                <a href="cv.pdf" target="_blank" rel="noopener">CV / Resume</a>
-            </div>
+      <div class="contact-box fade-up">
+        <h3>Get in touch</h3>
+        <p>
+          Open to collaboration on systems, networking, and low-level projects.
+        </p>
+        <a href="mailto:guicorpasp@gmail.com" class="btn btn-primary"
+          >guicorpasp@gmail.com</a
+        >
+        <div class="contact-links">
+          <a href="https://github.com/gcpino" target="_blank" rel="noopener"
+            >GitHub</a
+          >
+          <a
+            href="https://linkedin.com/in/gcpino"
+            target="_blank"
+            rel="noopener"
+            >LinkedIn</a
+          >
+          <a href="cv.pdf" target="_blank" rel="noopener">CV / Resume</a>
         </div>
+      </div>
     </section>
 
     <footer>
-        <p>Guillermo &mdash; Systems & Projects. Built from scratch.</p>
-        <p class="footer-hint">Press <kbd style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;background:var(--bg-card);padding:0.1rem 0.3rem;border-radius:3px;border:1px solid var(--border);">~</kbd> for terminal</p>
+      <p>Guillermo &mdash; Systems & Projects. Built from scratch.</p>
+      <p class="footer-hint">
+        Press
+        <kbd
+          style="
+            font-family: &quot;JetBrains Mono&quot;, monospace;
+            font-size: 0.7rem;
+            background: var(--bg-card);
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            border: 1px solid var(--border);
+          "
+          >~</kbd
+        >
+        for terminal
+      </p>
     </footer>
 
     <!-- Terminal Easter Egg -->
     <div id="terminal-overlay">
-        <div class="terminal-window">
-            <div class="terminal-header">
-                <div class="terminal-btn red" onclick="closeTerminal()"></div>
-                <div class="terminal-btn yellow"></div>
-                <div class="terminal-btn green"></div>
-                <span class="terminal-title">guillermo@portfolio — bash</span>
-            </div>
-            <div class="terminal-body" id="terminal-body">
-                <div class="terminal-line">Guillermo Systems Terminal — type <span class="info">help</span> for commands</div>
-                <div class="terminal-line"> </div>
-            </div>
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-btn red" onclick="closeTerminal()"></div>
+          <div class="terminal-btn yellow"></div>
+          <div class="terminal-btn green"></div>
+          <span class="terminal-title">guillermo@portfolio — bash</span>
         </div>
+        <div class="terminal-body" id="terminal-body">
+          <div class="terminal-line">
+            Guillermo Systems Terminal — type <span class="info">help</span> for
+            commands
+          </div>
+          <div class="terminal-line"></div>
+        </div>
+      </div>
     </div>
 
     <script>
-        // Scroll progress
-        window.addEventListener('scroll', () => {
-            const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-            document.getElementById('scroll-progress').style.width = (scrolled * 100) + '%';
-        });
+      // Scroll progress
+      window.addEventListener("scroll", () => {
+        const scrolled =
+          window.scrollY / (document.body.scrollHeight - window.innerHeight);
+        document.getElementById("scroll-progress").style.width =
+          scrolled * 100 + "%";
+      });
 
-        // Fade up observer with stagger
-        const fadeElements = document.querySelectorAll('.fade-up');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
+      // Fade up observer with stagger
+      const fadeElements = document.querySelectorAll(".fade-up");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: "0px 0px -50px 0px" },
+      );
 
-        fadeElements.forEach(el => observer.observe(el));
+      fadeElements.forEach((el) => observer.observe(el));
 
-        // Project details toggle
-        function toggleDetails(id, btn) {
-            const el = document.getElementById(id);
-            el.classList.toggle('open');
-            btn.textContent = el.classList.contains('open') ? '- architecture' : '+ architecture';
+      // Project details toggle
+      function toggleDetails(id, btn) {
+        const el = document.getElementById(id);
+        el.classList.toggle("open");
+        btn.textContent = el.classList.contains("open")
+          ? "- architecture"
+          : "+ architecture";
+      }
+
+      // Terminal Easter Egg
+      const terminalOverlay = document.getElementById("terminal-overlay");
+      const terminalBody = document.getElementById("terminal-body");
+      let terminalOpen = false;
+      let commandHistory = [];
+      let historyIndex = -1;
+      let currentInput = "";
+
+      const projectData = {};
+
+      function openTerminal() {
+        terminalOverlay.classList.add("active");
+        terminalOpen = true;
+        renderPrompt();
+        scrollTerminal();
+      }
+
+      function closeTerminal() {
+        terminalOverlay.classList.remove("active");
+        terminalOpen = false;
+      }
+
+      function scrollTerminal() {
+        terminalBody.scrollTop = terminalBody.scrollHeight;
+      }
+
+      function printLine(text, cls) {
+        const div = document.createElement("div");
+        div.className = "terminal-line terminal-output";
+        if (cls)
+          div.innerHTML = `<span class="${cls}">${escapeHtml(text)}</span>`;
+        else div.innerHTML = text;
+        terminalBody.appendChild(div);
+      }
+
+      function escapeHtml(str) {
+        return str.replace(
+          /[&<>"]/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+        );
+      }
+
+      function renderPrompt() {
+        const existing = terminalBody.querySelector(".terminal-input-line");
+        if (existing) existing.remove();
+
+        const line = document.createElement("div");
+        line.className = "terminal-line terminal-input-line";
+        line.innerHTML = `<span class="terminal-prompt">$</span> <span id="term-input">${escapeHtml(currentInput)}</span><span class="terminal-cursor"></span>`;
+        terminalBody.appendChild(line);
+        scrollTerminal();
+      }
+
+      function executeCommand(cmd) {
+        const input = cmd.trim().toLowerCase();
+        if (!input) return;
+
+        commandHistory.push(cmd);
+        historyIndex = commandHistory.length;
+
+        printLine("$ " + cmd);
+
+        const args = input.split(/\s+/);
+        const main = args[0];
+
+        switch (main) {
+          case "help":
+          case "?":
+            printLine("available commands:", "info");
+            printLine("  ls           list projects");
+            printLine("  cat <name>   show project details");
+            printLine("  whoami       about me");
+            printLine("  skills       list skills");
+            printLine("  contact      contact info");
+            printLine("  clear        clear terminal");
+            printLine("  exit         close terminal");
+            break;
+          case "ls":
+            printLine("total 0");
+            break;
+          case "cat":
+            const name = args[1];
+            if (!name) {
+              printLine("usage: cat <project_name>");
+            } else {
+              printLine(`cat: ${name}: No such file or directory`, "err");
+            }
+            break;
+          case "whoami":
+            printLine("Guillermo — C / C++ / Python Developer");
+            printLine("Focus: systems programming from scratch");
+            printLine("Philosophy: zero dependencies, full control");
+            break;
+          case "skills":
+            printLine("C         [██████████] systems, allocators, servers");
+            printLine("C++       [██████▇░░░] performance, embedded, fluids");
+            printLine("Python    [██████▇░░░] tooling, automation, ML, raster");
+            printLine("Linux     [████████░░] kernel, networking, infra");
+            break;
+          case "contact":
+            printLine("email:  guicorpasp@gmail.com");
+            printLine("github: github.com/gcpino");
+            printLine("linkedin: linkedin.com/in/gcpino");
+            break;
+          case "clear":
+            terminalBody.innerHTML = "";
+            break;
+          case "exit":
+          case "quit":
+            closeTerminal();
+            return;
+          case "":
+            break;
+          default:
+            printLine(
+              main + ": command not found. Type help for available commands.",
+              "err",
+            );
+        }
+        currentInput = "";
+        renderPrompt();
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "~" || e.key === "`") {
+          e.preventDefault();
+          if (terminalOpen) closeTerminal();
+          else openTerminal();
+          return;
         }
 
-        // Terminal Easter Egg
-        const terminalOverlay = document.getElementById('terminal-overlay');
-        const terminalBody = document.getElementById('terminal-body');
-        let terminalOpen = false;
-        let commandHistory = [];
-        let historyIndex = -1;
-        let currentInput = '';
+        if (!terminalOpen) return;
 
-        const projectData = {};
+        if (e.key === "Escape") {
+          closeTerminal();
+          return;
+        }
 
-        function openTerminal() {
-            terminalOverlay.classList.add('active');
-            terminalOpen = true;
+        if (e.key === "Enter") {
+          executeCommand(currentInput);
+          return;
+        }
+
+        if (e.key === "Backspace") {
+          currentInput = currentInput.slice(0, -1);
+          renderPrompt();
+          return;
+        }
+
+        if (e.key === "ArrowUp") {
+          e.preventDefault();
+          if (historyIndex > 0) {
+            historyIndex--;
+            currentInput = commandHistory[historyIndex] || "";
             renderPrompt();
-            scrollTerminal();
+          }
+          return;
         }
 
-        function closeTerminal() {
-            terminalOverlay.classList.remove('active');
-            terminalOpen = false;
-        }
-
-        function scrollTerminal() {
-            terminalBody.scrollTop = terminalBody.scrollHeight;
-        }
-
-        function printLine(text, cls) {
-            const div = document.createElement('div');
-            div.className = 'terminal-line terminal-output';
-            if (cls) div.innerHTML = `<span class="${cls}">${escapeHtml(text)}</span>`;
-            else div.innerHTML = text;
-            terminalBody.appendChild(div);
-        }
-
-        function escapeHtml(str) {
-            return str.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-        }
-
-        function renderPrompt() {
-            const existing = terminalBody.querySelector('.terminal-input-line');
-            if (existing) existing.remove();
-
-            const line = document.createElement('div');
-            line.className = 'terminal-line terminal-input-line';
-            line.innerHTML = `<span class="terminal-prompt">$</span> <span id="term-input">${escapeHtml(currentInput)}</span><span class="terminal-cursor"></span>`;
-            terminalBody.appendChild(line);
-            scrollTerminal();
-        }
-
-        function executeCommand(cmd) {
-            const input = cmd.trim().toLowerCase();
-            if (!input) return;
-
-            commandHistory.push(cmd);
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          if (historyIndex < commandHistory.length - 1) {
+            historyIndex++;
+            currentInput = commandHistory[historyIndex];
+          } else {
             historyIndex = commandHistory.length;
-
-            printLine('$ ' + cmd);
-
-            const args = input.split(/\s+/);
-            const main = args[0];
-
-            switch (main) {
-                case 'help':
-                case '?':
-                    printLine('available commands:', 'info');
-                    printLine('  ls           list projects');
-                    printLine('  cat <name>   show project details');
-                    printLine('  whoami       about me');
-                    printLine('  skills       list skills');
-                    printLine('  contact      contact info');
-                    printLine('  clear        clear terminal');
-                    printLine('  exit         close terminal');
-                    break;
-                case 'ls':
-                    printLine('total 0');
-                    break;
-                case 'cat':
-                    const name = args[1];
-                    if (!name) {
-                        printLine('usage: cat <project_name>');
-                    } else {
-                        printLine(`cat: ${name}: No such file or directory`, 'err');
-                    }
-                    break;
-                case 'whoami':
-                    printLine('Guillermo — C / C++ / Python Developer');
-                    printLine('Focus: systems programming from scratch');
-                    printLine('Philosophy: zero dependencies, full control');
-                    break;
-                case 'skills':
-                    printLine('C         [██████████] systems, allocators, servers');
-                    printLine('C++       [██████▇░░░] performance, embedded, fluids');
-                    printLine('Python    [██████▇░░░] tooling, automation, ML, raster');
-                    printLine('Linux     [████████░░] kernel, networking, infra');
-                    break;
-                case 'contact':
-                    printLine('email:  guillermo@gcpino.dev');
-                    printLine('github: github.com/gcpino');
-                    printLine('linkedin: linkedin.com/in/gcpino');
-                    break;
-                case 'clear':
-                    terminalBody.innerHTML = '';
-                    break;
-                case 'exit':
-                case 'quit':
-                    closeTerminal();
-                    return;
-                case '':
-                    break;
-                default:
-                    printLine(main + ': command not found. Type help for available commands.', 'err');
-            }
-            currentInput = '';
-            renderPrompt();
+            currentInput = "";
+          }
+          renderPrompt();
+          return;
         }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === '~' || e.key === '`') {
-                e.preventDefault();
-                if (terminalOpen) closeTerminal();
-                else openTerminal();
-                return;
-            }
-
-            if (!terminalOpen) return;
-
-            if (e.key === 'Escape') {
-                closeTerminal();
-                return;
-            }
-
-            if (e.key === 'Enter') {
-                executeCommand(currentInput);
-                return;
-            }
-
-            if (e.key === 'Backspace') {
-                currentInput = currentInput.slice(0, -1);
-                renderPrompt();
-                return;
-            }
-
-            if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (historyIndex > 0) {
-                    historyIndex--;
-                    currentInput = commandHistory[historyIndex] || '';
-                    renderPrompt();
-                }
-                return;
-            }
-
-            if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (historyIndex < commandHistory.length - 1) {
-                    historyIndex++;
-                    currentInput = commandHistory[historyIndex];
-                } else {
-                    historyIndex = commandHistory.length;
-                    currentInput = '';
-                }
-                renderPrompt();
-                return;
-            }
-
-            if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
-                currentInput += e.key;
-                renderPrompt();
-            }
-        });
-
-        terminalOverlay.addEventListener('click', (e) => {
-            if (e.target === terminalOverlay) closeTerminal();
-        });
-
-        /* ===== Typing Effect ===== */
-        const phrases = ["Building reliable", "systems at scale."];
-        const typeEl = document.getElementById('type-text');
-        let phraseIdx = 0, charIdx = 0, deleting = false;
-
-        function typeLoop() {
-            const current = phrases[phraseIdx];
-            if (deleting) {
-                typeEl.innerHTML = current.substring(0, charIdx - 1);
-                charIdx--;
-            } else {
-                typeEl.innerHTML = current.substring(0, charIdx + 1);
-                charIdx++;
-            }
-
-            let speed = deleting ? 40 : 80;
-            if (!deleting && charIdx === current.length) {
-                speed = 1500;
-                deleting = true;
-            } else if (deleting && charIdx === 0) {
-                deleting = false;
-                phraseIdx = (phraseIdx + 1) % phrases.length;
-                speed = 400;
-            }
-            setTimeout(typeLoop, speed);
+        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          currentInput += e.key;
+          renderPrompt();
         }
-        if (typeEl) setTimeout(typeLoop, 600);
+      });
 
-        /* ===== Stats Counter ===== */
-        const counters = document.querySelectorAll('.counter');
-        const counterObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const el = entry.target;
-                    const target = parseInt(el.dataset.target);
-                    const duration = 1200;
-                    const start = performance.now();
-                    function update(now) {
-                        const progress = Math.min((now - start) / duration, 1);
-                        const ease = 1 - Math.pow(1 - progress, 3);
-                        el.textContent = Math.floor(ease * target);
-                        if (progress < 1) requestAnimationFrame(update);
-                    }
-                    requestAnimationFrame(update);
-                    counterObserver.unobserve(el);
-                }
-            });
-        }, { threshold: 0.5 });
-        counters.forEach(c => counterObserver.observe(c));
+      terminalOverlay.addEventListener("click", (e) => {
+        if (e.target === terminalOverlay) closeTerminal();
+      });
 
-        /* ===== Matrix Rain ===== */
-        const matrixCanvas = document.getElementById('matrix-canvas');
-        if (matrixCanvas) {
-            const ctx = matrixCanvas.getContext('2d');
-            let cols, drops;
-            const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ';
+      /* ===== Typing Effect ===== */
+      const phrases = ["Building reliable", "systems at scale."];
+      const typeEl = document.getElementById("type-text");
+      let phraseIdx = 0,
+        charIdx = 0,
+        deleting = false;
 
-            function resizeMatrix() {
-                matrixCanvas.width = window.innerWidth;
-                matrixCanvas.height = window.innerHeight;
-                cols = Math.floor(matrixCanvas.width / 16);
-                drops = new Array(cols).fill(1);
-            }
-            resizeMatrix();
-            window.addEventListener('resize', resizeMatrix);
-
-            function drawMatrix() {
-                ctx.fillStyle = 'rgba(15, 23, 42, 0.08)';
-                ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-                ctx.fillStyle = 'rgba(59, 130, 246, 0.25)';
-                ctx.font = '14px JetBrains Mono';
-                for (let i = 0; i < drops.length; i++) {
-                    const char = chars[Math.floor(Math.random() * chars.length)];
-                    ctx.fillText(char, i * 16, drops[i] * 16);
-                    if (drops[i] * 16 > matrixCanvas.height && Math.random() > 0.975) {
-                        drops[i] = 0;
-                    }
-                    drops[i]++;
-                }
-                requestAnimationFrame(drawMatrix);
-            }
-            drawMatrix();
+      function typeLoop() {
+        const current = phrases[phraseIdx];
+        if (deleting) {
+          typeEl.innerHTML = current.substring(0, charIdx - 1);
+          charIdx--;
+        } else {
+          typeEl.innerHTML = current.substring(0, charIdx + 1);
+          charIdx++;
         }
 
-        /* ===== Konami Code ===== */
-        const konamiSequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-        let konamiIdx = 0;
-        document.addEventListener('keydown', (e) => {
-            if (e.key === konamiSequence[konamiIdx]) {
-                konamiIdx++;
-                if (konamiIdx === konamiSequence.length) {
-                    konamiIdx = 0;
-                    document.body.classList.add('konami-flash');
-                    setTimeout(() => document.body.classList.remove('konami-flash'), 1000);
-                    openTerminal();
-                    setTimeout(() => {
-                        printLine(' ');
-                        printLine('=== KONAMI CODE DETECTED ===', 'ok');
-                        printLine('Access granted to sector 7-G.', 'info');
-                        printLine(' ');
-                        printLine('Special commands unlocked:');
-                        printLine('  snake        about this site');
-                        printLine('  easteregg    hidden message');
-                        currentInput = '';
-                        renderPrompt();
-                    }, 300);
-                }
-            } else {
-                konamiIdx = 0;
-            }
-        });
+        let speed = deleting ? 40 : 80;
+        if (!deleting && charIdx === current.length) {
+          speed = 1500;
+          deleting = true;
+        } else if (deleting && charIdx === 0) {
+          deleting = false;
+          phraseIdx = (phraseIdx + 1) % phrases.length;
+          speed = 400;
+        }
+        setTimeout(typeLoop, speed);
+      }
+      if (typeEl) setTimeout(typeLoop, 600);
 
-        // Add special terminal commands for Konami mode
-        const originalExecute = executeCommand;
-        window.executeCommand = function(cmd) {
-            const input = cmd.trim().toLowerCase();
-            const args = input.split(/\s+/);
-            if (args[0] === 'snake') {
-                printLine(' ');
-                printLine('This portfolio was forged in the trenches of low-level programming.', 'info');
-                printLine('Built with vanilla HTML/CSS/JS. No frameworks. No bullshit.', 'info');
-                printLine('Press ~ anytime to access the terminal.', 'info');
-                printLine(' ');
-                currentInput = '';
-                renderPrompt();
-                return;
+      /* ===== Stats Counter ===== */
+      const counters = document.querySelectorAll(".counter");
+      const counterObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const el = entry.target;
+              const target = parseInt(el.dataset.target);
+              const duration = 1200;
+              const start = performance.now();
+              function update(now) {
+                const progress = Math.min((now - start) / duration, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.floor(ease * target);
+                if (progress < 1) requestAnimationFrame(update);
+              }
+              requestAnimationFrame(update);
+              counterObserver.unobserve(el);
             }
-            if (args[0] === 'easteregg') {
-                printLine(' ');
-                printLine('"The only way to do great work is to love what you do."', 'ok');
-                printLine('                    — Steve Jobs', 'info');
-                printLine(' ');
-                printLine('Also: the cake is a lie.', 'warn');
-                printLine(' ');
-                currentInput = '';
-                renderPrompt();
-                return;
+          });
+        },
+        { threshold: 0.5 },
+      );
+      counters.forEach((c) => counterObserver.observe(c));
+
+      /* ===== Matrix Rain ===== */
+      const matrixCanvas = document.getElementById("matrix-canvas");
+      if (matrixCanvas) {
+        const ctx = matrixCanvas.getContext("2d");
+        let cols, drops;
+        const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノ";
+
+        function resizeMatrix() {
+          matrixCanvas.width = window.innerWidth;
+          matrixCanvas.height = window.innerHeight;
+          cols = Math.floor(matrixCanvas.width / 16);
+          drops = new Array(cols).fill(1);
+        }
+        resizeMatrix();
+        window.addEventListener("resize", resizeMatrix);
+
+        function drawMatrix() {
+          ctx.fillStyle = "rgba(15, 23, 42, 0.08)";
+          ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+          ctx.fillStyle = "rgba(59, 130, 246, 0.25)";
+          ctx.font = "14px JetBrains Mono";
+          for (let i = 0; i < drops.length; i++) {
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(char, i * 16, drops[i] * 16);
+            if (drops[i] * 16 > matrixCanvas.height && Math.random() > 0.975) {
+              drops[i] = 0;
             }
-            return originalExecute(cmd);
-        };
+            drops[i]++;
+          }
+          requestAnimationFrame(drawMatrix);
+        }
+        drawMatrix();
+      }
+
+      /* ===== Konami Code ===== */
+      const konamiSequence = [
+        "ArrowUp",
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+        "ArrowLeft",
+        "ArrowRight",
+        "b",
+        "a",
+      ];
+      let konamiIdx = 0;
+      document.addEventListener("keydown", (e) => {
+        if (e.key === konamiSequence[konamiIdx]) {
+          konamiIdx++;
+          if (konamiIdx === konamiSequence.length) {
+            konamiIdx = 0;
+            document.body.classList.add("konami-flash");
+            setTimeout(
+              () => document.body.classList.remove("konami-flash"),
+              1000,
+            );
+            openTerminal();
+            setTimeout(() => {
+              printLine(" ");
+              printLine("=== KONAMI CODE DETECTED ===", "ok");
+              printLine("Access granted to sector 7-G.", "info");
+              printLine(" ");
+              printLine("Special commands unlocked:");
+              printLine("  snake        about this site");
+              printLine("  easteregg    hidden message");
+              currentInput = "";
+              renderPrompt();
+            }, 300);
+          }
+        } else {
+          konamiIdx = 0;
+        }
+      });
+
+      // Add special terminal commands for Konami mode
+      const originalExecute = executeCommand;
+      window.executeCommand = function (cmd) {
+        const input = cmd.trim().toLowerCase();
+        const args = input.split(/\s+/);
+        if (args[0] === "snake") {
+          printLine(" ");
+          printLine(
+            "This portfolio was forged in the trenches of low-level programming.",
+            "info",
+          );
+          printLine(
+            "Built with vanilla HTML/CSS/JS. No frameworks. No bullshit.",
+            "info",
+          );
+          printLine("Press ~ anytime to access the terminal.", "info");
+          printLine(" ");
+          currentInput = "";
+          renderPrompt();
+          return;
+        }
+        if (args[0] === "easteregg") {
+          printLine(" ");
+          printLine(
+            '"The only way to do great work is to love what you do."',
+            "ok",
+          );
+          printLine("                    — Steve Jobs", "info");
+          printLine(" ");
+          printLine("Also: the cake is a lie.", "warn");
+          printLine(" ");
+          currentInput = "";
+          renderPrompt();
+          return;
+        }
+        return originalExecute(cmd);
+      };
     </script>
-</body>
+  </body>
 </html>
