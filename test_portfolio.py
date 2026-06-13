@@ -17,7 +17,7 @@ def test_portfolio():
     assert 'class="logo">Guillermo</a>' in content, "Logo name not updated"
     assert 'guillermo@portfolio — bash' in content, "Terminal title not updated"
     assert 'Guillermo Systems Terminal' in content, "Terminal welcome message not updated"
-    assert 'Guillermo — C / Python Systems & AI Engineer' in content, "Terminal whoami not updated"
+    assert 'Guillermo — Physicist & Software Developer' in content, "Terminal whoami not updated"
     
     # 2. Check no Spike remains
     assert "Spike" not in content, "Found remaining 'Spike' reference"
