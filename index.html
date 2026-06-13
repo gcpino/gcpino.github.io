@@ -646,32 +646,6 @@
         border: 1px solid var(--border);
       }
 
-      .project-toggle {
-        background: none;
-        border: none;
-        color: var(--text-muted);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.75rem;
-        cursor: pointer;
-        padding: 0;
-        margin-top: 0.5rem;
-        transition: color 0.2s;
-      }
-
-      .project-toggle:hover {
-        color: var(--accent);
-      }
-
-      .project-details {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.35s ease;
-      }
-
-      .project-details.open {
-        max-height: 300px;
-      }
-
       /* Contact */
       .contact-box {
         background: var(--bg-card);
@@ -1088,18 +1062,10 @@
               <span class="project-stat">Zero-alloc forward</span>
               <span class="project-stat">Linear / Conv2D / MaxPool</span>
             </div>
-            <button class="project-toggle" onclick="toggleDetails('details-cinfer', this)">+ architecture</button>
-            <div id="details-cinfer" class="project-details">
-              <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border);">
-                <p style="font-size: 0.85rem; color: var(--text-secondary);"><strong>Core Focus:</strong> Translating the high-level computational graphs of PyTorch into rigid, predictable C arrays and loops. The system parses a custom binary model format exported from Python and runs inference using a deterministic execution loop.</p>
-              </div>
-            </div>
           </div>
           <div class="project-meta">
             <div class="project-tags">
               <span>C</span>
-              <span>Linear Algebra</span>
-              <span>Systems Design</span>
             </div>
             <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">View Source ↗</a>
           </div>
@@ -1192,15 +1158,6 @@
       );
 
       fadeElements.forEach((el) => observer.observe(el));
-
-      // Project details toggle
-      function toggleDetails(id, btn) {
-        const el = document.getElementById(id);
-        el.classList.toggle("open");
-        btn.textContent = el.classList.contains("open")
-          ? "- architecture"
-          : "+ architecture";
-      }
 
       // Terminal Easter Egg
       const terminalOverlay = document.getElementById("terminal-overlay");
