@@ -1074,32 +1074,29 @@
       </div>
 
       <div class="projects-list fade-up">
-        <div
-          class="project-row"
-          style="
-            grid-template-columns: 1fr;
-            border-style: dashed;
-            opacity: 0.85;
-          "
-        >
-          <div
-            style="
-              font-family: &quot;JetBrains Mono&quot;, monospace;
-              padding: 1rem 0;
-            "
-          >
-            <span
-              style="
-                color: var(--text-muted);
-                display: block;
-                margin-bottom: 0.5rem;
-              "
-              >/* TODO: Add projects one by one */</span
-            >
-            <p style="color: var(--text-secondary); font-size: 0.9rem">
-              No projects listed yet. Currently refactoring the showcase to add
-              items individually.
+        <div class="project-row">
+          <div class="project-info">
+            <h4><a href="#">c-infer</a></h4>
+            <p>
+              A minimal neural network inference engine written from scratch in C. Designed to bridge the gap between Python-based training environments (like PyTorch) and execution on hardware-constrained edge devices where predictable memory and performance are critical.
             </p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+              The engine executes pre-trained models with a strict, pre-allocated memory footprint. It implements essential linear algebra operations directly, ensuring tight control over the hardware without relying on external libraries.
+            </p>
+            <button class="project-toggle" onclick="toggleDetails('details-cinfer', this)">+ architecture</button>
+            <div id="details-cinfer" class="project-details">
+              <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border);">
+                <p style="font-size: 0.85rem; color: var(--text-secondary);"><strong>Core Focus:</strong> Translating the high-level computational graphs of PyTorch into rigid, predictable C arrays and loops. The system parses a custom binary model format exported from Python and runs inference using a deterministic execution loop.</p>
+              </div>
+            </div>
+          </div>
+          <div class="project-meta">
+            <div class="project-tags">
+              <span>C</span>
+              <span>Linear Algebra</span>
+              <span>Systems Design</span>
+            </div>
+            <a href="#">View Source ↗</a>
           </div>
         </div>
       </div>

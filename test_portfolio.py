@@ -52,9 +52,8 @@ def test_portfolio():
     assert "<h4>trace</h4>" not in content, "trace project header still exists"
     assert "details-trace" not in content, "trace project details still exists"
     
-    # Check placeholders are present
-    assert "/* TODO: Add projects one by one */" in content, "Todo comment not found in C struct or project card"
-    assert "No projects listed yet." in content, "Empty project row description not found"
+    # Check c-infer project is present
+    assert "c-infer" in content, "c-infer project not found"
     
     # 6. Check LinkedIn handle is gcorpas
     assert 'linkedin.com/in/gcorpas' in content, "LinkedIn handle not updated to gcorpas"
