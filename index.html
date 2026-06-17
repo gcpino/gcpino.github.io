@@ -1054,6 +1054,28 @@
       <div class="projects-list fade-up">
         <div class="project-row">
           <div class="project-info">
+            <h4><a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">sdr</a></h4>
+            <p>
+              A C library that demodulates FM broadcast from an int16 I/Q capture into a 16-bit PCM WAV. The full pipeline fits in ~600 lines: NCO, multi-stage decimation, atan2 discriminator, de-emphasis, and a WAV writer.
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+              Ships a synthetic FM signal generator so the project is fully testable without RF hardware. The round-trip test synthesizes a 1 kHz tone, demodulates it, and verifies the recovered spectrum is essentially a pure tone.
+            </p>
+            <div class="project-stats">
+              <span class="project-stat">C11</span>
+              <span class="project-stat">libm only</span>
+              <span class="project-stat">Self-contained</span>
+            </div>
+          </div>
+          <div class="project-meta">
+            <div class="project-tags">
+              <span>C</span>
+            </div>
+            <a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">View Source ↗</a>
+          </div>
+        </div>
+        <div class="project-row">
+          <div class="project-info">
             <h4><a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener">balloc</a></h4>
             <p>
               A small C library offering three pre-allocated memory strategies from a single header: arena (bump), pool (fixed-size), and heap (first-fit with coalescing). Bounded memory, predictable performance.
