@@ -918,6 +918,19 @@
           justify-content: flex-start;
         }
       }
+
+      @media (prefers-reduced-motion: reduce) {
+        .hero-label::before,
+        .type-cursor,
+        .terminal-cursor {
+          animation: none;
+        }
+        .fade-up {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+      }
     </style>
   </head>
   <body>
@@ -982,21 +995,23 @@
                 <p>
                     During my bachelor's thesis, I developed a convolutional neural network using PyTorch and Python. This project was particularly rewarding because it wasn't just about training a model; it was about extracting genuine physical knowledge from the results. It taught me how to bridge the gap between pure science and practical engineering, a philosophy I now apply to building reliable software.
                 </p>
-            <div class="meta-cell">
-              <div class="num">C</div>
-              <div class="lbl">Systems</div>
-            </div>
-            <div class="meta-cell">
-              <div class="num">PyTorch</div>
-              <div class="lbl">Machine Learning</div>
-            </div>
-            <div class="meta-cell">
-              <div class="num">Python</div>
-              <div class="lbl">Prototyping</div>
-            </div>
-            <div class="meta-cell">
-              <div class="num">B.Sc.</div>
-              <div class="lbl">Physics</div>
+            <div class="about-meta">
+              <div class="meta-cell">
+                <div class="num">C</div>
+                <div class="lbl">Systems</div>
+              </div>
+              <div class="meta-cell">
+                <div class="num">PyTorch</div>
+                <div class="lbl">Machine Learning</div>
+              </div>
+              <div class="meta-cell">
+                <div class="num">Python</div>
+                <div class="lbl">Prototyping</div>
+              </div>
+              <div class="meta-cell">
+                <div class="num">B.Sc.</div>
+                <div class="lbl">Physics</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1072,9 +1087,9 @@
           >guicorpasp@gmail.com</a
         >
         <div class="contact-links">
-          <!-- <a href="https://github.com/gcpino" target="_blank" rel="noopener"
+          <a href="https://github.com/gcpino" target="_blank" rel="noopener"
             >GitHub</a
-          > -->
+          >
           <a
             href="https://linkedin.com/in/gcorpas"
             target="_blank"
@@ -1358,7 +1373,8 @@
         }
         setTimeout(typeLoop, speed);
       }
-      if (typeEl) setTimeout(typeLoop, 600);
+      if (typeEl && !prefersReducedMotion) setTimeout(typeLoop, 600);
+      else if (typeEl) typeEl.textContent = phrases[0];
 
       /* ===== Stats Counter ===== */
       const counters = document.querySelectorAll(".counter");
@@ -1387,9 +1403,12 @@
 
       /* ===== Matrix Rain ===== */
       const matrixCanvas = document.getElementById("matrix-canvas");
-      if (matrixCanvas) {
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      if (matrixCanvas && !prefersReducedMotion) {
         const ctx = matrixCanvas.getContext("2d");
-        let cols, drops;
+        let cols, drops, matrixRunning = true;
         const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノ";
 
         function resizeMatrix() {
@@ -1400,8 +1419,13 @@
         }
         resizeMatrix();
         window.addEventListener("resize", resizeMatrix);
+        document.addEventListener("visibilitychange", () => {
+          matrixRunning = !document.hidden;
+          if (matrixRunning) requestAnimationFrame(drawMatrix);
+        });
 
         function drawMatrix() {
+          if (!matrixRunning) return;
           ctx.fillStyle = "rgba(15, 23, 42, 0.08)";
           ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
           ctx.fillStyle = "rgba(59, 130, 246, 0.25)";
