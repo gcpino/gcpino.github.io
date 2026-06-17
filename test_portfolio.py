@@ -45,6 +45,10 @@ def test_portfolio():
     
     # Check c-infer project is present
     assert "c-infer" in content, "c-infer project not found"
+
+    # Check balloc project is present
+    assert "balloc" in content, "balloc project not found"
+    assert "https://github.com/gcpino/balloc" in content, "balloc GitHub link not found"
     
     # 6. Check LinkedIn handle is gcorpas
     assert 'linkedin.com/in/gcorpas' in content, "LinkedIn handle not updated to gcorpas"

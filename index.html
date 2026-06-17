@@ -1054,6 +1054,28 @@
       <div class="projects-list fade-up">
         <div class="project-row">
           <div class="project-info">
+            <h4><a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener">balloc</a></h4>
+            <p>
+              A small C library offering three pre-allocated memory strategies from a single header: arena (bump), pool (fixed-size), and heap (first-fit with coalescing). Bounded memory, predictable performance.
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+              All buffers are reserved up front, so the hot path never calls the system allocator. Useful for embedded targets, real-time systems, and workloads where allocation latency matters. Benchmarked faster than glibc malloc on small allocations and pooled objects.
+            </p>
+            <div class="project-stats">
+              <span class="project-stat">C11</span>
+              <span class="project-stat">Single header</span>
+              <span class="project-stat">No deps</span>
+            </div>
+          </div>
+          <div class="project-meta">
+            <div class="project-tags">
+              <span>C</span>
+            </div>
+            <a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener">View Source ↗</a>
+          </div>
+        </div>
+        <div class="project-row">
+          <div class="project-info">
             <h4><a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">c-infer</a></h4>
             <p>
               A minimal neural network inference engine written from scratch in C. Designed to bridge the gap between Python-based training environments (like PyTorch) and execution on hardware-constrained edge devices where predictable memory and performance are critical.
@@ -1161,6 +1183,10 @@
       );
 
       fadeElements.forEach((el) => observer.observe(el));
+
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
 
       // Terminal Easter Egg
       const terminalOverlay = document.getElementById("terminal-overlay");
@@ -1346,7 +1372,7 @@
       });
 
       /* ===== Typing Effect ===== */
-      const phrases = ["Physics background,", "Systems developer."];
+      const phrases = ["Physicist and developer.", "Systems in C."];
       const typeEl = document.getElementById("type-text");
       let phraseIdx = 0,
         charIdx = 0,
@@ -1403,9 +1429,6 @@
 
       /* ===== Matrix Rain ===== */
       const matrixCanvas = document.getElementById("matrix-canvas");
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
       if (matrixCanvas && !prefersReducedMotion) {
         const ctx = matrixCanvas.getContext("2d");
         let cols, drops, matrixRunning = true;
