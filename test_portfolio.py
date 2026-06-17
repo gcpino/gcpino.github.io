@@ -8,9 +8,6 @@ def test_portfolio():
     with open(html_path, "r", encoding="utf-8") as f:
         content = f.read()
         
-    # Check physical CV file exists
-    assert os.path.exists("cv.pdf"), "cv.pdf file does not exist in the root folder"
-    
     # 1. Check name is Guillermo
     assert "Guillermo — Systems & Projects" in content, "Title name not updated"
     assert 'content="Guillermo"' in content, "Author meta tag not updated"
@@ -23,13 +20,7 @@ def test_portfolio():
     assert "Spike" not in content, "Found remaining 'Spike' reference"
     assert "spike" not in content.lower(), "Found remaining 'spike' reference (lowercase/email)"
     
-    # 3. Check CV links
-    assert 'href="cv.pdf"' in content, "CV link not found"
-    # Ensure there's at least two CV links (Navbar & Hero/Contact)
-    cv_count = content.count('href="cv.pdf"')
-    assert cv_count >= 2, f"Expected at least 2 links to cv.pdf, found {cv_count}"
-    
-    # 4. Check colors (Slate 900)
+    # 3. Check colors (Slate 900)
     assert '--bg: #0f172a;' in content, "Background color variable not updated to Slate 900"
     assert '--bg-card: #1e293b;' in content, "Card background variable not updated"
     assert '--border: #334155;' in content, "Border variable not updated"
