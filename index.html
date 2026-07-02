@@ -504,6 +504,29 @@
         gap: 1rem;
       }
 
+      .project-category {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--accent);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-top: 1.75rem;
+        margin-bottom: 0.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
+
+      .project-category::before {
+        content: "//";
+        color: var(--text-muted);
+        font-weight: 400;
+      }
+
+      .project-category:first-child {
+        margin-top: 0;
+      }
+
       .project-row {
         background: var(--bg-card);
         border: 1px solid var(--border);
@@ -1052,28 +1075,7 @@
       </div>
 
       <div class="projects-list fade-up">
-        <div class="project-row">
-          <div class="project-info">
-            <h4><a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">sdr</a></h4>
-            <p>
-              A C library that demodulates FM broadcast from an int16 I/Q capture into a 16-bit PCM WAV. The full pipeline fits in ~600 lines: NCO, multi-stage decimation, atan2 discriminator, de-emphasis, and a WAV writer.
-            </p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
-              Ships a synthetic FM signal generator so the project is fully testable without RF hardware. The round-trip test synthesizes a 1 kHz tone, demodulates it, and verifies the recovered spectrum is essentially a pure tone.
-            </p>
-            <div class="project-stats">
-              <span class="project-stat">C11</span>
-              <span class="project-stat">libm only</span>
-              <span class="project-stat">Self-contained</span>
-            </div>
-          </div>
-          <div class="project-meta">
-            <div class="project-tags">
-              <span>C</span>
-            </div>
-            <a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">View Source ↗</a>
-          </div>
-        </div>
+        <h3 class="project-category">Systems &amp; Memory</h3>
         <div class="project-row">
           <div class="project-info">
             <h4><a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener">balloc</a></h4>
@@ -1096,6 +1098,32 @@
             <a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener">View Source ↗</a>
           </div>
         </div>
+
+        <h3 class="project-category">Signal Processing</h3>
+        <div class="project-row">
+          <div class="project-info">
+            <h4><a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">sdr</a></h4>
+            <p>
+              A C library that demodulates FM broadcast from an int16 I/Q capture into a 16-bit PCM WAV. The full pipeline fits in ~600 lines: NCO, multi-stage decimation, atan2 discriminator, de-emphasis, and a WAV writer.
+            </p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+              Ships a synthetic FM signal generator so the project is fully testable without RF hardware. The round-trip test synthesizes a 1 kHz tone, demodulates it, and verifies the recovered spectrum is essentially a pure tone.
+            </p>
+            <div class="project-stats">
+              <span class="project-stat">C11</span>
+              <span class="project-stat">libm only</span>
+              <span class="project-stat">Self-contained</span>
+            </div>
+          </div>
+          <div class="project-meta">
+            <div class="project-tags">
+              <span>C</span>
+            </div>
+            <a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">View Source ↗</a>
+          </div>
+        </div>
+
+        <h3 class="project-category">Machine Learning</h3>
         <div class="project-row">
           <div class="project-info">
             <h4><a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">c-infer</a></h4>
@@ -1118,6 +1146,8 @@
             <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">View Source ↗</a>
           </div>
         </div>
+
+        <h3 class="project-category">Cryptography</h3>
         <div class="project-row">
           <div class="project-info">
             <h4><a href="https://github.com/gcpino/aes256" target="_blank" rel="noopener">aes256</a></h4>
