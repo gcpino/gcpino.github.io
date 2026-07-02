@@ -977,10 +977,12 @@
 
     <section class="hero">
       <div class="hero-content">
-        <div class="hero-label">Software Engineer</div>
+        <div class="hero-label">Engineer · B.Sc. Physics</div>
         <h1><span id="type-text"></span><span class="type-cursor">|</span></h1>
         <p>
-          Exploring the intersection of physical sciences and low-level software engineering, with a focus on C and reliable AI.
+          Single-header C libraries with NIST-verified test vectors, and a
+          convolutional network trained on real physics data. No frameworks
+          in the hot path.
         </p>
         <div class="hero-actions">
           <a href="#projects" class="btn btn-primary">View Projects</a>
@@ -992,24 +994,24 @@
     <section id="about">
       <div class="section-header fade-up">
         <h2>About</h2>
-        <p>A background in physics applied to software.</p>
+        <p>From a CNN trained on real physics data to C libraries with published test vectors.</p>
       </div>
       <div class="about-grid">
         <div class="about-visual fade-up">
           <div class="code-block">
             <span class="cm">/* core profile */</span><br />
             <span class="kw">struct</span> <span class="type">profile</span> {<br />
-            &nbsp;&nbsp;<span class="type">const char*</span>&nbsp;&nbsp;<span class="fn">background</span>;&nbsp;&nbsp;<span class="cm">/* "Physics" */</span><br />
-            &nbsp;&nbsp;<span class="type">const char*</span>&nbsp;&nbsp;<span class="fn">focus</span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">/* "Systems & AI" */</span><br />
+            &nbsp;&nbsp;<span class="type">const char*</span>&nbsp;&nbsp;<span class="fn">training</span>;&nbsp;&nbsp;<span class="cm">/* CNN on real physics data */</span><br />
+            &nbsp;&nbsp;<span class="type">const char*</span>&nbsp;&nbsp;<span class="fn">practice</span>;&nbsp;&nbsp;<span class="cm">/* C, verified, no deps */</span><br />
             };
           </div>
         </div>
         <div class="about-text fade-up">
                 <p>
-                    My journey started in physics where I learned to analyze complex systems. This naturally translated into a strong interest in low-level development. I enjoy working directly with memory and hardware interfaces using C.
+                    My bachelor's thesis was a convolutional network trained on real physics data — not a benchmark, not a tutorial. The trained weights, not the model itself, were the deliverable: they let us extract physical insight about the system that generated the data. That experience — building something in order to learn from it, not just to ship it — shapes how I work today.
                 </p>
                 <p>
-                    During my bachelor's thesis, I developed a convolutional neural network using PyTorch and Python. This project was particularly rewarding because it wasn't just about training a model; it was about extracting genuine physical knowledge from the results. It taught me how to bridge the gap between pure science and practical engineering, a philosophy I now apply to building reliable software.
+                    These days I write C. Four single-header libraries cover FM demodulation, bounded memory, neural network inference, and AES-256 with GCM. Each ships with a published test vector suite (FIPS 197, NIST SP 800-38A, SP 800-38D) and a round-trip test. The hot path has zero dependencies — the metal is the point.
                 </p>
             <div class="about-meta">
               <div class="meta-cell">
@@ -1255,7 +1257,16 @@
       let historyIndex = -1;
       let currentInput = "";
 
-      const projectData = {};
+      const projectData = {
+        balloc:  { desc: "arena/pool/heap memory allocator, single-header C",
+                   url:  "https://github.com/gcpino/balloc" },
+        sdr:     { desc: "FM demodulator (NCO, decimation, atan2), C11, libm only",
+                   url:  "https://github.com/gcpino/sdr" },
+        "c-infer": { desc: "zero-alloc NN inference, C11, Linear/Conv2D/MaxPool",
+                     url:  "https://github.com/gcpino/c-infer" },
+        aes256:  { desc: "AES-256 + GCM AEAD, single-header C11, FIPS 197 / SP 800-38A/D",
+                   url:  "https://github.com/gcpino/aes256" }
+      };
 
       function openTerminal() {
         terminalOverlay.classList.add("active");
@@ -1325,21 +1336,27 @@
             printLine("  exit         close terminal");
             break;
           case "ls":
-            printLine("total 0");
+            printLine("balloc/     arena/pool/heap memory");
+            printLine("sdr/        FM demodulator");
+            printLine("c-infer/    zero-alloc NN inference");
+            printLine("aes256/     AES-256 + GCM AEAD");
             break;
           case "cat":
             const name = args[1];
             if (!name) {
               printLine("usage: cat <project_name>");
+            } else if (projectData[name]) {
+              const p = projectData[name];
+              printLine(p.desc, "info");
+              printLine("src: " + p.url, "info");
             } else {
               printLine(`cat: ${name}: No such file or directory`, "err");
             }
             break;
           case "whoami":
             printLine("Guillermo — Software Engineer");
-            printLine("Focus: Low-level C and Reliable AI");
-            printLine("Research: Applied Convolutional Neural Networks");
-            printLine("Philosophy: Bridging science and engineering");
+            printLine("Training: CNN on real physics data (B.Sc. thesis)");
+            printLine("Practice: C, single-header, NIST-verified");
             break;
           case "skills":
             printLine("C           [██████████] Systems, Memory management");
@@ -1431,7 +1448,7 @@
       });
 
       /* ===== Typing Effect ===== */
-      const phrases = ["Physicist and developer.", "Systems in C."];
+      const phrases = ["C from scratch, verified.", "Physics, in code."];
       const typeEl = document.getElementById("type-text");
       let phraseIdx = 0,
         charIdx = 0,
