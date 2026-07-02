@@ -11,6 +11,8 @@
     <meta name="author" content="Guillermo" />
     <meta name="theme-color" content="#0f172a" />
 
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+
     <!-- Open Graph -->
     <meta property="og:title" content="Guillermo — Systems & Projects" />
     <meta
@@ -19,6 +21,10 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://gcpino.github.io" />
+    <meta property="og:image" content="https://gcpino.github.io/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:image" content="https://gcpino.github.io/og.png" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -266,6 +272,44 @@
         margin-bottom: 2rem;
       }
 
+      .hero-now {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-left: 2px solid var(--accent);
+        padding: 0.55rem 0.9rem;
+        border-radius: 4px;
+        margin-bottom: 1.75rem;
+        max-width: 560px;
+      }
+
+      .hero-now em {
+        color: var(--text-secondary);
+        font-style: italic;
+      }
+
+      .hero-now-label {
+        color: var(--accent);
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+      }
+
+      .hero-now-dot {
+        width: 6px;
+        height: 6px;
+        background: var(--green);
+        border-radius: 50%;
+        animation: pulse 2s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+
       .hero-actions {
         display: flex;
         gap: 0.75rem;
@@ -447,54 +491,58 @@
 
       /* Skills */
       .skills-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 1px;
-        background: var(--border);
+        background: var(--bg-card);
         border: 1px solid var(--border);
         border-radius: 8px;
-        overflow: hidden;
+        padding: 1.25rem 1.5rem;
+        font-family: "JetBrains Mono", monospace;
       }
 
       .skill-item {
-        background: var(--bg-card);
-        padding: 1.5rem;
-        transition:
-          background 0.2s,
-          transform 0.2s;
+        display: grid;
+        grid-template-columns: 16ch 1fr;
+        gap: 0.5rem 1rem;
+        align-items: center;
+        padding: 0.55rem 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.82rem;
+      }
+
+      .skill-item:last-child {
+        border-bottom: none;
       }
 
       .skill-item:hover {
         background: var(--bg-elevated);
-        transform: translateY(-2px);
       }
 
       .skill-item h4 {
         font-weight: 600;
-        font-size: 0.95rem;
-        margin-bottom: 0.4rem;
+        font-size: 0.82rem;
+        color: var(--text);
+        margin: 0;
       }
 
-      .skill-item p {
-        font-size: 0.85rem;
-        color: var(--text-secondary);
-        margin-bottom: 0.75rem;
-      }
-
-      .skill-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-      }
-
-      .skill-tags span {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.7rem;
-        padding: 0.2rem 0.55rem;
+      .skill-bar {
+        height: 6px;
         background: var(--bg);
         border: 1px solid var(--border);
-        border-radius: 4px;
+        border-radius: 3px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .skill-bar-fill {
+        height: 100%;
+        background: var(--accent);
+        box-shadow: 0 0 8px var(--accent-glow);
+      }
+
+      .skill-note {
+        grid-column: 2;
         color: var(--text-muted);
+        font-size: 0.75rem;
+        margin-top: -0.15rem;
       }
 
       /* Projects */
@@ -984,6 +1032,12 @@
           convolutional network trained on real physics data. No frameworks
           in the hot path.
         </p>
+        <div class="hero-now">
+          <span class="hero-now-dot"></span>
+          <span class="hero-now-label">now</span>
+          exploring aes256 → WebAssembly, reading
+          <em>The Pragmatic Programmer</em>, based in Madrid.
+        </div>
         <div class="hero-actions">
           <a href="#projects" class="btn btn-primary">View Projects</a>
           <a href="#contact" class="btn btn-secondary">Contact</a>
@@ -999,11 +1053,19 @@
       <div class="about-grid">
         <div class="about-visual fade-up">
           <div class="code-block">
-            <span class="cm">/* core profile */</span><br />
-            <span class="kw">struct</span> <span class="type">profile</span> {<br />
-            &nbsp;&nbsp;<span class="type">const char*</span>&nbsp;&nbsp;<span class="fn">training</span>;&nbsp;&nbsp;<span class="cm">/* CNN on real physics data */</span><br />
-            &nbsp;&nbsp;<span class="type">const char*</span>&nbsp;&nbsp;<span class="fn">practice</span>;&nbsp;&nbsp;<span class="cm">/* C, verified, no deps */</span><br />
-            };
+            <span class="cm">/* c-infer: linear forward */</span><br />
+            <span class="kw">void</span> <span class="fn">linear_forward</span>(<br />
+            &nbsp;&nbsp;<span class="kw">const</span> <span class="type">layer_t</span>* <span class="fn">l</span>,<br />
+            &nbsp;&nbsp;<span class="kw">const</span> <span class="type">float</span>*   <span class="fn">in</span>,<br />
+            &nbsp;&nbsp;<span class="type">float</span>*         <span class="fn">out</span><br />
+            ) {<br />
+            &nbsp;&nbsp;<span class="kw">for</span> (<span class="type">size_t</span> <span class="fn">i</span> = <span class="num">0</span>; i &lt; l-&gt;n_out; i++) {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">float</span> <span class="fn">s</span> = l-&gt;bias[i];<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">for</span> (<span class="type">size_t</span> <span class="fn">k</span> = <span class="num">0</span>; k &lt; l-&gt;n_in; k++)<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s += l-&gt;w[i*l-&gt;n_in + k] * in[k];<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;out[i] = l-&gt;act(s);<br />
+            &nbsp;&nbsp;}<br />
+            }
           </div>
         </div>
         <div class="about-text fade-up">
@@ -1039,26 +1101,28 @@
     <section id="skills">
       <div class="section-header fade-up">
         <h2>Skills</h2>
-        <p>Areas of expertise combining scientific analysis with software development.</p>
+        <p>What the projects above are built with.</p>
       </div>
       <div class="skills-list fade-up">
         <div class="skill-item">
-          <h4>Programming</h4>
-          <p>
-            I am highly proficient in C for low-level tasks where performance and direct hardware interaction matter. For data analysis and machine learning research, I rely heavily on Python.
-          </p>
+          <h4>C / Systems</h4>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:100%"></div></div>
+          <div class="skill-note">All four libraries. Memory layout, signal pipelines, GF(2^128) by hand.</div>
         </div>
         <div class="skill-item">
-          <h4>Machine Learning</h4>
-          <p>
-            My experience centers around building reliable AI models. Working with PyTorch has allowed me to design custom architectures like convolutional networks aimed at extracting meaningful physical insights from raw data.
-          </p>
+          <h4>DSP / Numerics</h4>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:80%"></div></div>
+          <div class="skill-note">From <code style="color:var(--accent)">sdr</code>: NCO, multi-stage decimation, atan2 discriminator, de-emphasis.</div>
         </div>
         <div class="skill-item">
-          <h4>Systems Design</h4>
-          <p>
-            Coming from a physics background gives me a unique perspective on architecture. I appreciate software that is robust and operates predictably at the system level.
-          </p>
+          <h4>Python / PyTorch</h4>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:75%"></div></div>
+          <div class="skill-note">CNN for the B.Sc. thesis; prototyping and analysis.</div>
+        </div>
+        <div class="skill-item">
+          <h4>Physics</h4>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:90%"></div></div>
+          <div class="skill-note">B.Sc. 2024. Analytical modeling, signal analysis.</div>
         </div>
       </div>
     </section>
@@ -1258,14 +1322,30 @@
       let currentInput = "";
 
       const projectData = {
-        balloc:  { desc: "arena/pool/heap memory allocator, single-header C",
-                   url:  "https://github.com/gcpino/balloc" },
-        sdr:     { desc: "FM demodulator (NCO, decimation, atan2), C11, libm only",
-                   url:  "https://github.com/gcpino/sdr" },
-        "c-infer": { desc: "zero-alloc NN inference, C11, Linear/Conv2D/MaxPool",
-                     url:  "https://github.com/gcpino/c-infer" },
-        aes256:  { desc: "AES-256 + GCM AEAD, single-header C11, FIPS 197 / SP 800-38A/D",
-                   url:  "https://github.com/gcpino/aes256" }
+        balloc: {
+          desc: "arena/pool/heap memory allocator, single-header C",
+          body: "All buffers are reserved up front, so the hot path never calls the system allocator. Useful for embedded targets, real-time systems, and workloads where allocation latency matters. Benchmarked faster than glibc malloc on small allocations and pooled objects.",
+          stats: "C11 · Single header · No deps",
+          url: "https://github.com/gcpino/balloc"
+        },
+        sdr: {
+          desc: "FM demodulator (NCO, decimation, atan2), C11, libm only",
+          body: "Ships a synthetic FM signal generator so the project is fully testable without RF hardware. The round-trip test synthesizes a 1 kHz tone, demodulates it, and verifies the recovered spectrum is essentially a pure tone.",
+          stats: "C11 · libm only · Self-contained",
+          url: "https://github.com/gcpino/sdr"
+        },
+        "c-infer": {
+          desc: "zero-alloc NN inference, C11, Linear/Conv2D/MaxPool",
+          body: "The engine executes pre-trained models with a strict, pre-allocated memory footprint. It implements essential linear algebra operations directly, ensuring tight control over the hardware without relying on external libraries.",
+          stats: "C11 · Zero-alloc forward · Conv2D support",
+          url: "https://github.com/gcpino/c-infer"
+        },
+        aes256: {
+          desc: "AES-256 + GCM AEAD, single-header C11, FIPS 197 / SP 800-38A/D",
+          body: "The cipher follows the FIPS 197 spec directly: SubBytes, ShiftRows, MixColumns, AddRoundKey. GCM uses a standard GHASH over GF(2^128) with a constant-time tag comparison in the open path. The whole library — block cipher, four modes, and tests — fits in roughly 400 lines of header.",
+          stats: "C11 · Single header · 9 verified test vectors",
+          url: "https://github.com/gcpino/aes256"
+        }
       };
 
       function openTerminal() {
@@ -1348,7 +1428,11 @@
             } else if (projectData[name]) {
               const p = projectData[name];
               printLine(p.desc, "info");
-              printLine("src: " + p.url, "info");
+              printLine("");
+              printLine(p.body);
+              printLine("");
+              printLine("stats: " + p.stats, "info");
+              printLine("src:   " + p.url, "info");
             } else {
               printLine(`cat: ${name}: No such file or directory`, "err");
             }
