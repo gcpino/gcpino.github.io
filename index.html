@@ -577,6 +577,7 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        padding-right: 3.5rem;
       }
 
       .project-row h4 a {
@@ -638,35 +639,27 @@
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+        align-self: end;
         gap: 0.5rem;
       }
 
-      .project-meta a {
-        color: var(--text-muted);
-        text-decoration: none;
-        font-size: 0.8rem;
-        transition: color 0.2s;
-      }
-
-      .project-meta a:hover {
-        color: var(--text);
-      }
-
-      .project-tags {
-        display: flex;
-        gap: 0.4rem;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-      }
-
-      .project-tags span {
+      .project-lang {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
         font-family: "JetBrains Mono", monospace;
         font-size: 0.7rem;
         color: var(--text-muted);
         background: var(--bg);
-        padding: 0.15rem 0.4rem;
+        padding: 0.2rem 0.5rem;
         border-radius: 4px;
         border: 1px solid var(--border);
+        z-index: 1;
+      }
+
+      .btn-sm {
+        padding: 0.55rem 1.1rem;
+        font-size: 0.82rem;
       }
 
       /* Contact */
@@ -1077,6 +1070,7 @@
       <div class="projects-list fade-up">
         <h3 class="project-category">Systems &amp; Memory</h3>
         <div class="project-row">
+          <span class="project-lang">C</span>
           <div class="project-info">
             <h4><a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener">balloc</a></h4>
             <p>
@@ -1092,15 +1086,13 @@
             </div>
           </div>
           <div class="project-meta">
-            <div class="project-tags">
-              <span>C</span>
-            </div>
-            <a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener">View Source ↗</a>
+            <a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">View Source ↗</a>
           </div>
         </div>
 
         <h3 class="project-category">Signal Processing</h3>
         <div class="project-row">
+          <span class="project-lang">C</span>
           <div class="project-info">
             <h4><a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">sdr</a></h4>
             <p>
@@ -1116,15 +1108,13 @@
             </div>
           </div>
           <div class="project-meta">
-            <div class="project-tags">
-              <span>C</span>
-            </div>
-            <a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">View Source ↗</a>
+            <a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">View Source ↗</a>
           </div>
         </div>
 
         <h3 class="project-category">Machine Learning</h3>
         <div class="project-row">
+          <span class="project-lang">C</span>
           <div class="project-info">
             <h4><a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">c-infer</a></h4>
             <p>
@@ -1140,15 +1130,13 @@
             </div>
           </div>
           <div class="project-meta">
-            <div class="project-tags">
-              <span>C</span>
-            </div>
-            <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">View Source ↗</a>
+            <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">View Source ↗</a>
           </div>
         </div>
 
         <h3 class="project-category">Cryptography</h3>
         <div class="project-row">
+          <span class="project-lang">C</span>
           <div class="project-info">
             <h4><a href="https://github.com/gcpino/aes256" target="_blank" rel="noopener">aes256</a></h4>
             <p>
@@ -1164,11 +1152,7 @@
             </div>
           </div>
           <div class="project-meta">
-            <div class="project-tags">
-              <span>C</span>
-              <span>Crypto</span>
-            </div>
-            <a href="https://github.com/gcpino/aes256" target="_blank" rel="noopener">View Source ↗</a>
+            <a href="https://github.com/gcpino/aes256" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">View Source ↗</a>
           </div>
         </div>
       </div>
