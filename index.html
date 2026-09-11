@@ -381,11 +381,8 @@
       }
 
       /* About */
-      .about-grid {
-        display: grid;
-        grid-template-columns: 1fr 1.3fr;
-        gap: 3rem;
-        align-items: start;
+      .about-text {
+        max-width: 68ch;
       }
 
       .about-text p {
@@ -397,96 +394,6 @@
       .about-text strong {
         color: var(--text);
         font-weight: 500;
-      }
-
-      .about-meta {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1px;
-        background: var(--border);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        overflow: hidden;
-        margin-top: 1.5rem;
-      }
-
-      .meta-cell {
-        background: var(--bg-card);
-        padding: 1.25rem;
-        transition: background 0.2s;
-      }
-
-      .meta-cell:hover {
-        background: var(--bg-elevated);
-      }
-
-      .meta-cell .num {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 1.4rem;
-        font-weight: 500;
-        color: var(--text);
-      }
-
-      .meta-cell .lbl {
-        font-size: 0.78rem;
-        color: var(--text-muted);
-        margin-top: 0.2rem;
-      }
-
-      .about-visual {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 2rem;
-        min-height: 280px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .about-visual::before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(
-          circle at 30% 30%,
-          rgba(59, 130, 246, 0.06),
-          transparent 60%
-        );
-        pointer-events: none;
-      }
-
-      .code-block {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.78rem;
-        line-height: 1.8;
-        color: var(--text-secondary);
-        position: relative;
-        z-index: 1;
-      }
-
-      .code-block .kw {
-        color: var(--accent);
-      }
-      .code-block .type {
-        color: var(--orange);
-      }
-      .code-block .str {
-        color: var(--green);
-      }
-      .code-block .fn {
-        color: var(--text);
-      }
-      .code-block .cm {
-        color: var(--text-muted);
-      }
-      .code-block .num {
-        color: #a78bfa;
       }
 
       /* Skills */
@@ -969,9 +876,6 @@
         .hero {
           padding-top: 6rem;
         }
-        .about-grid {
-          grid-template-columns: 1fr;
-        }
         .project-row {
           grid-template-columns: 1fr;
         }
@@ -1050,51 +954,22 @@
         <h2>About</h2>
         <p>From a CNN trained on real physics data to C libraries with published test vectors.</p>
       </div>
-      <div class="about-grid">
-        <div class="about-visual fade-up">
-          <div class="code-block">
-            <span class="cm">/* c-infer: linear forward */</span><br />
-            <span class="kw">void</span> <span class="fn">linear_forward</span>(<br />
-            &nbsp;&nbsp;<span class="kw">const</span> <span class="type">layer_t</span>* <span class="fn">l</span>,<br />
-            &nbsp;&nbsp;<span class="kw">const</span> <span class="type">float</span>*   <span class="fn">in</span>,<br />
-            &nbsp;&nbsp;<span class="type">float</span>*         <span class="fn">out</span><br />
-            ) {<br />
-            &nbsp;&nbsp;<span class="kw">for</span> (<span class="type">size_t</span> <span class="fn">i</span> = <span class="num">0</span>; i &lt; l-&gt;n_out; i++) {<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">float</span> <span class="fn">s</span> = l-&gt;bias[i];<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">for</span> (<span class="type">size_t</span> <span class="fn">k</span> = <span class="num">0</span>; k &lt; l-&gt;n_in; k++)<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s += l-&gt;w[i*l-&gt;n_in + k] * in[k];<br />
-            &nbsp;&nbsp;&nbsp;&nbsp;out[i] = l-&gt;act(s);<br />
-            &nbsp;&nbsp;}<br />
-            }
-          </div>
-        </div>
-        <div class="about-text fade-up">
-                <p>
-                    My bachelor's thesis was a convolutional network trained on real physics data — not a benchmark, not a tutorial. The trained weights, not the model itself, were the deliverable: they let us extract physical insight about the system that generated the data. That experience — building something in order to learn from it, not just to ship it — shapes how I work today.
-                </p>
-                <p>
-                    These days I write C. Four single-header libraries cover FM demodulation, bounded memory, neural network inference, and AES-256 with GCM. Each ships with a published test vector suite (FIPS 197, NIST SP 800-38A, SP 800-38D) and a round-trip test. The hot path has zero dependencies — the metal is the point.
-                </p>
-            <div class="about-meta">
-              <div class="meta-cell">
-                <div class="num">C</div>
-                <div class="lbl">Systems</div>
-              </div>
-              <div class="meta-cell">
-                <div class="num">PyTorch</div>
-                <div class="lbl">Machine Learning</div>
-              </div>
-              <div class="meta-cell">
-                <div class="num">Python</div>
-                <div class="lbl">Prototyping</div>
-              </div>
-              <div class="meta-cell">
-                <div class="num">B.Sc.</div>
-                <div class="lbl">Physics</div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="about-text fade-up">
+        <p>
+          My bachelor's thesis was a convolutional network trained on real
+          physics data — not a benchmark, not a tutorial. The trained weights,
+          not the model itself, were the deliverable: they let us extract
+          physical insight about the system that generated the data. That
+          experience — building something in order to learn from it, not just
+          to ship it — shapes how I work today.
+        </p>
+        <p>
+          These days I write C. Four single-header libraries cover FM
+          demodulation, bounded memory, neural network inference, and AES-256
+          with GCM. Each ships with a published test vector suite (FIPS 197,
+          NIST SP 800-38A, SP 800-38D) and a round-trip test. The hot path has
+          zero dependencies — the metal is the point.
+        </p>
       </div>
     </section>
 
@@ -1708,3 +1583,4 @@
     </script>
   </body>
 </html>
+
