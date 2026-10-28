@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Guillermo — Systems & Projects</title>
+    <title>Guillermo: Systems & Projects</title>
     <meta
       name="description"
       content="Physicist and developer focused on low-level C, systems programming, and reliable AI, bridging science and engineering."
@@ -14,7 +14,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Guillermo — Systems & Projects" />
+    <meta property="og:title" content="Guillermo: Systems & Projects" />
     <meta
       property="og:description"
       content="Physicist and developer focused on low-level C, systems programming, and reliable AI, bridging science and engineering."
@@ -28,7 +28,7 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Guillermo — Systems & Projects" />
+    <meta name="twitter:title" content="Guillermo: Systems & Projects" />
     <meta
       name="twitter:description"
       content="Physicist and developer focused on low-level C, systems programming, and reliable AI, bridging science and engineering."
@@ -395,6 +395,24 @@
         color: var(--text);
         font-weight: 500;
       }
+
+      .profile-code {
+        display: inline-block;
+        margin: 0 0 1.5rem;
+        padding: 1rem 1.25rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text-secondary);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.78rem;
+        line-height: 1.8;
+      }
+
+      .profile-code .kw { color: var(--accent); }
+      .profile-code .type { color: var(--orange); }
+      .profile-code .fn { color: var(--text); }
+      .profile-code .cm { color: var(--text-muted); }
 
       /* Skills */
       .skills-list {
@@ -947,21 +965,26 @@
         <h2>About</h2>
         <p>From a CNN trained on real physics data to C libraries with published test vectors.</p>
       </div>
+      <pre class="profile-code fade-up"><code><span class="cm">/* core profile */</span>
+<span class="kw">struct</span> <span class="type">profile</span> {
+  <span class="type">const char*</span> <span class="fn">training</span>; <span class="cm">/* CNN on real physics data */</span>
+  <span class="type">const char*</span> <span class="fn">practice</span>; <span class="cm">/* C, verified, no deps */</span>
+};</code></pre>
       <div class="about-text fade-up">
         <p>
           My bachelor's thesis was a convolutional network trained on real
-          physics data — not a benchmark, not a tutorial. The trained weights,
+          physics data, not a benchmark, not a tutorial. The trained weights,
           not the model itself, were the deliverable: they let us extract
           physical insight about the system that generated the data. That
-          experience — building something in order to learn from it, not just
-          to ship it — shapes how I work today.
+          experience, building something in order to learn from it, not just
+          to ship it, shapes how I work today.
         </p>
         <p>
           These days I write C. Four single-header libraries cover FM
           demodulation, bounded memory, neural network inference, and AES-256
           with GCM. Each ships with a published test vector suite (FIPS 197,
           NIST SP 800-38A, SP 800-38D) and a round-trip test. The hot path has
-          zero dependencies — the metal is the point.
+          zero dependencies. The metal is the point.
         </p>
       </div>
     </section>
@@ -1048,7 +1071,7 @@
               A single-header C11 implementation of AES-256 with the standard block modes (ECB, CBC, CTR) and an AES-256-GCM AEAD. No dependencies beyond libc. Verified against FIPS 197, NIST SP 800-38A, and SP 800-38D test vectors.
             </p>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
-              The cipher follows the FIPS 197 spec directly: SubBytes, ShiftRows, MixColumns, AddRoundKey. GCM uses a standard GHASH over GF(2^128) with a constant-time tag comparison in the open path. The whole library — block cipher, four modes, and tests — fits in roughly 400 lines of header.
+              The cipher follows the FIPS 197 spec directly: SubBytes, ShiftRows, MixColumns, AddRoundKey. GCM uses a standard GHASH over GF(2^128) with a constant-time tag comparison in the open path. The whole library, including the block cipher, four modes, and tests, fits in roughly 400 lines of header.
             </p>
             <div class="project-stats">
               <span class="project-stat">C11</span>
@@ -1066,9 +1089,6 @@
     <section id="contact">
       <div class="contact-box fade-up">
         <h3>Get in touch</h3>
-        <p>
-          Feel free to reach out if you are working on interesting problems in reliable AI, systems programming, or anything that requires a deep analytical approach.
-        </p>
         <a href="mailto:guicorpasp@gmail.com" class="btn btn-primary"
           >guicorpasp@gmail.com</a
         >
@@ -1087,7 +1107,7 @@
     </section>
 
     <footer>
-      <p>Guillermo &mdash; Systems & Projects. Built from scratch.</p>
+      <p>Guillermo: Systems & Projects. Built from scratch.</p>
       <p class="footer-hint">
         Press
         <kbd
@@ -1112,11 +1132,11 @@
           <div class="terminal-btn red" onclick="closeTerminal()"></div>
           <div class="terminal-btn yellow"></div>
           <div class="terminal-btn green"></div>
-          <span class="terminal-title">guillermo@portfolio — bash</span>
+          <span class="terminal-title">guillermo@portfolio: bash</span>
         </div>
         <div class="terminal-body" id="terminal-body">
           <div class="terminal-line">
-            Guillermo Systems Terminal — type <span class="info">help</span> for
+            Guillermo Systems Terminal. Type <span class="info">help</span> for
             commands
           </div>
           <div class="terminal-line"></div>
@@ -1181,7 +1201,7 @@
         },
         aes256: {
           desc: "AES-256 + GCM AEAD, single-header C11, FIPS 197 / SP 800-38A/D",
-          body: "The cipher follows the FIPS 197 spec directly: SubBytes, ShiftRows, MixColumns, AddRoundKey. GCM uses a standard GHASH over GF(2^128) with a constant-time tag comparison in the open path. The whole library — block cipher, four modes, and tests — fits in roughly 400 lines of header.",
+          body: "The cipher follows the FIPS 197 spec directly: SubBytes, ShiftRows, MixColumns, AddRoundKey. GCM uses a standard GHASH over GF(2^128) with a constant-time tag comparison in the open path. The whole library, including the block cipher, four modes, and tests, fits in roughly 400 lines of header.",
           stats: "C11 · Single header · 9 verified test vectors",
           url: "https://github.com/gcpino/aes256"
         }
@@ -1277,7 +1297,7 @@
             }
             break;
           case "whoami":
-            printLine("Guillermo — Software Engineer");
+            printLine("Guillermo: Software Engineer");
             printLine("Training: CNN on real physics data (B.Sc. thesis)");
             printLine("Practice: C, single-header, NIST-verified");
             break;
@@ -1534,7 +1554,7 @@
             '"The only way to do great work is to love what you do."',
             "ok",
           );
-          printLine("                    — Steve Jobs", "info");
+          printLine("                    Steve Jobs", "info");
           printLine(" ");
           printLine("Also: the cake is a lie.", "warn");
           printLine(" ");

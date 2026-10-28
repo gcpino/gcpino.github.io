@@ -9,12 +9,12 @@ def test_portfolio():
         content = f.read()
         
     # 1. Check name is Guillermo
-    assert "Guillermo — Systems & Projects" in content, "Title name not updated"
+    assert "Guillermo: Systems & Projects" in content, "Title name not updated"
     assert 'content="Guillermo"' in content, "Author meta tag not updated"
     assert 'class="logo">Guillermo</a>' in content, "Logo name not updated"
-    assert 'guillermo@portfolio — bash' in content, "Terminal title not updated"
+    assert 'guillermo@portfolio: bash' in content, "Terminal title not updated"
     assert 'Guillermo Systems Terminal' in content, "Terminal welcome message not updated"
-    assert 'Guillermo — Software Engineer' in content, "Terminal whoami not updated"
+    assert 'Guillermo: Software Engineer' in content, "Terminal whoami not updated"
     
     # 2. Check no Spike remains
     assert "Spike" not in content, "Found remaining 'Spike' reference"
