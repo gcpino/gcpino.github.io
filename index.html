@@ -88,18 +88,6 @@
         color: #fff;
       }
 
-      /* Scroll progress */
-      #scroll-progress {
-        position: fixed;
-        top: 0;
-        left: 0;
-        height: 2px;
-        background: var(--accent);
-        z-index: 1000;
-        width: 0%;
-        transition: width 0.1s linear;
-      }
-
       /* Subtle grid background */
       body::before {
         content: "";
@@ -232,37 +220,6 @@
         z-index: 1;
       }
 
-      .hero-label {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.78rem;
-        color: var(--accent);
-        margin-bottom: 1.25rem;
-        letter-spacing: 0.05em;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .hero-label::before {
-        content: "";
-        display: inline-block;
-        width: 6px;
-        height: 6px;
-        background: var(--accent);
-        border-radius: 50%;
-        animation: pulse 2s ease-in-out infinite;
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.4;
-        }
-      }
-
       .hero h1 {
         font-size: clamp(2.2rem, 5vw, 3.6rem);
         font-weight: 700;
@@ -313,7 +270,6 @@
       .btn-primary:hover {
         background: #1d4ed8;
         box-shadow: 0 0 30px rgba(37, 99, 235, 0.25);
-        transform: translateY(-1px);
       }
 
       .btn-secondary {
@@ -396,7 +352,7 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        transition: all 0.25s ease;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease;
         position: relative;
       }
 
@@ -420,7 +376,6 @@
 
       .pcard:hover {
         border-color: var(--border-hover);
-        transform: translateY(-2px);
         box-shadow:
           0 8px 32px rgba(0, 0, 0, 0.3),
           0 0 0 1px rgba(37, 99, 235, 0.08);
@@ -440,6 +395,12 @@
         display: block;
         width: 100%;
         height: auto;
+        aspect-ratio: 1200 / 450;
+        object-fit: contain;
+      }
+
+      .pcard-visual img[src*="pinn-comparison"] {
+        aspect-ratio: 2520 / 720;
       }
 
       .pcard-caption {
@@ -557,15 +518,18 @@
       }
 
       .mini-term-body {
+        margin: 0;
         padding: 0.75rem 0.9rem;
-        min-height: 12.5em;
-        white-space: pre-wrap;
-        word-break: break-word;
+        height: calc(1.55em * 11 + 1.5rem);
+        box-sizing: border-box;
+        overflow: hidden;
+        white-space: pre;
+        overflow-x: auto;
         color: var(--text-secondary);
       }
 
-      #term-balloc { min-height: 19em; }
-      #term-cinfer { min-height: 17em; }
+      #term-balloc { height: calc(1.55em * 12 + 1.5rem); }
+      #term-cinfer { height: calc(1.55em * 11 + 1.5rem); }
 
       .mini-term-body .cmd { color: var(--text); }
       .mini-term-body .ok { color: var(--green); }
@@ -641,8 +605,9 @@
         content: "";
         position: absolute;
         top: -50%;
-        left: 50%;
-        transform: translateX(-50%);
+        left: 0;
+        right: 0;
+        margin: 0 auto;
         width: 300px;
         height: 300px;
         background: radial-gradient(
@@ -856,73 +821,7 @@
         }
       }
 
-      /* Pure CSS scroll-driven animations, progressive enhancement only */
-      @media (prefers-reduced-motion: no-preference) {
-        @supports (animation-timeline: view()) {
-          .rv {
-            animation: rv-in linear both;
-            animation-timeline: view();
-            animation-range: entry 5% entry 45%;
-          }
-
-          @keyframes rv-in {
-            from {
-              opacity: 0;
-            }
-            to {
-              opacity: 1;
-            }
-          }
-
-          .hero-content {
-            animation: hero-out linear both;
-            animation-timeline: scroll();
-            animation-range: 0 55vh;
-          }
-
-          @keyframes hero-out {
-            from {
-              opacity: 1;
-            }
-            to {
-              opacity: 0;
-            }
-          }
-
-          #scroll-progress {
-            width: 100%;
-            transform-origin: 0 50%;
-            scale: 0 1;
-            transition: none;
-            animation: scroll-progress linear both;
-            animation-timeline: scroll(root);
-          }
-
-          @keyframes scroll-progress {
-            from {
-              scale: 0 1;
-            }
-            to {
-              scale: 1 1;
-            }
-          }
-
-          .bench-fill {
-            animation: bench-grow linear both;
-            animation-timeline: view();
-            animation-range: entry 20% entry 90%;
-          }
-
-          @keyframes bench-grow {
-            from {
-              width: 0;
-            }
-            to {
-              width: var(--w);
-            }
-          }
-        }
-      }
+      /* Project cards stay spatially fixed while scrolling. */
 
       /* Responsive */
       @media (max-width: 900px) {
@@ -947,7 +846,6 @@
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .hero-label::before,
         .terminal-cursor,
         .term-caret {
           animation: none;
@@ -956,8 +854,6 @@
     </style>
   </head>
   <body>
-    <div id="scroll-progress"></div>
-
     <nav>
       <a href="#" class="logo">Guillermo</a>
       <ul class="nav-links">
@@ -970,11 +866,10 @@
     <section class="hero">
       <canvas id="shader-canvas" aria-hidden="true"></canvas>
       <div class="hero-content">
-        <div class="hero-label">Engineer · B.Sc. Physics</div>
-        <h1>C from scratch, verified.</h1>
+        <h1>Close to the metal.</h1>
         <p>
           Systems programmer. C from scratch, verified by construction,
-          benchmarked to the metal.
+          benchmarked end to end.
         </p>
         <div class="hero-actions">
           <a href="#projects" class="btn btn-primary">View Projects</a>
@@ -1070,6 +965,8 @@ fixed-size object pool (64 B x 1024):
             <img
               src="assets/sdr-waveform.png"
               alt="Demodulated 1 kHz tone recovered from an FM signal"
+              width="1200"
+              height="450"
               loading="lazy"
             />
             <div class="pcard-caption">make demo: 1 kHz tone recovered from FM, 2.4 MS/s I/Q to 48 kHz PCM</div>
@@ -1134,6 +1031,8 @@ ALL TESTS PASSED</pre>
             <img
               src="assets/pinn-comparison.png"
               alt="PINN solution of the 1D heat equation compared with the analytical solution"
+              width="2520"
+              height="720"
               loading="lazy"
             />
             <div class="pcard-caption">PINN vs analytical solution, relative L2 error 1.6e-3</div>
@@ -1224,14 +1123,6 @@ ALL TESTS PASSED</pre>
       ).matches;
 
       // Scroll progress: JS fallback only where CSS scroll timelines are missing
-      if (!CSS.supports("animation-timeline: scroll()")) {
-        window.addEventListener("scroll", () => {
-          const scrolled =
-            window.scrollY / (document.body.scrollHeight - window.innerHeight);
-          document.getElementById("scroll-progress").style.width =
-            scrolled * 100 + "%";
-        });
-      }
 
       /* ===== Hero shader (hand-written WebGL, no libraries) ===== */
       (function () {
