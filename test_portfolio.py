@@ -54,17 +54,22 @@ def test_portfolio():
     assert "sdr" in content, "sdr project not found"
     assert "https://github.com/gcpino/sdr" in content, "sdr GitHub link not found"
 
-    # Check aes256 project is present
-    assert "aes256" in content, "aes256 project not found"
-    assert "https://github.com/gcpino/aes256" in content, "aes256 GitHub link not found"
+    # Check PINN project is present
+    assert "PINN" in content, "PINN project not found"
+    assert "https://github.com/gcpino/PINN" in content, "PINN GitHub link not found"
 
     # Check project categories are present
     assert ">Systems &amp; Memory<" in content, "Systems & Memory category not found"
     assert ">Signal Processing<" in content, "Signal Processing category not found"
     assert ">Machine Learning<" in content, "Machine Learning category not found"
-    assert ">Cryptography<" in content, "Cryptography category not found"
+    assert ">Physics<" in content, "Physics category not found"
     
-    # 6. Check LinkedIn handle is gcorpas
+    # 6. Check shader hero replaced matrix rain
+    assert 'id="shader-canvas"' in content, "Shader canvas missing"
+    assert "matrix-canvas" not in content, "Matrix rain canvas still present"
+    assert "Matrix Rain" not in content, "Matrix rain JS still present"
+
+    # 7. Check LinkedIn handle is gcorpas
     assert 'linkedin.com/in/gcorpas' in content, "LinkedIn handle not updated to gcorpas"
 
     print("All portfolio tests PASSED successfully!")

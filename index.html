@@ -48,9 +48,9 @@
         --bg-card: #1e293b;
         --border: #334155;
         --border-hover: #475569;
-        --text: #f8fafc;
-        --text-secondary: #e2e8f0;
-        --text-muted: #cbd5e1;
+        --text: #f1f5f9;
+        --text-secondary: #cbd5e1;
+        --text-muted: #64748b;
         --accent: #3b82f6;
         --accent-soft: rgba(59, 130, 246, 0.12);
         --accent-glow: rgba(59, 130, 246, 0.25);
@@ -217,8 +217,19 @@
         z-index: 1;
       }
 
+      #shader-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+      }
+
       .hero-content {
         max-width: 800px;
+        position: relative;
+        z-index: 1;
       }
 
       .hero-label {
@@ -270,44 +281,6 @@
         font-size: 1.05rem;
         max-width: 520px;
         margin-bottom: 2rem;
-      }
-
-      .hero-now {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-left: 2px solid var(--accent);
-        padding: 0.55rem 0.9rem;
-        border-radius: 4px;
-        margin-bottom: 1.75rem;
-        max-width: 560px;
-      }
-
-      .hero-now em {
-        color: var(--text-secondary);
-        font-style: italic;
-      }
-
-      .hero-now-label {
-        color: var(--accent);
-        font-weight: 600;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        font-size: 0.7rem;
-      }
-
-      .hero-now-dot {
-        width: 6px;
-        height: 6px;
-        background: var(--green);
-        border-radius: 50%;
-        animation: pulse 2s ease-in-out infinite;
-        flex-shrink: 0;
       }
 
       .hero-actions {
@@ -391,11 +364,6 @@
         line-height: 1.75;
       }
 
-      .about-text strong {
-        color: var(--text);
-        font-weight: 500;
-      }
-
       .profile-code {
         display: inline-block;
         margin: 0 0 1.5rem;
@@ -414,107 +382,25 @@
       .profile-code .fn { color: var(--text); }
       .profile-code .cm { color: var(--text-muted); }
 
-      /* Skills */
-      .skills-list {
+      /* Projects */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+      }
+
+      .pcard {
         background: var(--bg-card);
         border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 1.25rem 1.5rem;
-        font-family: "JetBrains Mono", monospace;
-      }
-
-      .skill-item {
-        display: grid;
-        grid-template-columns: 16ch 1fr;
-        gap: 0.5rem 1rem;
-        align-items: center;
-        padding: 0.55rem 0;
-        border-bottom: 1px solid var(--border);
-        font-size: 0.82rem;
-      }
-
-      .skill-item:last-child {
-        border-bottom: none;
-      }
-
-      .skill-item:hover {
-        background: var(--bg-elevated);
-      }
-
-      .skill-item h4 {
-        font-weight: 600;
-        font-size: 0.82rem;
-        color: var(--text);
-        margin: 0;
-      }
-
-      .skill-bar {
-        height: 6px;
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: 3px;
-        position: relative;
+        border-radius: 10px;
         overflow: hidden;
-      }
-
-      .skill-bar-fill {
-        height: 100%;
-        background: var(--accent);
-        box-shadow: 0 0 8px var(--accent-glow);
-      }
-
-      .skill-note {
-        grid-column: 2;
-        color: var(--text-muted);
-        font-size: 0.75rem;
-        margin-top: -0.15rem;
-      }
-
-      /* Projects */
-      .projects-list {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-      }
-
-      .project-category {
-        font-size: 0.72rem;
-        font-weight: 600;
-        color: var(--accent);
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        margin-top: 1.75rem;
-        margin-bottom: 0.25rem;
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-      }
-
-      .project-category::before {
-        content: "//";
-        color: var(--text-muted);
-        font-weight: 400;
-      }
-
-      .project-category:first-child {
-        margin-top: 0;
-      }
-
-      .project-row {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 1.5rem;
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 1.5rem;
-        align-items: start;
         transition: all 0.25s ease;
         position: relative;
-        overflow: hidden;
       }
 
-      .project-row::before {
+      .pcard::before {
         content: "";
         position: absolute;
         top: 0;
@@ -529,9 +415,10 @@
         );
         opacity: 0;
         transition: opacity 0.3s;
+        z-index: 2;
       }
 
-      .project-row:hover {
+      .pcard:hover {
         border-color: var(--border-hover);
         transform: translateY(-2px);
         box-shadow:
@@ -539,63 +426,88 @@
           0 0 0 1px rgba(37, 99, 235, 0.08);
       }
 
-      .project-row:hover::before {
+      .pcard:hover::before {
         opacity: 1;
       }
 
-      .project-row h4 {
-        font-weight: 600;
-        font-size: 1rem;
-        margin-bottom: 0.35rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding-right: 3.5rem;
+      .pcard-visual {
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        position: relative;
       }
 
-      .project-row h4 a {
+      .pcard-visual img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .pcard-caption {
+        padding: 0.45rem 0.9rem;
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        border-top: 1px solid var(--border);
+      }
+
+      .pcard-body {
+        padding: 1.25rem 1.5rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+
+      .pcard-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.6rem;
+      }
+
+      .pcard-tag {
+        font-size: 0.68rem;
+        font-weight: 600;
+        color: var(--accent);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .pcard-lang {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        background: var(--bg);
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+      }
+
+      .pcard h4 {
+        font-weight: 600;
+        font-size: 1.05rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .pcard h4 a {
         color: var(--text);
         text-decoration: none;
       }
 
-      .project-row h4 a:hover {
+      .pcard h4 a:hover {
         color: var(--accent);
       }
 
-      .project-row p {
-        font-size: 0.88rem;
+      .pcard p {
+        font-size: 0.86rem;
         color: var(--text-secondary);
         line-height: 1.6;
-        margin-bottom: 0.75rem;
-      }
-
-      .project-features {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-        margin-bottom: 0.75rem;
-      }
-
-      .project-features li {
-        font-size: 0.82rem;
-        color: var(--text-muted);
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-      }
-
-      .project-features li::before {
-        content: "->";
-        font-family: "JetBrains Mono", monospace;
-        color: var(--accent);
-        font-size: 0.7rem;
+        margin-bottom: 0.9rem;
       }
 
       .project-stats {
         display: flex;
-        gap: 1rem;
-        margin-bottom: 0.75rem;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
       }
 
       .project-stat {
@@ -608,31 +520,107 @@
         border: 1px solid var(--border);
       }
 
-      .project-meta {
+      .card-link {
+        margin-top: auto;
+        align-self: flex-start;
+        font-size: 0.82rem;
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.2s;
+      }
+
+      .card-link:hover {
+        border-bottom-color: var(--accent);
+      }
+
+      /* Mini terminals inside project cards */
+      .mini-term {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+        line-height: 1.55;
+      }
+
+      .mini-term-bar {
+        display: flex;
+        gap: 6px;
+        padding: 0.5rem 0.75rem;
+        background: var(--bg-elevated);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .mini-term-bar span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border);
+      }
+
+      .mini-term-body {
+        padding: 0.75rem 0.9rem;
+        min-height: 12.5em;
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: var(--text-secondary);
+      }
+
+      .mini-term-body .cmd { color: var(--text); }
+      .mini-term-body .ok { color: var(--green); }
+      .mini-term-body .num { color: var(--accent); }
+      .mini-term-body .dim { color: var(--text-muted); }
+
+      .term-caret {
+        display: inline-block;
+        width: 7px;
+        height: 12px;
+        background: var(--accent);
+        vertical-align: -1px;
+        animation: blink 1s step-end infinite;
+      }
+
+      /* Benchmark bars (balloc) */
+      .bench {
+        padding: 0.75rem 0.9rem 0.9rem;
+        border-top: 1px solid var(--border);
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
-        align-self: end;
-        gap: 0.5rem;
+        gap: 0.45rem;
       }
 
-      .project-lang {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.7rem;
+      .bench-row {
+        display: grid;
+        grid-template-columns: 7ch 1fr 7ch;
+        gap: 0.6rem;
+        align-items: center;
+        font-size: 0.68rem;
         color: var(--text-muted);
-        background: var(--bg);
-        padding: 0.2rem 0.5rem;
-        border-radius: 4px;
-        border: 1px solid var(--border);
-        z-index: 1;
       }
 
-      .btn-sm {
-        padding: 0.55rem 1.1rem;
-        font-size: 0.82rem;
+      .bench-track {
+        position: relative;
+        height: 8px;
+        background: var(--bg-elevated);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .bench-fill {
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: var(--w);
+        background: var(--accent);
+        border-radius: 4px;
+        box-shadow: 0 0 8px var(--accent-glow);
+      }
+
+      .bench-fill.ref {
+        background: var(--border-hover);
+        box-shadow: none;
+      }
+
+      .bench-val {
+        text-align: right;
+        color: var(--text-secondary);
       }
 
       /* Contact */
@@ -676,11 +664,27 @@
         position: relative;
       }
 
+      .contact-email {
+        display: inline-block;
+        font-size: clamp(1.05rem, 3vw, 1.5rem);
+        font-weight: 600;
+        color: var(--text);
+        text-decoration: none;
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 0.15rem;
+        position: relative;
+        transition: color 0.2s;
+      }
+
+      .contact-email:hover {
+        color: var(--accent);
+      }
+
       .contact-links {
         display: flex;
         justify-content: center;
         gap: 0.75rem;
-        margin-top: 1.5rem;
+        margin-top: 1.75rem;
         position: relative;
       }
 
@@ -834,36 +838,6 @@
         color: var(--accent);
       }
 
-      /* Animations */
-      .fade-up {
-        opacity: 0;
-        transform: translateY(20px);
-        transition:
-          opacity 0.7s ease,
-          transform 0.7s ease;
-      }
-
-      .fade-up.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .stagger-1 {
-        transition-delay: 0.08s;
-      }
-      .stagger-2 {
-        transition-delay: 0.16s;
-      }
-      .stagger-3 {
-        transition-delay: 0.24s;
-      }
-      .stagger-4 {
-        transition-delay: 0.32s;
-      }
-      .stagger-5 {
-        transition-delay: 0.4s;
-      }
-
       /* Typing effect */
       .type-cursor {
         font-weight: 300;
@@ -886,7 +860,85 @@
         }
       }
 
+      /* Pure CSS scroll-driven animations, progressive enhancement only */
+      @media (prefers-reduced-motion: no-preference) {
+        @supports (animation-timeline: view()) {
+          .rv {
+            animation: rv-in linear both;
+            animation-timeline: view();
+            animation-range: entry 5% entry 45%;
+          }
+
+          @keyframes rv-in {
+            from {
+              opacity: 0;
+              transform: translateY(26px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          .hero-content {
+            animation: hero-out linear both;
+            animation-timeline: scroll();
+            animation-range: 0 55vh;
+          }
+
+          @keyframes hero-out {
+            from {
+              opacity: 1;
+              transform: translateY(0);
+            }
+            to {
+              opacity: 0;
+              transform: translateY(-36px);
+            }
+          }
+
+          #scroll-progress {
+            width: 100%;
+            transform-origin: 0 50%;
+            scale: 0 1;
+            transition: none;
+            animation: scroll-progress linear both;
+            animation-timeline: scroll(root);
+          }
+
+          @keyframes scroll-progress {
+            from {
+              scale: 0 1;
+            }
+            to {
+              scale: 1 1;
+            }
+          }
+
+          .bench-fill {
+            animation: bench-grow linear both;
+            animation-timeline: view();
+            animation-range: entry 20% entry 90%;
+          }
+
+          @keyframes bench-grow {
+            from {
+              width: 0;
+            }
+            to {
+              width: var(--w);
+            }
+          }
+        }
+      }
+
       /* Responsive */
+      @media (max-width: 900px) {
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
       @media (max-width: 768px) {
         .nav-links {
           display: none;
@@ -894,46 +946,26 @@
         .hero {
           padding-top: 6rem;
         }
-        .project-row {
-          grid-template-columns: 1fr;
+        .mini-term {
+          font-size: 0.66rem;
         }
-        .project-meta {
-          align-items: flex-start;
-        }
-        .project-tags {
-          justify-content: flex-start;
+        .contact-box {
+          padding: 2rem 1.25rem;
         }
       }
 
       @media (prefers-reduced-motion: reduce) {
         .hero-label::before,
         .type-cursor,
-        .terminal-cursor {
+        .terminal-cursor,
+        .term-caret {
           animation: none;
-        }
-        .fade-up {
-          opacity: 1;
-          transform: none;
-          transition: none;
         }
       }
     </style>
   </head>
   <body>
     <div id="scroll-progress"></div>
-    <canvas
-      id="matrix-canvas"
-      style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 0;
-        opacity: 0.025;
-      "
-    ></canvas>
 
     <nav>
       <a href="#" class="logo">Guillermo</a>
@@ -945,13 +977,13 @@
     </nav>
 
     <section class="hero">
+      <canvas id="shader-canvas" aria-hidden="true"></canvas>
       <div class="hero-content">
         <div class="hero-label">Engineer · B.Sc. Physics</div>
         <h1><span id="type-text"></span><span class="type-cursor">|</span></h1>
         <p>
-          Single-header C libraries with NIST-verified test vectors, and a
-          convolutional network trained on real physics data. No frameworks
-          in the hot path.
+          Systems programmer. C from scratch, verified by construction,
+          benchmarked to the metal.
         </p>
         <div class="hero-actions">
           <a href="#projects" class="btn btn-primary">View Projects</a>
@@ -961,135 +993,186 @@
     </section>
 
     <section id="about">
-      <div class="section-header fade-up">
+      <div class="section-header rv">
         <h2>About</h2>
-        <p>From a CNN trained on real physics data to C libraries with published test vectors.</p>
       </div>
-      <pre class="profile-code fade-up"><code><span class="cm">/* core profile */</span>
+      <pre class="profile-code rv"><code><span class="cm">/* core profile */</span>
 <span class="kw">struct</span> <span class="type">profile</span> {
   <span class="type">const char*</span> <span class="fn">training</span>; <span class="cm">/* CNN on real physics data */</span>
   <span class="type">const char*</span> <span class="fn">practice</span>; <span class="cm">/* C, verified, no deps */</span>
 };</code></pre>
-      <div class="about-text fade-up">
+      <div class="about-text rv">
         <p>
-          My bachelor's thesis was a convolutional network trained on real
-          physics data, not a benchmark, not a tutorial. The trained weights,
-          not the model itself, were the deliverable: they let us extract
-          physical insight about the system that generated the data. That
-          experience, building something in order to learn from it, not just
-          to ship it, shapes how I work today.
-        </p>
-        <p>
-          These days I write C. Four single-header libraries cover FM
-          demodulation, bounded memory, neural network inference, and AES-256
-          with GCM. Each ships with a published test vector suite (FIPS 197,
-          NIST SP 800-38A, SP 800-38D) and a round-trip test. The hot path has
-          zero dependencies. The metal is the point.
+          Physics grad who ended up close to the metal. I build small,
+          dependency-free C systems and prove they work.
         </p>
       </div>
     </section>
 
     <section id="projects">
-      <div class="section-header fade-up">
+      <div class="section-header rv">
         <h2>Projects</h2>
-        <p>Built from scratch.</p>
+        <p>Built from scratch. Real output below, reproduced with make.</p>
       </div>
 
-      <div class="projects-list fade-up">
-        <h3 class="project-category">Systems &amp; Memory</h3>
-        <div class="project-row">
-          <span class="project-lang">C</span>
-          <div class="project-info">
+      <div class="projects-grid">
+        <article class="pcard rv">
+          <div class="pcard-visual">
+            <div class="mini-term" data-term="balloc">
+              <div class="mini-term-bar"><span></span><span></span><span></span></div>
+              <pre class="mini-term-body" id="term-balloc">$ make bench
+balloc benchmark (lower is better)
+small alloc/free (16 B, 200000 iters):
+  balloc heap                        7.22 ns/op
+  glibc malloc                      12.43 ns/op
+mixed sizes, random free order:
+  balloc heap                       34.09 ns/op
+  glibc malloc                      55.94 ns/op
+fixed-size object pool (64 B x 1024):
+  balloc pool                        3.46 ns/op
+  glibc malloc                       9.86 ns/op</pre>
+            </div>
+            <div class="bench" aria-hidden="true">
+              <div class="bench-row">
+                <span>heap 16 B</span>
+                <div class="bench-track"><div class="bench-fill" style="--w: 58%"></div></div>
+                <span class="bench-val">7.22 ns</span>
+              </div>
+              <div class="bench-row">
+                <span></span>
+                <div class="bench-track"><div class="bench-fill ref" style="--w: 100%"></div></div>
+                <span class="bench-val">12.43 ns</span>
+              </div>
+              <div class="bench-row">
+                <span>pool 64 B</span>
+                <div class="bench-track"><div class="bench-fill" style="--w: 35%"></div></div>
+                <span class="bench-val">3.46 ns</span>
+              </div>
+              <div class="bench-row">
+                <span></span>
+                <div class="bench-track"><div class="bench-fill ref" style="--w: 100%"></div></div>
+                <span class="bench-val">9.86 ns</span>
+              </div>
+            </div>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="pcard-tag">Systems &amp; Memory</span>
+              <span class="pcard-lang">C</span>
+            </div>
             <h4><a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener">balloc</a></h4>
             <p>
-              A small C library offering three pre-allocated memory strategies from a single header: arena (bump), pool (fixed-size), and heap (first-fit with coalescing). Bounded memory, predictable performance.
-            </p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
-              All buffers are reserved up front, so the hot path never calls the system allocator. Useful for embedded targets, real-time systems, and workloads where allocation latency matters. Benchmarked faster than glibc malloc on small allocations and pooled objects.
+              Arena, pool and heap allocators from a single header. All memory
+              is reserved up front, so the hot path never calls malloc.
             </p>
             <div class="project-stats">
               <span class="project-stat">C11</span>
               <span class="project-stat">Single header</span>
               <span class="project-stat">No deps</span>
             </div>
+            <a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener" class="card-link">View source ↗</a>
           </div>
-          <div class="project-meta">
-            <a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">View Source ↗</a>
-          </div>
-        </div>
+        </article>
 
-        <h3 class="project-category">Signal Processing</h3>
-        <div class="project-row">
-          <span class="project-lang">C</span>
-          <div class="project-info">
+        <article class="pcard rv">
+          <div class="pcard-visual">
+            <img
+              src="assets/sdr-waveform.png"
+              alt="Demodulated 1 kHz tone recovered from an FM signal"
+              loading="lazy"
+            />
+            <div class="pcard-caption">make demo: 1 kHz tone recovered from FM, 2.4 MS/s I/Q to 48 kHz PCM</div>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="pcard-tag">Signal Processing</span>
+              <span class="pcard-lang">C</span>
+            </div>
             <h4><a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">sdr</a></h4>
             <p>
-              A C library that demodulates FM broadcast from an int16 I/Q capture into a 16-bit PCM WAV. The full pipeline fits in ~600 lines: NCO, multi-stage decimation, atan2 discriminator, de-emphasis, and a WAV writer.
-            </p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
-              Ships a synthetic FM signal generator so the project is fully testable without RF hardware. The round-trip test synthesizes a 1 kHz tone, demodulates it, and verifies the recovered spectrum is essentially a pure tone.
+              FM broadcast demodulator in ~600 lines of C. I/Q samples in,
+              audio out, nothing but libm.
             </p>
             <div class="project-stats">
               <span class="project-stat">C11</span>
               <span class="project-stat">libm only</span>
               <span class="project-stat">Self-contained</span>
             </div>
+            <a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener" class="card-link">View source ↗</a>
           </div>
-          <div class="project-meta">
-            <a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">View Source ↗</a>
-          </div>
-        </div>
+        </article>
 
-        <h3 class="project-category">Machine Learning</h3>
-        <div class="project-row">
-          <span class="project-lang">C</span>
-          <div class="project-info">
+        <article class="pcard rv">
+          <div class="pcard-visual">
+            <div class="mini-term" data-term="cinfer">
+              <div class="mini-term-bar"><span></span><span></span><span></span></div>
+              <pre class="mini-term-body" id="term-cinfer">$ make test
+==> build/test_linear
+==> build/test_conv2d
+==> build/test_maxpool2d
+==> build/test_flatten
+==> build/test_relu
+==> build/test_sigmoid
+==> build/test_softmax
+==> build/test_end_to_end
+==> build/test_no_alloc_forward
+ALL TESTS PASSED</pre>
+            </div>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="pcard-tag">Machine Learning</span>
+              <span class="pcard-lang">C</span>
+            </div>
             <h4><a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">c-infer</a></h4>
             <p>
-              A minimal neural network inference engine written from scratch in C. Designed to bridge the gap between Python-based training environments (like PyTorch) and execution on hardware-constrained edge devices where predictable memory and performance are critical.
-            </p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
-              The engine executes pre-trained models with a strict, pre-allocated memory footprint. It implements essential linear algebra operations directly, ensuring tight control over the hardware without relying on external libraries.
+              Neural network inference in pure C11. Zero allocations in the
+              forward pass, verified layer by layer against PyTorch.
             </p>
             <div class="project-stats">
               <span class="project-stat">C11</span>
               <span class="project-stat">Zero-alloc forward</span>
-              <span class="project-stat">Linear / Conv2D / MaxPool</span>
+              <span class="project-stat">Conv2D</span>
             </div>
+            <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener" class="card-link">View source ↗</a>
           </div>
-          <div class="project-meta">
-            <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">View Source ↗</a>
-          </div>
-        </div>
+        </article>
 
-        <h3 class="project-category">Cryptography</h3>
-        <div class="project-row">
-          <span class="project-lang">C</span>
-          <div class="project-info">
-            <h4><a href="https://github.com/gcpino/aes256" target="_blank" rel="noopener">aes256</a></h4>
+        <article class="pcard rv">
+          <div class="pcard-visual">
+            <img
+              src="assets/pinn-comparison.png"
+              alt="PINN solution of the 1D heat equation compared with the analytical solution"
+              loading="lazy"
+            />
+            <div class="pcard-caption">PINN vs analytical solution, relative L2 error 1.6e-3</div>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="pcard-tag">Physics</span>
+              <span class="pcard-lang">Python</span>
+            </div>
+            <h4><a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener">PINN</a></h4>
             <p>
-              A single-header C11 implementation of AES-256 with the standard block modes (ECB, CBC, CTR) and an AES-256-GCM AEAD. No dependencies beyond libc. Verified against FIPS 197, NIST SP 800-38A, and SP 800-38D test vectors.
-            </p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
-              The cipher follows the FIPS 197 spec directly: SubBytes, ShiftRows, MixColumns, AddRoundKey. GCM uses a standard GHASH over GF(2^128) with a constant-time tag comparison in the open path. The whole library, including the block cipher, four modes, and tests, fits in roughly 400 lines of header.
+              Physics-informed neural network for the 1D heat equation.
+              Trained on the PDE residual alone, no solution data.
             </p>
             <div class="project-stats">
-              <span class="project-stat">C11</span>
-              <span class="project-stat">Single header</span>
-              <span class="project-stat">No deps</span>
+              <span class="project-stat">Python</span>
+              <span class="project-stat">PyTorch</span>
+              <span class="project-stat">rel. L2 1.6e-3</span>
             </div>
+            <a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener" class="card-link">View source ↗</a>
           </div>
-          <div class="project-meta">
-            <a href="https://github.com/gcpino/aes256" target="_blank" rel="noopener" class="btn btn-secondary btn-sm">View Source ↗</a>
-          </div>
-        </div>
+        </article>
       </div>
     </section>
 
     <section id="contact">
-      <div class="contact-box fade-up">
+      <div class="contact-box rv">
         <h3>Get in touch</h3>
-        <a href="mailto:guicorpasp@gmail.com" class="btn btn-primary"
+        <p>Open to interesting systems work.</p>
+        <a href="mailto:guicorpasp@gmail.com" class="contact-email"
           >guicorpasp@gmail.com</a
         >
         <div class="contact-links">
@@ -1145,32 +1228,267 @@
     </div>
 
     <script>
-      // Scroll progress
-      window.addEventListener("scroll", () => {
-        const scrolled =
-          window.scrollY / (document.body.scrollHeight - window.innerHeight);
-        document.getElementById("scroll-progress").style.width =
-          scrolled * 100 + "%";
-      });
-
-      // Fade up observer with stagger
-      const fadeElements = document.querySelectorAll(".fade-up");
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("visible");
-            }
-          });
-        },
-        { threshold: 0.08, rootMargin: "0px 0px -50px 0px" },
-      );
-
-      fadeElements.forEach((el) => observer.observe(el));
-
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
       ).matches;
+
+      // Scroll progress: JS fallback only where CSS scroll timelines are missing
+      if (!CSS.supports("animation-timeline: scroll()")) {
+        window.addEventListener("scroll", () => {
+          const scrolled =
+            window.scrollY / (document.body.scrollHeight - window.innerHeight);
+          document.getElementById("scroll-progress").style.width =
+            scrolled * 100 + "%";
+        });
+      }
+
+      /* ===== Hero shader (hand-written WebGL, no libraries) ===== */
+      (function () {
+        const canvas = document.getElementById("shader-canvas");
+        if (!canvas) return;
+        const gl = canvas.getContext("webgl", { antialias: true });
+        if (!gl) {
+          canvas.remove();
+          return;
+        }
+
+        const vsSource = `
+          attribute vec2 a_pos;
+          void main() {
+            gl_Position = vec4(a_pos, 0.0, 1.0);
+          }
+        `;
+
+        const fsSource = `
+          precision highp float;
+          uniform vec2 u_res;
+          uniform float u_t;
+
+          void main() {
+            vec2 uv = gl_FragCoord.xy / u_res.xy;
+            vec3 col = vec3(0.059, 0.090, 0.165);
+
+            for (int i = 0; i < 3; i++) {
+              float fi = float(i);
+              float center = 0.66 - fi * 0.17;
+              float drift = u_t * (0.25 + 0.09 * fi);
+              float y = center
+                + (0.09 + 0.025 * fi)
+                  * sin(uv.x * (5.0 + fi * 2.3) + drift + fi * 2.1
+                        + 0.9 * sin(uv.x * 2.2 - u_t * 0.3 + fi))
+                + 0.018 * sin(uv.x * 34.0 - u_t * 0.8 + fi * 1.7);
+              float d = uv.y - y;
+              float glow = 0.00006 / (d * d + 0.00006) * 0.55;
+              col += vec3(0.23, 0.51, 0.96) * glow * (1.0 - fi * 0.28);
+            }
+
+            float fadeX = smoothstep(0.0, 0.12, uv.x)
+                        * smoothstep(1.0, 0.88, uv.x);
+            float fadeY = smoothstep(0.0, 0.18, uv.y)
+                        * smoothstep(1.0, 0.82, uv.y);
+            col = mix(vec3(0.059, 0.090, 0.165), col, fadeX * fadeY);
+
+            gl_FragColor = vec4(col, 1.0);
+          }
+        `;
+
+        function compile(type, source) {
+          const s = gl.createShader(type);
+          gl.shaderSource(s, source);
+          gl.compileShader(s);
+          if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+            return null;
+          }
+          return s;
+        }
+
+        const vs = compile(gl.VERTEX_SHADER, vsSource);
+        const fs = compile(gl.FRAGMENT_SHADER, fsSource);
+        if (!vs || !fs) {
+          canvas.remove();
+          return;
+        }
+
+        const prog = gl.createProgram();
+        gl.attachShader(prog, vs);
+        gl.attachShader(prog, fs);
+        gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+          canvas.remove();
+          return;
+        }
+        gl.useProgram(prog);
+
+        const buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(
+          gl.ARRAY_BUFFER,
+          new Float32Array([-1, -1, 3, -1, -1, 3]),
+          gl.STATIC_DRAW,
+        );
+        const loc = gl.getAttribLocation(prog, "a_pos");
+        gl.enableVertexAttribArray(loc);
+        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+        const uRes = gl.getUniformLocation(prog, "u_res");
+        const uT = gl.getUniformLocation(prog, "u_t");
+
+        function resize() {
+          const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+          const w = Math.floor(canvas.clientWidth * dpr);
+          const h = Math.floor(canvas.clientHeight * dpr);
+          if (canvas.width !== w || canvas.height !== h) {
+            canvas.width = w;
+            canvas.height = h;
+            gl.viewport(0, 0, w, h);
+          }
+        }
+        resize();
+        window.addEventListener("resize", resize);
+
+        let visible = true;
+        new IntersectionObserver(
+          (entries) => {
+            visible = entries[0].isIntersecting;
+          },
+          { threshold: 0 },
+        ).observe(canvas);
+
+        function frame(t) {
+          if (visible && !document.hidden) {
+            resize();
+            gl.uniform2f(uRes, canvas.width, canvas.height);
+            gl.uniform1f(uT, t * 0.001);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
+          }
+          requestAnimationFrame(frame);
+        }
+
+        function drawStill() {
+          resize();
+          gl.uniform2f(uRes, canvas.width, canvas.height);
+          gl.uniform1f(uT, 12);
+          gl.drawArrays(gl.TRIANGLES, 0, 3);
+        }
+
+        if (prefersReducedMotion) {
+          requestAnimationFrame(drawStill);
+          window.addEventListener("resize", drawStill);
+        } else {
+          requestAnimationFrame(frame);
+        }
+      })();
+
+      /* ===== Typing Effect ===== */
+      const phrases = ["C from scratch, verified.", "Physics, in code."];
+      const typeEl = document.getElementById("type-text");
+      let phraseIdx = 0,
+        charIdx = 0,
+        deleting = false;
+
+      function typeLoop() {
+        const current = phrases[phraseIdx];
+        if (deleting) {
+          typeEl.innerHTML = current.substring(0, charIdx - 1);
+          charIdx--;
+        } else {
+          typeEl.innerHTML = current.substring(0, charIdx + 1);
+          charIdx++;
+        }
+
+        let speed = deleting ? 40 : 80;
+        if (!deleting && charIdx === current.length) {
+          speed = 1500;
+          deleting = true;
+        } else if (deleting && charIdx === 0) {
+          deleting = false;
+          phraseIdx = (phraseIdx + 1) % phrases.length;
+          speed = 400;
+        }
+        setTimeout(typeLoop, speed);
+      }
+      if (typeEl && !prefersReducedMotion) setTimeout(typeLoop, 600);
+      else if (typeEl) typeEl.textContent = phrases[0];
+
+      /* ===== Mini terminals in project cards ===== */
+      (function () {
+        const terms = document.querySelectorAll(".mini-term-body");
+        if (!terms.length) return;
+
+        if (prefersReducedMotion) return; // full output already in the markup
+
+        const spans = [];
+        terms.forEach((pre) => {
+          const lines = pre.textContent.replace(/\n$/, "").split("\n");
+          pre.textContent = "";
+          spans.push({ pre, lines, timer: null, running: false });
+        });
+
+        function run(term) {
+          if (term.running) return;
+          term.running = true;
+          const { pre, lines } = term;
+          let li = 0;
+
+          function typeLine() {
+            if (li >= lines.length) {
+              term.timer = setTimeout(() => {
+                pre.textContent = "";
+                li = 0;
+                typeLine();
+              }, 4200);
+              return;
+            }
+            const line = lines[li];
+            const isCmd = li === 0;
+            if (isCmd) {
+              // type the command character by character
+              let ci = 0;
+              const cmdSpan = document.createElement("span");
+              cmdSpan.className = "cmd";
+              pre.appendChild(cmdSpan);
+              const caret = document.createElement("span");
+              caret.className = "term-caret";
+              pre.appendChild(caret);
+              (function tick() {
+                cmdSpan.textContent = line.substring(0, ci + 1);
+                ci++;
+                if (ci < line.length) {
+                  term.timer = setTimeout(tick, 55);
+                } else {
+                  caret.remove();
+                  pre.appendChild(document.createTextNode("\n"));
+                  li++;
+                  term.timer = setTimeout(typeLine, 350);
+                }
+              })();
+            } else {
+              const span = document.createElement("span");
+              const isLast = li === lines.length - 1;
+              if (/PASSED/.test(line)) span.className = "ok";
+              else if (/ns\/op/.test(line)) span.className = "num";
+              else if (isCmd) span.className = "cmd";
+              span.textContent = line;
+              pre.appendChild(span);
+              pre.appendChild(document.createTextNode("\n"));
+              li++;
+              term.timer = setTimeout(typeLine, isLast ? 500 : 130);
+            }
+          }
+          typeLine();
+        }
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              const term = spans.find((t) => t.pre === entry.target);
+              if (entry.isIntersecting) run(term);
+            });
+          },
+          { threshold: 0.25 },
+        );
+        terms.forEach((pre) => io.observe(pre));
+      })();
 
       // Terminal Easter Egg
       const terminalOverlay = document.getElementById("terminal-overlay");
@@ -1199,11 +1517,11 @@
           stats: "C11 · Zero-alloc forward · Conv2D support",
           url: "https://github.com/gcpino/c-infer"
         },
-        aes256: {
-          desc: "AES-256 + GCM AEAD, single-header C11, FIPS 197 / SP 800-38A/D",
-          body: "The cipher follows the FIPS 197 spec directly: SubBytes, ShiftRows, MixColumns, AddRoundKey. GCM uses a standard GHASH over GF(2^128) with a constant-time tag comparison in the open path. The whole library, including the block cipher, four modes, and tests, fits in roughly 400 lines of header.",
-          stats: "C11 · Single header · 9 verified test vectors",
-          url: "https://github.com/gcpino/aes256"
+        pinn: {
+          desc: "physics-informed NN, 1D heat equation, PyTorch",
+          body: "Trained on the PDE residual plus initial and boundary conditions only, no solution data. Relative L2 error 1.6e-3 against the analytical solution on an 80x80 grid.",
+          stats: "Python · PyTorch · rel. L2 1.6e-3",
+          url: "https://github.com/gcpino/PINN"
         }
       };
 
@@ -1278,7 +1596,7 @@
             printLine("balloc/     arena/pool/heap memory");
             printLine("sdr/        FM demodulator");
             printLine("c-infer/    zero-alloc NN inference");
-            printLine("aes256/     AES-256 + GCM AEAD");
+            printLine("pinn/       physics-informed NN");
             break;
           case "cat":
             const name = args[1];
@@ -1299,7 +1617,7 @@
           case "whoami":
             printLine("Guillermo: Software Engineer");
             printLine("Training: CNN on real physics data (B.Sc. thesis)");
-            printLine("Practice: C, single-header, NIST-verified");
+            printLine("Practice: C, single-header, verified");
             break;
           case "skills":
             printLine("C           [██████████] Systems, Memory management");
@@ -1390,101 +1708,6 @@
         if (e.target === terminalOverlay) closeTerminal();
       });
 
-      /* ===== Typing Effect ===== */
-      const phrases = ["C from scratch, verified.", "Physics, in code."];
-      const typeEl = document.getElementById("type-text");
-      let phraseIdx = 0,
-        charIdx = 0,
-        deleting = false;
-
-      function typeLoop() {
-        const current = phrases[phraseIdx];
-        if (deleting) {
-          typeEl.innerHTML = current.substring(0, charIdx - 1);
-          charIdx--;
-        } else {
-          typeEl.innerHTML = current.substring(0, charIdx + 1);
-          charIdx++;
-        }
-
-        let speed = deleting ? 40 : 80;
-        if (!deleting && charIdx === current.length) {
-          speed = 1500;
-          deleting = true;
-        } else if (deleting && charIdx === 0) {
-          deleting = false;
-          phraseIdx = (phraseIdx + 1) % phrases.length;
-          speed = 400;
-        }
-        setTimeout(typeLoop, speed);
-      }
-      if (typeEl && !prefersReducedMotion) setTimeout(typeLoop, 600);
-      else if (typeEl) typeEl.textContent = phrases[0];
-
-      /* ===== Stats Counter ===== */
-      const counters = document.querySelectorAll(".counter");
-      const counterObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              const el = entry.target;
-              const target = parseInt(el.dataset.target);
-              const duration = 1200;
-              const start = performance.now();
-              function update(now) {
-                const progress = Math.min((now - start) / duration, 1);
-                const ease = 1 - Math.pow(1 - progress, 3);
-                el.textContent = Math.floor(ease * target);
-                if (progress < 1) requestAnimationFrame(update);
-              }
-              requestAnimationFrame(update);
-              counterObserver.unobserve(el);
-            }
-          });
-        },
-        { threshold: 0.5 },
-      );
-      counters.forEach((c) => counterObserver.observe(c));
-
-      /* ===== Matrix Rain ===== */
-      const matrixCanvas = document.getElementById("matrix-canvas");
-      if (matrixCanvas && !prefersReducedMotion) {
-        const ctx = matrixCanvas.getContext("2d");
-        let cols, drops, matrixRunning = true;
-        const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノ";
-
-        function resizeMatrix() {
-          matrixCanvas.width = window.innerWidth;
-          matrixCanvas.height = window.innerHeight;
-          cols = Math.floor(matrixCanvas.width / 16);
-          drops = new Array(cols).fill(1);
-        }
-        resizeMatrix();
-        window.addEventListener("resize", resizeMatrix);
-        document.addEventListener("visibilitychange", () => {
-          matrixRunning = !document.hidden;
-          if (matrixRunning) requestAnimationFrame(drawMatrix);
-        });
-
-        function drawMatrix() {
-          if (!matrixRunning) return;
-          ctx.fillStyle = "rgba(15, 23, 42, 0.08)";
-          ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-          ctx.fillStyle = "rgba(59, 130, 246, 0.25)";
-          ctx.font = "14px JetBrains Mono";
-          for (let i = 0; i < drops.length; i++) {
-            const char = chars[Math.floor(Math.random() * chars.length)];
-            ctx.fillText(char, i * 16, drops[i] * 16);
-            if (drops[i] * 16 > matrixCanvas.height && Math.random() > 0.975) {
-              drops[i] = 0;
-            }
-            drops[i]++;
-          }
-          requestAnimationFrame(drawMatrix);
-        }
-        drawMatrix();
-      }
-
       /* ===== Konami Code ===== */
       const konamiSequence = [
         "ArrowUp",
@@ -1567,4 +1790,3 @@
     </script>
   </body>
 </html>
-
