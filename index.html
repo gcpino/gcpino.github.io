@@ -911,11 +911,18 @@
 <span class="kw">struct</span> <span class="type">profile</span> {
   <span class="type">const char*</span> <span class="fn">training</span>; <span class="cm">/* CNN on real physics data */</span>
   <span class="type">const char*</span> <span class="fn">practice</span>; <span class="cm">/* C, verified, no deps */</span>
+  <span class="type">const char*</span> <span class="fn">focus</span>;    <span class="cm">/* allocators, SDR, inference */</span>
+  <span class="type">const char*</span> <span class="fn">method</span>;   <span class="cm">/* measure, test, repeat */</span>
 };</code></pre>
       <div class="about-text rv">
         <p>
           Physics grad who ended up close to the metal. I build small,
           dependency-free C systems and prove they work.
+        </p>
+        <p>
+          My projects range from memory allocators and SDR to neural networks
+          trained on real physics data. I care about explicit data flow,
+          predictable memory use, and measurements I can reproduce.
         </p>
       </div>
     </section>
