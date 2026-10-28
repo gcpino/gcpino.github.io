@@ -564,6 +564,9 @@
         color: var(--text-secondary);
       }
 
+      #term-balloc { min-height: 19em; }
+      #term-cinfer { min-height: 17em; }
+
       .mini-term-body .cmd { color: var(--text); }
       .mini-term-body .ok { color: var(--green); }
       .mini-term-body .num { color: var(--accent); }
@@ -838,13 +841,6 @@
         color: var(--accent);
       }
 
-      /* Typing effect */
-      .type-cursor {
-        font-weight: 300;
-        color: var(--accent);
-        animation: blink 1s step-end infinite;
-      }
-
       /* Konami code flash */
       .konami-flash {
         animation: konami-flash 0.3s ease 3;
@@ -872,11 +868,9 @@
           @keyframes rv-in {
             from {
               opacity: 0;
-              transform: translateY(26px);
             }
             to {
               opacity: 1;
-              transform: translateY(0);
             }
           }
 
@@ -889,11 +883,9 @@
           @keyframes hero-out {
             from {
               opacity: 1;
-              transform: translateY(0);
             }
             to {
               opacity: 0;
-              transform: translateY(-36px);
             }
           }
 
@@ -956,7 +948,6 @@
 
       @media (prefers-reduced-motion: reduce) {
         .hero-label::before,
-        .type-cursor,
         .terminal-cursor,
         .term-caret {
           animation: none;
@@ -980,7 +971,7 @@
       <canvas id="shader-canvas" aria-hidden="true"></canvas>
       <div class="hero-content">
         <div class="hero-label">Engineer · B.Sc. Physics</div>
-        <h1><span id="type-text"></span><span class="type-cursor">|</span></h1>
+        <h1>C from scratch, verified.</h1>
         <p>
           Systems programmer. C from scratch, verified by construction,
           benchmarked to the metal.
@@ -1378,37 +1369,6 @@ ALL TESTS PASSED</pre>
           requestAnimationFrame(frame);
         }
       })();
-
-      /* ===== Typing Effect ===== */
-      const phrases = ["C from scratch, verified.", "Physics, in code."];
-      const typeEl = document.getElementById("type-text");
-      let phraseIdx = 0,
-        charIdx = 0,
-        deleting = false;
-
-      function typeLoop() {
-        const current = phrases[phraseIdx];
-        if (deleting) {
-          typeEl.innerHTML = current.substring(0, charIdx - 1);
-          charIdx--;
-        } else {
-          typeEl.innerHTML = current.substring(0, charIdx + 1);
-          charIdx++;
-        }
-
-        let speed = deleting ? 40 : 80;
-        if (!deleting && charIdx === current.length) {
-          speed = 1500;
-          deleting = true;
-        } else if (deleting && charIdx === 0) {
-          deleting = false;
-          phraseIdx = (phraseIdx + 1) % phrases.length;
-          speed = 400;
-        }
-        setTimeout(typeLoop, speed);
-      }
-      if (typeEl && !prefersReducedMotion) setTimeout(typeLoop, 600);
-      else if (typeEl) typeEl.textContent = phrases[0];
 
       /* ===== Mini terminals in project cards ===== */
       (function () {
