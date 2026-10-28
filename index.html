@@ -50,10 +50,11 @@
         --border-hover: #475569;
         --text: #f1f5f9;
         --text-secondary: #cbd5e1;
-        --text-muted: #64748b;
+        --text-muted: #94a3b8;
         --accent: #3b82f6;
         --accent-soft: rgba(59, 130, 246, 0.12);
         --accent-glow: rgba(59, 130, 246, 0.25);
+        --accent-text: #60a5fa;
         --green: #10b981;
         --orange: #f59e0b;
         --red: #ef4444;
@@ -321,7 +322,9 @@
       }
 
       .profile-code {
-        display: inline-block;
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
         margin: 0 0 1.5rem;
         padding: 1rem 1.25rem;
         background: var(--bg-card);
@@ -427,7 +430,7 @@
       .pcard-tag {
         font-size: 0.68rem;
         font-weight: 600;
-        color: var(--accent);
+        color: var(--accent-text);
         letter-spacing: 0.12em;
         text-transform: uppercase;
       }
@@ -484,8 +487,11 @@
       .card-link {
         margin-top: auto;
         align-self: flex-start;
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
         font-size: 0.82rem;
-        color: var(--accent);
+        color: var(--accent-text);
         text-decoration: none;
         border-bottom: 1px solid transparent;
         transition: border-color 0.2s;
@@ -555,8 +561,9 @@
       }
 
       .bench-row {
+        white-space: nowrap;
         display: grid;
-        grid-template-columns: 7ch 1fr 7ch;
+        grid-template-columns: 9ch 1fr 8ch;
         gap: 0.6rem;
         align-items: center;
         font-size: 0.68rem;
@@ -645,7 +652,7 @@
       }
 
       .contact-email:hover {
-        color: var(--accent);
+        color: var(--accent-text);
       }
 
       .contact-links {
@@ -657,6 +664,9 @@
       }
 
       .contact-links a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
         padding: 0.5rem 1rem;
         border: 1px solid var(--border);
         border-radius: 6px;
@@ -688,6 +698,9 @@
         font-size: 0.7rem;
         color: var(--text-muted);
         opacity: 0.5;
+        display: inline-block;
+        padding: 0.75rem 1rem;
+        cursor: pointer;
       }
 
       /* Terminal Easter Egg */
@@ -769,7 +782,7 @@
       }
 
       .terminal-prompt {
-        color: var(--accent);
+        color: var(--accent-text);
       }
 
       .terminal-input-line {
@@ -803,7 +816,7 @@
         color: var(--red);
       }
       .terminal-output .info {
-        color: var(--accent);
+        color: var(--accent-text);
       }
 
       /* Konami code flash */
@@ -831,8 +844,20 @@
       }
 
       @media (max-width: 768px) {
+        nav {
+          padding: 0.9rem 4%;
+        }
         .nav-links {
-          display: none;
+          gap: 0.85rem;
+        }
+        .nav-links a {
+          font-size: 0.78rem;
+          display: inline-block;
+          padding: 0.9rem 0.2rem;
+          margin: -0.9rem 0;
+        }
+        .profile-code {
+          font-size: 0.72rem;
         }
         .hero {
           padding-top: 6rem;
@@ -1081,7 +1106,7 @@ ALL TESTS PASSED</pre>
 
     <footer>
       <p>Guillermo: Systems & Projects. Built from scratch.</p>
-      <p class="footer-hint">
+      <p class="footer-hint" id="terminal-hint" role="button" tabindex="0" title="Open terminal">
         Press
         <kbd
           style="
@@ -1558,6 +1583,25 @@ ALL TESTS PASSED</pre>
       terminalOverlay.addEventListener("click", (e) => {
         if (e.target === terminalOverlay) closeTerminal();
       });
+
+      // Footer hint opens the terminal too (touch devices have no `~` key)
+      const terminalHint = document.getElementById("terminal-hint");
+      if (terminalHint) {
+        const isTouch =
+          "ontouchstart" in window || navigator.maxTouchPoints > 0;
+        if (isTouch) terminalHint.textContent = "Tap for terminal";
+        terminalHint.addEventListener("click", () => {
+          if (terminalOpen) closeTerminal();
+          else openTerminal();
+        });
+        terminalHint.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            if (terminalOpen) closeTerminal();
+            else openTerminal();
+          }
+        });
+      }
 
       /* ===== Konami Code ===== */
       const konamiSequence = [
