@@ -51,13 +51,13 @@
         --text: #f1f5f9;
         --text-secondary: #cbd5e1;
         --text-muted: #94a3b8;
-        --accent: #3b82f6;
-        --accent-soft: rgba(59, 130, 246, 0.12);
-        --accent-glow: rgba(59, 130, 246, 0.25);
-        --accent-text: #60a5fa;
+        --accent: #649ad2;
+        --accent-soft: rgba(100, 154, 210, 0.12);
+        --accent-glow: rgba(100, 154, 210, 0.25);
+        --accent-text: #93bce8;
         --bg-nav: rgba(15, 23, 42, 0.8);
         --overlay-bg: rgba(15, 23, 42, 0.85);
-        --accent-faint: rgba(59, 130, 246, 0.08);
+        --accent-faint: rgba(100, 154, 210, 0.08);
         --rust: #f74c00;
         --rust-soft: rgba(244, 76, 0, 0.12);
         --rust-glow: rgba(244, 76, 0, 0.25);
@@ -271,13 +271,13 @@
 
       .btn-primary {
         background: var(--accent);
-        color: #fff;
-        box-shadow: 0 0 20px rgba(37, 99, 235, 0.15);
+        color: #0b1526;
+        box-shadow: 0 0 20px rgba(100, 154, 210, 0.15);
       }
 
       .btn-primary:hover {
-        background: #1d4ed8;
-        box-shadow: 0 0 30px rgba(37, 99, 235, 0.25);
+        background: #4a80bd;
+        box-shadow: 0 0 30px rgba(100, 154, 210, 0.25);
       }
 
       .btn-secondary {
@@ -388,7 +388,7 @@
         border-color: var(--border-hover);
         box-shadow:
           0 8px 32px rgba(0, 0, 0, 0.3),
-          0 0 0 1px rgba(37, 99, 235, 0.08);
+          0 0 0 1px rgba(100, 154, 210, 0.08);
       }
 
       .pcard:hover::before {
@@ -860,7 +860,7 @@
           background: var(--bg);
         }
         50% {
-          background: rgba(37, 99, 235, 0.15);
+          background: rgba(100, 154, 210, 0.15);
         }
       }
 
@@ -1342,7 +1342,7 @@ mpsc costs 8.8x what spsc does on this workload</pre>
         // Palette endpoints, normalized to 0..1
         const BASE_BLUE = [15 / 255, 23 / 255, 42 / 255];
         const BASE_RUST = [26 / 255, 16 / 255, 12 / 255];
-        const WAVE_BLUE = [59 / 255, 130 / 255, 246 / 255];
+        const WAVE_BLUE = [100 / 255, 154 / 255, 210 / 255];
         const WAVE_RUST = [244 / 255, 76 / 255, 0 / 255];
 
         function setPalette() {
@@ -1415,8 +1415,8 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           "--bg-card": [[30, 41, 59], [44, 29, 22]],
           "--border": [[51, 65, 85], [84, 58, 46]],
           "--border-hover": [[71, 85, 105], [106, 76, 60]],
-          "--accent": [[59, 130, 246], [244, 76, 0]],
-          "--accent-text": [[96, 165, 250], [255, 138, 102]],
+          "--accent": [[100, 154, 210], [244, 76, 0]],
+          "--accent-text": [[147, 188, 232], [255, 138, 102]],
         };
         const rootStyle = document.documentElement.style;
         const themeMeta = document.querySelector('meta[name="theme-color"]');
