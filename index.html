@@ -55,6 +55,10 @@
         --accent-soft: rgba(59, 130, 246, 0.12);
         --accent-glow: rgba(59, 130, 246, 0.25);
         --accent-text: #60a5fa;
+        --rust: #f74c00;
+        --rust-soft: rgba(244, 76, 0, 0.12);
+        --rust-glow: rgba(244, 76, 0, 0.25);
+        --rust-text: #ff8a66;
         --green: #10b981;
         --orange: #f59e0b;
         --red: #ef4444;
@@ -536,6 +540,7 @@
 
       #term-balloc { height: calc(1.55em * 12 + 1.5rem); }
       #term-cinfer { height: calc(1.55em * 11 + 1.5rem); }
+      #term-spsc { height: calc(1.55em * 7 + 1.5rem); }
 
       .mini-term-body .cmd { color: var(--text); }
       .mini-term-body .ok { color: var(--green); }
@@ -595,6 +600,28 @@
       .bench-val {
         text-align: right;
         color: var(--text-secondary);
+      }
+
+      /* Rust corner divider */
+      .rust-divider {
+        height: 1px;
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 4%;
+        background: none;
+      }
+
+      .rust-divider::before {
+        content: "";
+        display: block;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--accent),
+          transparent
+        );
+        opacity: 0.6;
       }
 
       /* Contact */
@@ -1090,6 +1117,60 @@ ALL TESTS PASSED</pre>
       </div>
     </section>
 
+    <div class="rust-divider" aria-hidden="true"></div>
+
+    <section id="rust">
+      <div class="section-header rv">
+        <h2>Rust corner</h2>
+        <p>Same metal, safer types. Real output below, reproduced with cargo.</p>
+      </div>
+
+      <div class="projects-grid">
+        <article class="pcard rv">
+          <div class="pcard-visual">
+            <div class="mini-term" data-term="spsc">
+              <div class="mini-term-bar"><span></span><span></span><span></span></div>
+              <pre class="mini-term-body" id="term-spsc">$ cargo run --release --example bench
+spsc benchmark (lower is better)
+5000000 items, capacity 1024, one producer, one consumer:
+spsc (try_push/try_pop)           2.01 ns/op    498.1 Mops/s
+mpsc::sync_channel (send/recv)    17.75 ns/op     56.3 Mops/s
+mpsc costs 8.8x what spsc does on this workload</pre>
+            </div>
+            <div class="bench" aria-hidden="true">
+              <div class="bench-row">
+                <span>spsc</span>
+                <div class="bench-track"><div class="bench-fill" style="--w: 11%"></div></div>
+                <span class="bench-val">2.01 ns</span>
+              </div>
+              <div class="bench-row">
+                <span>mpsc</span>
+                <div class="bench-track"><div class="bench-fill ref" style="--w: 100%"></div></div>
+                <span class="bench-val">17.75 ns</span>
+              </div>
+            </div>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="pcard-tag">Concurrency</span>
+              <span class="pcard-lang">Rust</span>
+            </div>
+            <h4><a href="https://github.com/gcpino/spsc" target="_blank" rel="noopener">spsc</a></h4>
+            <p>
+              Lock-free SPSC ring buffer. One writer per index, bounded
+              steps, all memory reserved up front.
+            </p>
+            <div class="project-stats">
+              <span class="project-stat">Lock-free</span>
+              <span class="project-stat">No deps</span>
+              <span class="project-stat">Zero-alloc hot path</span>
+            </div>
+            <a href="https://github.com/gcpino/spsc" target="_blank" rel="noopener" class="card-link">View source ↗</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section id="contact">
       <div class="contact-box rv">
         <h3>Get in touch</h3>
@@ -1291,6 +1372,56 @@ ALL TESTS PASSED</pre>
         } else {
           requestAnimationFrame(frame);
         }
+      })();
+
+      /* ===== Scroll-linked accent: blue <-> rust around the Rust corner ===== */
+      (function () {
+        const rustSection = document.getElementById("rust");
+        if (!rustSection) return;
+        const BLUE = [59, 130, 246];
+        const RUST = [244, 76, 0];
+        const BLUE_TEXT = [96, 165, 250];
+        const RUST_TEXT = [255, 138, 102];
+        const rootStyle = document.documentElement.style;
+
+        function mix(a, b, t) {
+          return a.map((v, i) => Math.round(v + (b[i] - v) * t));
+        }
+
+        let queued = false;
+        function updateAccent() {
+          queued = false;
+          const r = rustSection.getBoundingClientRect();
+          const center = r.top + r.height / 2;
+          const vh = window.innerHeight;
+          let t = 1 - Math.min(Math.abs(center - vh * 0.45) / (vh * 0.75), 1);
+          t = t * t * (3 - 2 * t); // smoothstep
+          const acc = mix(BLUE, RUST, t);
+          const txt = mix(BLUE_TEXT, RUST_TEXT, t);
+          rootStyle.setProperty("--accent", "rgb(" + acc.join(", ") + ")");
+          rootStyle.setProperty(
+            "--accent-soft",
+            "rgba(" + acc.join(", ") + ", 0.12)"
+          );
+          rootStyle.setProperty(
+            "--accent-glow",
+            "rgba(" + acc.join(", ") + ", 0.25)"
+          );
+          rootStyle.setProperty("--accent-text", "rgb(" + txt.join(", ") + ")");
+        }
+
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (!queued) {
+              queued = true;
+              requestAnimationFrame(updateAccent);
+            }
+          },
+          { passive: true }
+        );
+        window.addEventListener("resize", updateAccent);
+        updateAccent();
       })();
 
       /* ===== Mini terminals in project cards ===== */
