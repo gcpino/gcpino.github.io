@@ -407,6 +407,7 @@
         height: auto;
         aspect-ratio: 1200 / 450;
         object-fit: contain;
+        transition: opacity 0.15s linear;
       }
 
       .pcard-visual img[src*="pinn-comparison"] {
@@ -1316,12 +1317,10 @@ mpsc costs 8.8x what spsc does on this workload</pre>
             for (int i = 0; i < 3; i++) {
               float fi = float(i);
               float center = 0.66 - fi * 0.17;
-              float drift = u_t * (0.25 + 0.09 * fi);
+              float drift = u_t * (0.12 + 0.05 * fi);
               float y = center
-                + (0.09 + 0.025 * fi)
-                  * sin(uv.x * (5.0 + fi * 2.3) + drift + fi * 2.1
-                        + 0.9 * sin(uv.x * 2.2 - u_t * 0.3 + fi))
-                + 0.018 * sin(uv.x * 34.0 - u_t * 0.8 + fi * 1.7);
+                + (0.085 + 0.03 * fi)
+                  * sin(uv.x * (3.2 + fi * 0.8) + drift + fi * 2.1);
               float d = uv.y - y;
               float glow = 0.00006 / (d * d + 0.00006) * 0.55;
               col += u_wave * glow * (1.0 - fi * 0.28);
@@ -1443,6 +1442,29 @@ mpsc costs 8.8x what spsc does on this workload</pre>
         } else {
           requestAnimationFrame(frame);
         }
+      })();
+
+      /* ===== Project photo reveal: fade in as the card scrolls into view ===== */
+      (function () {
+        if (prefersReducedMotion) return;
+        if (!("IntersectionObserver" in window)) return;
+        const imgs = document.querySelectorAll(".pcard-visual img");
+        if (!imgs.length) return;
+        const steps = [];
+        for (let i = 0; i <= 20; i++) steps.push(i / 20);
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              const r = Math.min(entry.intersectionRatio / 0.6, 1);
+              entry.target.style.opacity = r.toFixed(3);
+            });
+          },
+          { threshold: steps },
+        );
+        imgs.forEach((img) => {
+          img.style.opacity = "0";
+          io.observe(img);
+        });
       })();
 
       /* ===== Scroll-linked accent: blue <-> rust around the Rust corner ===== */
