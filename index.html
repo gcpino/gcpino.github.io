@@ -1447,24 +1447,31 @@ mpsc costs 8.8x what spsc does on this workload</pre>
       /* ===== Project photo reveal: fade in as the card scrolls into view ===== */
       (function () {
         if (prefersReducedMotion) return;
-        if (!("IntersectionObserver" in window)) return;
-        const imgs = document.querySelectorAll(".pcard-visual img");
+        const imgs = Array.from(document.querySelectorAll(".pcard-visual img"));
         if (!imgs.length) return;
-        const steps = [];
-        for (let i = 0; i <= 20; i++) steps.push(i / 20);
-        const io = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              const r = Math.min(entry.intersectionRatio / 0.6, 1);
-              entry.target.style.opacity = r.toFixed(3);
-            });
-          },
-          { threshold: steps },
-        );
-        imgs.forEach((img) => {
-          img.style.opacity = "0";
-          io.observe(img);
-        });
+        let ticking = false;
+        function update() {
+          ticking = false;
+          const vh = window.innerHeight;
+          imgs.forEach((img) => {
+            const r = img.getBoundingClientRect();
+            if (r.height === 0) return;
+            const visible =
+              Math.min(Math.max(Math.min(r.bottom, vh) - Math.max(r.top, 0), 0) /
+                r.height,
+              1);
+            img.style.opacity = Math.min(visible / 0.6, 1).toFixed(3);
+          });
+        }
+        function onScroll() {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(update);
+          }
+        }
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll);
+        update();
       })();
 
       /* ===== Scroll-linked accent: blue <-> rust around the Rust corner ===== */
