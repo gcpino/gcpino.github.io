@@ -24,7 +24,7 @@ def test_portfolio():
     assert '--bg: #0f172a;' in content, "Background color variable not updated to Slate 900"
     assert '--bg-card: #1e293b;' in content, "Card background variable not updated"
     assert '--border: #334155;' in content, "Border variable not updated"
-    assert '--accent: #3b82f6;' in content, "Accent color not updated to blue-500"
+    assert '--accent: #649ad2;' in content, "Accent color not updated to site blue"
     assert "rgba(15, 23, 42" in content, "Navbar or Matrix canvas RGB clear color not updated to slate-900"
     
     # 5. Check projects removal

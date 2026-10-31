@@ -491,6 +491,13 @@
         border: 1px solid var(--border);
       }
 
+      .pcard-note {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin: -0.5rem 0 0.9rem;
+      }
+
       .card-link {
         margin-top: auto;
         align-self: flex-start;
@@ -1115,6 +1122,40 @@ ALL TESTS PASSED</pre>
               <span class="project-stat">rel. L2 1.6e-3</span>
             </div>
             <a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener" class="card-link">View source ↗</a>
+          </div>
+        </article>
+        <article class="pcard rv">
+          <div class="pcard-visual">
+            <img
+              src="assets/rf-guard-demo.png"
+              alt="Simulated 500-frame RF scenario: spectrogram, reconstruction residual, and MSE/CUSUM drift traces"
+              width="2240"
+              height="644"
+              loading="lazy"
+            />
+            <div class="pcard-caption">make demo: 500 simulated frames, nominal operation, thermal drift and amplifier nonlinearity</div>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-top">
+              <span class="pcard-tag">Machine Learning</span>
+              <span class="pcard-lang">C</span>
+            </div>
+            <h4><a href="https://github.com/gcpino/rf-guard" target="_blank" rel="noopener">rf-guard</a></h4>
+            <p>
+              RF spectrogram anomaly and drift detector in dependency-free C11,
+              trained and verified layer by layer against PyTorch. Zero heap
+              allocations in the hot path. Processes 4,160-sample blocks within
+              the acquisition interval on the test host. Synthetic-data
+              prototype; no hardware validation or demonstrated early-warning
+              advantage.
+            </p>
+            <div class="project-stats">
+              <span class="project-stat">C11</span>
+              <span class="project-stat">Zero-alloc hot path</span>
+              <span class="project-stat">92.9 KiB RAM budget*</span>
+            </div>
+            <p class="pcard-note">*Includes a compiler-based stack estimate.</p>
+            <a href="https://github.com/gcpino/rf-guard" target="_blank" rel="noopener" class="card-link">View source ↗</a>
           </div>
         </article>
       </div>
