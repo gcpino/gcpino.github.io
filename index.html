@@ -761,6 +761,7 @@
       }
 
       .terminal-window {
+        position: relative;
         width: min(720px, 92vw);
         height: min(460px, 70vh);
         background: var(--bg-card);
@@ -855,6 +856,26 @@
       }
       .terminal-output .info {
         color: var(--accent-text);
+      }
+
+      /* Real input that gives mobile soft keyboards a focus target.
+         Invisible and click-through; focus is set in JS on touch devices.
+         font-size >= 16px so iOS does not zoom on focus. */
+      #term-mobile-input {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2rem;
+        opacity: 0;
+        border: 0;
+        padding: 0;
+        font-size: 16px;
+        background: transparent;
+        color: transparent;
+        caret-color: transparent;
+        outline: none;
+        pointer-events: none;
       }
 
       /* Konami code flash */
@@ -1239,6 +1260,17 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           </div>
           <div class="terminal-line"></div>
         </div>
+        <input
+          id="term-mobile-input"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+          autocapitalize="none"
+          autocorrect="off"
+          spellcheck="false"
+          enterkeyhint="go"
+          aria-label="Terminal input"
+        />
       </div>
     </div>
 
@@ -1587,6 +1619,9 @@ mpsc costs 8.8x what spsc does on this workload</pre>
       let commandHistory = [];
       let historyIndex = -1;
       let currentInput = "";
+      const termInput = document.getElementById("term-mobile-input");
+      const isTouchDevice =
+        "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
       const projectData = {
         balloc: {
@@ -1620,11 +1655,16 @@ mpsc costs 8.8x what spsc does on this workload</pre>
         terminalOpen = true;
         renderPrompt();
         scrollTerminal();
+        if (isTouchDevice) {
+          termInput.value = currentInput;
+          termInput.focus({ preventScroll: true });
+        }
       }
 
       function closeTerminal() {
         terminalOverlay.classList.remove("active");
         terminalOpen = false;
+        termInput.blur();
       }
 
       function scrollTerminal() {
@@ -1736,6 +1776,7 @@ mpsc costs 8.8x what spsc does on this workload</pre>
             );
         }
         currentInput = "";
+        termInput.value = "";
         renderPrompt();
       }
 
@@ -1792,6 +1833,47 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           currentInput += e.key;
           renderPrompt();
         }
+      });
+
+      // Mobile input path: the soft keyboard types into a real input.
+      // Text (including backspace edits) arrives via "input"; Enter, Escape
+      // and history keys arrive via "keydown". stopPropagation keeps the
+      // document-level handler from double-processing these events.
+      termInput.addEventListener("input", () => {
+        currentInput = termInput.value;
+        renderPrompt();
+      });
+
+      termInput.addEventListener("keydown", (e) => {
+        e.stopPropagation();
+        if (e.key === "Enter") {
+          e.preventDefault();
+          executeCommand(termInput.value);
+        } else if (e.key === "Escape") {
+          closeTerminal();
+        } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+          e.preventDefault();
+          if (e.key === "ArrowUp") {
+            if (historyIndex > 0) {
+              historyIndex--;
+              currentInput = commandHistory[historyIndex] || "";
+            }
+          } else if (historyIndex < commandHistory.length - 1) {
+            historyIndex++;
+            currentInput = commandHistory[historyIndex];
+          } else {
+            historyIndex = commandHistory.length;
+            currentInput = "";
+          }
+          termInput.value = currentInput;
+          renderPrompt();
+        }
+      });
+
+      // Tapping the terminal re-opens the soft keyboard if it was dismissed
+      terminalBody.addEventListener("click", () => {
+        if (terminalOpen && isTouchDevice)
+          termInput.focus({ preventScroll: true });
       });
 
       terminalOverlay.addEventListener("click", (e) => {
