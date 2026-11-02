@@ -37,36 +37,24 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
 
     <style>
       :root {
         --bg: #0f172a;
-        --bg-elevated: #1e293b;
         --bg-card: #1e293b;
         --border: #334155;
-        --border-hover: #475569;
+        --border-subtle: rgba(51, 65, 85, 0.55);
         --text: #f1f5f9;
         --text-secondary: #cbd5e1;
         --text-muted: #94a3b8;
         --accent: #649ad2;
-        --accent-soft: rgba(100, 154, 210, 0.12);
-        --accent-glow: rgba(100, 154, 210, 0.25);
         --accent-text: #93bce8;
-        --bg-nav: rgba(15, 23, 42, 0.85);
-        --overlay-bg: rgba(15, 23, 42, 0.85);
-        --accent-faint: rgba(100, 154, 210, 0.08);
-        --rust: #f74c00;
-        --rust-soft: rgba(244, 76, 0, 0.12);
-        --rust-glow: rgba(244, 76, 0, 0.25);
-        --rust-text: #ff8a66;
         --green: #10b981;
         --orange: #f59e0b;
         --red: #ef4444;
-        --sidebar-w: 268px;
-        --nav-h: 60px;
       }
 
       * {
@@ -77,21 +65,15 @@
 
       html {
         scroll-behavior: smooth;
-        scroll-padding-top: calc(var(--nav-h) + 1.5rem);
       }
 
       body {
-        font-family:
-          "JetBrains Mono",
-          "Fira Code",
-          "Source Code Pro",
-          monospace;
+        font-family: "JetBrains Mono", monospace;
         background: var(--bg);
         color: var(--text);
         line-height: 1.65;
-        font-size: 15px;
+        font-size: 14.5px;
         -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
       }
 
       ::selection {
@@ -99,1178 +81,426 @@
         color: #fff;
       }
 
-      /* Subtle technical blueprint grid background */
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background-image:
-          linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-          linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0.018) 1px,
-            transparent 1px
-          );
-        background-size: 56px 56px;
-        pointer-events: none;
-        z-index: 0;
-        mask-image: linear-gradient(
-          to bottom,
-          transparent 0%,
-          black 12%,
-          black 88%,
-          transparent 100%
-        );
-        -webkit-mask-image: linear-gradient(
-          to bottom,
-          transparent 0%,
-          black 12%,
-          black 88%,
-          transparent 100%
-        );
+      a {
+        color: inherit;
+        text-decoration: none;
       }
 
-      /* Top Navigation Bar */
+      .page {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      /* Minimal Top Nav */
       nav {
-        position: fixed;
+        position: sticky;
         top: 0;
-        left: 0;
-        right: 0;
-        height: var(--nav-h);
-        z-index: 120;
-        padding: 0 1.75rem;
+        z-index: 50;
+        background: rgba(15, 23, 42, 0.88);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-subtle);
+      }
+
+      .nav-inner {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 1.1rem 1.5rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: var(--bg-nav);
-        backdrop-filter: blur(16px);
-        border-bottom: 1px solid var(--border);
-      }
-
-      .nav-left {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      .sidebar-toggle {
-        display: none;
-        align-items: center;
-        gap: 0.45rem;
-        background: var(--bg-elevated);
-        color: var(--text-secondary);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        padding: 0.35rem 0.65rem;
-        font-family: inherit;
-        font-size: 0.76rem;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .sidebar-toggle:hover {
-        color: var(--text);
-        border-color: var(--accent);
       }
 
       .logo {
-        font-weight: 700;
-        font-size: 1.05rem;
+        font-weight: 600;
+        font-size: 0.95rem;
         color: var(--text);
-        text-decoration: none;
         letter-spacing: -0.02em;
-        position: relative;
-      }
-
-      .logo::after {
-        content: "";
-        position: absolute;
-        bottom: -4px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: var(--accent);
-        transition: width 0.3s ease;
-      }
-
-      .logo:hover::after {
-        width: 100%;
-      }
-
-      .nav-status {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        font-size: 0.72rem;
-        color: var(--text-muted);
-        padding: 0.2rem 0.6rem;
-        border-radius: 999px;
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid var(--border);
-      }
-
-      .nav-status-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--green);
-        box-shadow: 0 0 8px var(--green);
       }
 
       .nav-links {
         display: flex;
         align-items: center;
-        gap: 1.6rem;
+        gap: 1.4rem;
         list-style: none;
-      }
-
-      .nav-links a {
-        color: var(--text-secondary);
-        text-decoration: none;
-        font-weight: 400;
-        font-size: 0.84rem;
-        transition: color 0.2s;
-        position: relative;
+        font-size: 0.82rem;
+        color: var(--text-muted);
       }
 
       .nav-links a:hover {
         color: var(--text);
       }
 
-      .nav-links a::after {
-        content: "";
-        position: absolute;
-        bottom: -4px;
-        left: 0;
-        width: 0;
-        height: 1.5px;
-        background: var(--accent);
-        transition: width 0.25s ease;
-      }
-
-      .nav-links a:hover::after {
-        width: 100%;
-      }
-
-      .nav-term-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        background: var(--bg-elevated);
-        color: var(--accent-text);
+      .term-trigger {
+        background: none;
         border: 1px solid var(--border);
-        border-radius: 6px;
-        padding: 0.32rem 0.65rem;
+        color: var(--text-muted);
         font-family: inherit;
         font-size: 0.75rem;
+        padding: 0.15rem 0.45rem;
+        border-radius: 4px;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: color 0.15s, border-color 0.15s;
       }
 
-      .nav-term-btn:hover {
+      .term-trigger:hover {
+        color: var(--text);
         border-color: var(--accent);
-        color: var(--text);
-        background: var(--accent-soft);
       }
 
-      .nav-term-btn kbd {
-        font-family: inherit;
-        font-size: 0.7rem;
-        padding: 0.05rem 0.3rem;
-        background: var(--bg);
-        border: 1px solid var(--border);
-        border-radius: 3px;
-        color: var(--text-secondary);
-      }
-
-      /* App Shell with Fixed Left Technical Index Sidebar */
-      .layout-shell {
-        display: flex;
-        padding-top: var(--nav-h);
-        min-height: 100vh;
-        position: relative;
-        z-index: 1;
-      }
-
-      .doc-sidebar {
-        position: fixed;
-        top: var(--nav-h);
-        left: 0;
-        bottom: 0;
-        width: var(--sidebar-w);
-        background: rgba(15, 23, 42, 0.75);
-        backdrop-filter: blur(12px);
-        border-right: 1px solid var(--border);
-        padding: 1.4rem 1.1rem;
-        overflow-y: auto;
-        z-index: 110;
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-      }
-
-      .sidebar-section-label {
-        font-size: 0.66rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: var(--text-muted);
-        padding: 0 0.5rem;
-        margin-bottom: 0.4rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .sidebar-nav-list,
-      .sidebar-proj-list {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 0.15rem;
-      }
-
-      .sidebar-link {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.5rem;
-        padding: 0.42rem 0.6rem;
-        border-radius: 6px;
-        color: var(--text-secondary);
-        text-decoration: none;
-        font-size: 0.78rem;
-        border-left: 2px solid transparent;
-        transition: all 0.18s ease;
-      }
-
-      .sidebar-link:hover {
-        color: var(--text);
-        background: rgba(255, 255, 255, 0.03);
-      }
-
-      .sidebar-link.active {
-        color: var(--text);
-        background: var(--accent-soft);
-        border-left-color: var(--accent);
-        font-weight: 500;
-      }
-
-      .sidebar-num {
-        color: var(--text-muted);
-        font-size: 0.7rem;
-        margin-right: 0.35rem;
-      }
-
-      .sidebar-link.active .sidebar-num {
-        color: var(--accent-text);
-      }
-
-      .sidebar-badge {
-        font-size: 0.64rem;
-        color: var(--text-muted);
-        background: var(--bg);
-        border: 1px solid var(--border);
-        padding: 0.08rem 0.38rem;
-        border-radius: 4px;
-        flex-shrink: 0;
-      }
-
-      .sidebar-group-title {
-        font-size: 0.68rem;
-        color: var(--accent-text);
-        padding: 0.55rem 0.6rem 0.2rem;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 0.35rem;
-      }
-
-      .sidebar-proj-link {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.34rem 0.6rem 0.34rem 1.15rem;
-        border-radius: 5px;
-        color: var(--text-muted);
-        text-decoration: none;
-        font-size: 0.75rem;
-        border-left: 2px solid transparent;
-        transition: all 0.16s ease;
-        position: relative;
-      }
-
-      .sidebar-proj-link::before {
-        content: "├─";
-        position: absolute;
-        left: 0.35rem;
-        color: var(--border-hover);
-        font-size: 0.68rem;
-      }
-
-      .sidebar-proj-list li:last-child .sidebar-proj-link::before {
-        content: "└─";
-      }
-
-      .sidebar-proj-link:hover {
-        color: var(--text);
-        background: rgba(255, 255, 255, 0.03);
-      }
-
-      .sidebar-proj-link.active {
-        color: var(--accent-text);
-        background: var(--accent-faint);
-        border-left-color: var(--accent);
-      }
-
-      .sidebar-footer {
-        margin-top: auto;
-        padding-top: 1rem;
-        border-top: 1px solid var(--border);
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .sidebar-meta {
-        font-size: 0.68rem;
-        color: var(--text-muted);
-        line-height: 1.5;
-        padding: 0 0.35rem;
-      }
-
-      .sidebar-backdrop {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(15, 23, 42, 0.65);
-        backdrop-filter: blur(4px);
-        z-index: 105;
-      }
-
-      .sidebar-backdrop.active {
-        display: block;
-      }
-
-      /* Main Content Area */
-      .main-content {
-        flex: 1;
-        margin-left: var(--sidebar-w);
-        min-width: 0;
-      }
-
-      /* Hero — Clean Systems Datasheet / Engineering Spec Layout (No Blurry Shader) */
+      /* Minimal Intro / Hero */
       .hero {
-        padding: 4.5rem 5% 3.5rem;
-        max-width: 1200px;
-        margin: 0 auto;
-        position: relative;
-        z-index: 1;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .hero-grid {
-        display: grid;
-        grid-template-columns: 1.15fr 0.95fr;
-        gap: 2.25rem;
-        align-items: center;
-      }
-
-      .hero-content {
-        position: relative;
-        z-index: 1;
-      }
-
-      .hero-kicker {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 0.14em;
-        color: var(--accent-text);
-        background: var(--accent-soft);
-        border: 1px solid rgba(100, 154, 210, 0.3);
-        padding: 0.26rem 0.7rem;
-        border-radius: 4px;
-        margin-bottom: 1.1rem;
+        padding: 4.5rem 0 3rem;
+        border-bottom: 1px solid var(--border-subtle);
       }
 
       .hero h1 {
-        font-size: clamp(2.1rem, 4.2vw, 3.25rem);
-        font-weight: 700;
-        line-height: 1.12;
+        font-size: 1.65rem;
+        font-weight: 600;
         letter-spacing: -0.03em;
-        margin-bottom: 1.1rem;
+        margin-bottom: 0.75rem;
+        color: var(--text);
       }
 
       .hero p {
         color: var(--text-secondary);
-        font-size: 0.96rem;
-        max-width: 54ch;
-        margin-bottom: 1.75rem;
-        line-height: 1.7;
+        font-size: 0.92rem;
+        max-width: 60ch;
+        margin-bottom: 1.35rem;
       }
 
-      .hero-actions {
+      .hero-links {
         display: flex;
-        gap: 0.75rem;
         flex-wrap: wrap;
-      }
-
-      /* Right-side Hardware/Systems Inspection Panel in Hero */
-      .sys-panel {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
-      }
-
-      .sys-panel-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.6rem 1rem;
-        background: var(--bg-elevated);
-        border-bottom: 1px solid var(--border);
-        font-size: 0.7rem;
+        gap: 1.25rem;
+        font-size: 0.82rem;
         color: var(--text-muted);
       }
 
-      .sys-panel-title {
-        color: var(--text-secondary);
-        font-weight: 600;
-        letter-spacing: 0.05em;
-      }
-
-      .sys-panel-tag {
-        color: var(--green);
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid rgba(16, 185, 129, 0.3);
-        padding: 0.08rem 0.45rem;
-        border-radius: 4px;
-        font-size: 0.65rem;
-      }
-
-      .sys-spec-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.75rem;
-      }
-
-      .sys-spec-table tr {
-        border-bottom: 1px solid rgba(51, 65, 85, 0.6);
-      }
-
-      .sys-spec-table tr:last-child {
-        border-bottom: none;
-      }
-
-      .sys-spec-table td {
-        padding: 0.62rem 1rem;
-      }
-
-      .sys-spec-key {
-        color: var(--text-muted);
-        white-space: nowrap;
-        width: 38%;
-      }
-
-      .sys-spec-val {
-        color: var(--text);
-        font-weight: 500;
-        text-align: right;
-      }
-
-      .sys-spec-val .accent {
+      .hero-links a {
         color: var(--accent-text);
+        transition: color 0.15s;
       }
 
-      .sys-spec-val .ok {
-        color: var(--green);
-      }
-
-      .sys-mem-bar {
-        padding: 0.75rem 1rem;
-        background: var(--bg);
-        border-top: 1px solid var(--border);
-      }
-
-      .sys-mem-label {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.66rem;
-        color: var(--text-muted);
-        margin-bottom: 0.4rem;
-      }
-
-      .sys-mem-segments {
-        display: grid;
-        grid-template-columns: 2fr 2fr 1.5fr 1fr;
-        gap: 3px;
-        height: 18px;
-      }
-
-      .sys-seg {
-        background: var(--accent-soft);
-        border: 1px solid var(--accent);
-        border-radius: 2px;
-        font-size: 0.6rem;
-        color: var(--accent-text);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-
-      .sys-seg.dim {
-        background: rgba(51, 65, 85, 0.35);
-        border-color: var(--border);
-        color: var(--text-muted);
-      }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.68rem 1.35rem;
-        border-radius: 6px;
-        font-weight: 500;
-        font-size: 0.86rem;
-        text-decoration: none;
-        transition: all 0.2s;
-        cursor: pointer;
-        border: none;
-        font-family: inherit;
-      }
-
-      .btn-primary {
-        background: var(--accent);
-        color: #0b1526;
-        box-shadow: 0 0 20px rgba(100, 154, 210, 0.15);
-      }
-
-      .btn-primary:hover {
-        background: #4a80bd;
-        box-shadow: 0 0 30px rgba(100, 154, 210, 0.25);
-      }
-
-      .btn-secondary {
-        background: transparent;
-        color: var(--text-secondary);
-        border: 1px solid var(--border);
-      }
-
-      .btn-secondary:hover {
-        border-color: var(--border-hover);
+      .hero-links a:hover {
         color: var(--text);
-        background: var(--bg-elevated);
       }
 
       /* Sections */
       section {
-        padding: 4.5rem 5%;
-        max-width: 1200px;
-        margin: 0 auto;
-        position: relative;
-        z-index: 1;
+        padding: 3rem 0;
+        border-bottom: 1px solid var(--border-subtle);
       }
 
-      .section-header {
-        margin-bottom: 2rem;
+      section:last-of-type {
+        border-bottom: none;
       }
 
-      .section-eyebrow {
-        font-size: 0.7rem;
-        color: var(--accent-text);
-        letter-spacing: 0.12em;
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+
+      h2 {
+        font-size: 0.82rem;
+        font-weight: 500;
         text-transform: uppercase;
-        margin-bottom: 0.3rem;
-        display: block;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
       }
 
-      .section-header h2 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        letter-spacing: -0.02em;
-      }
-
-      .section-header p {
-        color: var(--text-secondary);
-        margin-top: 0.35rem;
-        font-size: 0.92rem;
-      }
-
-      /* About Grid */
-      .about-grid {
-        display: grid;
-        grid-template-columns: 1.15fr 1fr;
-        gap: 1.5rem;
-        align-items: start;
-      }
-
-      .about-text p {
-        color: var(--text-secondary);
-        margin-bottom: 1rem;
-        line-height: 1.75;
-        font-size: 0.92rem;
-      }
-
-      .profile-code {
-        display: block;
-        max-width: 100%;
-        overflow-x: auto;
-        margin: 0;
-        padding: 1.1rem 1.25rem;
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        color: var(--text-secondary);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.77rem;
-        line-height: 1.78;
-      }
-
-      .profile-code .kw { color: var(--accent); }
-      .profile-code .type { color: var(--orange); }
-      .profile-code .fn { color: var(--text); }
-      .profile-code .cm { color: var(--text-muted); }
-
-      /* Filter Toolbar */
+      /* Minimal inline filter bar */
       .filter-bar {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 1.75rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border);
+        gap: 0.35rem;
       }
 
       .filter-btn {
-        background: var(--bg-card);
-        color: var(--text-secondary);
-        border: 1px solid var(--border);
-        padding: 0.38rem 0.8rem;
-        border-radius: 6px;
+        background: none;
+        border: none;
         font-family: inherit;
         font-size: 0.76rem;
+        color: var(--text-muted);
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
         cursor: pointer;
-        transition: all 0.18s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
+        transition: color 0.15s, background 0.15s;
       }
 
       .filter-btn:hover {
         color: var(--text);
-        border-color: var(--border-hover);
       }
 
       .filter-btn.active {
-        background: var(--accent-soft);
         color: var(--accent-text);
-        border-color: var(--accent);
+        background: rgba(100, 154, 210, 0.12);
       }
 
-      .filter-count {
-        font-size: 0.66rem;
-        color: var(--text-muted);
-        background: var(--bg);
-        padding: 0.05rem 0.35rem;
-        border-radius: 4px;
-      }
-
-      /* Projects Grid */
-      .projects-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1.35rem;
+      /* Minimal Project List */
+      .projects-list {
+        display: flex;
+        flex-direction: column;
       }
 
       .pcard {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        transition: border-color 0.25s ease, box-shadow 0.25s ease;
-        position: relative;
+        padding: 1.35rem 0;
+        border-top: 1px solid var(--border-subtle);
+      }
+
+      .pcard:first-child {
+        border-top: none;
+        padding-top: 0.25rem;
       }
 
       .pcard.hidden-card {
         display: none;
       }
 
-      .pcard.spotlight {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 2px var(--accent-glow), 0 12px 36px rgba(0, 0, 0, 0.45);
-      }
-
-      .pcard::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--accent),
-          transparent
-        );
-        opacity: 0;
-        transition: opacity 0.3s;
-        z-index: 2;
-      }
-
-      .pcard:hover {
-        border-color: var(--border-hover);
-        box-shadow:
-          0 8px 32px rgba(0, 0, 0, 0.3),
-          0 0 0 1px rgba(100, 154, 210, 0.08);
-      }
-
-      .pcard:hover::before {
-        opacity: 1;
-      }
-
-      .pcard-visual {
-        background: var(--bg);
-        border-bottom: 1px solid var(--border);
-        position: relative;
-      }
-
-      .pcard-visual img {
-        display: block;
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1200 / 450;
-        object-fit: contain;
-        transition: opacity 0.15s linear;
-      }
-
-      .pcard-visual img[src*="pinn-comparison"] {
-        aspect-ratio: 2520 / 720;
-      }
-
-      .pcard-caption {
-        padding: 0.45rem 0.9rem;
-        font-size: 0.72rem;
-        color: var(--text-muted);
-        border-top: 1px solid var(--border);
-      }
-
-      .pcard-body {
-        padding: 1.25rem 1.45rem 1.45rem;
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-      }
-
-      .pcard-top {
+      .pcard-row {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.6rem;
+        align-items: baseline;
+        gap: 1rem;
+        margin-bottom: 0.4rem;
       }
 
-      .pcard-tag {
-        font-size: 0.68rem;
-        font-weight: 600;
-        color: var(--accent-text);
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-      }
-
-      .pcard-lang {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.7rem;
-        color: var(--text-muted);
-        background: var(--bg);
-        padding: 0.2rem 0.5rem;
-        border-radius: 4px;
-        border: 1px solid var(--border);
+      .pcard-title-group {
+        display: flex;
+        align-items: baseline;
+        gap: 0.65rem;
+        flex-wrap: wrap;
       }
 
       .pcard h4 {
+        font-size: 0.98rem;
         font-weight: 600;
-        font-size: 1.05rem;
-        margin-bottom: 0.35rem;
-      }
-
-      .pcard h4 a {
         color: var(--text);
-        text-decoration: none;
       }
 
       .pcard h4 a:hover {
-        color: var(--accent);
+        color: var(--accent-text);
+      }
+
+      .pcard-tag {
+        font-size: 0.73rem;
+        color: var(--text-muted);
+      }
+
+      .pcard-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        flex-shrink: 0;
+      }
+
+      .out-toggle {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        font-family: inherit;
+        font-size: 0.7rem;
+        padding: 0.1rem 0.45rem;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: color 0.15s, border-color 0.15s;
+      }
+
+      .out-toggle:hover,
+      .out-toggle[aria-expanded="true"] {
+        color: var(--accent-text);
+        border-color: var(--accent);
       }
 
       .pcard p {
-        font-size: 0.85rem;
         color: var(--text-secondary);
-        line-height: 1.6;
-        margin-bottom: 0.9rem;
+        font-size: 0.86rem;
+        max-width: 64ch;
       }
 
-      .project-stats {
-        display: flex;
-        gap: 0.45rem;
-        flex-wrap: wrap;
-        margin-bottom: 0.95rem;
-      }
-
-      .project-stat {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.71rem;
-        color: var(--text-muted);
-        background: var(--bg);
-        padding: 0.2rem 0.5rem;
-        border-radius: 4px;
-        border: 1px solid var(--border);
-      }
-
-      .card-link {
-        margin-top: auto;
-        align-self: flex-start;
-        display: inline-flex;
-        align-items: center;
-        min-height: 40px;
-        font-size: 0.81rem;
-        color: var(--accent-text);
-        text-decoration: none;
-        border-bottom: 1px solid transparent;
-        transition: border-color 0.2s;
-      }
-
-      .card-link:hover {
-        border-bottom-color: var(--accent);
-      }
-
-      /* Mini terminals inside project cards */
-      .mini-term {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.71rem;
-        line-height: 1.55;
-      }
-
-      .mini-term-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.45rem 0.75rem;
-        background: var(--bg-elevated);
-        border-bottom: 1px solid var(--border);
-      }
-
-      .mini-term-dots {
-        display: flex;
-        gap: 6px;
-      }
-
-      .mini-term-dots span {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--border);
-      }
-
-      .mini-term-label {
-        font-size: 0.65rem;
-        color: var(--text-muted);
-      }
-
-      .mini-term-body {
-        margin: 0;
-        padding: 0.75rem 0.9rem;
-        height: calc(1.55em * 11 + 1.5rem);
-        box-sizing: border-box;
-        overflow: hidden;
-        white-space: pre;
+      .pcard-output {
+        display: none;
+        margin-top: 0.9rem;
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid var(--border-subtle);
+        border-radius: 6px;
+        padding: 0.85rem 1rem;
         overflow-x: auto;
-        color: var(--text-secondary);
       }
 
-      #term-balloc { height: calc(1.55em * 12 + 1.5rem); }
-      #term-cinfer { height: calc(1.55em * 11 + 1.5rem); }
-      #term-aes256 { height: calc(1.55em * 11 + 1.5rem); }
-      #term-sentinel { height: calc(1.55em * 10 + 1.5rem); }
-      #term-spsc { height: calc(1.55em * 7 + 1.5rem); }
-
-      .mini-term-body .cmd { color: var(--text); }
-      .mini-term-body .ok { color: var(--green); }
-      .mini-term-body .num { color: var(--accent); }
-      .mini-term-body .dim { color: var(--text-muted); }
-
-      .term-caret {
-        display: inline-block;
-        width: 7px;
-        height: 12px;
-        background: var(--accent);
-        vertical-align: -1px;
-        animation: blink 1s step-end infinite;
-      }
-
-      /* Benchmark bars */
-      .bench {
-        padding: 0.75rem 0.9rem 0.9rem;
-        border-top: 1px solid var(--border);
-        display: flex;
-        flex-direction: column;
-        gap: 0.45rem;
-      }
-
-      .bench-row {
-        white-space: nowrap;
-        display: grid;
-        grid-template-columns: 9ch 1fr 8ch;
-        gap: 0.6rem;
-        align-items: center;
-        font-size: 0.68rem;
-        color: var(--text-muted);
-      }
-
-      .bench-track {
-        position: relative;
-        height: 8px;
-        background: var(--bg-elevated);
-        border-radius: 4px;
-        overflow: hidden;
-      }
-
-      .bench-fill {
-        position: absolute;
-        inset: 0 auto 0 0;
-        width: var(--w);
-        background: var(--accent);
-        border-radius: 4px;
-        box-shadow: 0 0 8px var(--accent-glow);
-      }
-
-      .bench-fill.ref {
-        background: var(--border-hover);
-        box-shadow: none;
-      }
-
-      .bench-val {
-        text-align: right;
-        color: var(--text-secondary);
-      }
-
-      /* Rust corner divider */
-      .rust-divider {
-        height: 1px;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 5%;
-        background: none;
-      }
-
-      .rust-divider::before {
-        content: "";
+      .pcard-output.open {
         display: block;
-        height: 1px;
-        background: linear-gradient(
-          90deg,
-          transparent,
-          var(--accent),
-          transparent
-        );
-        opacity: 0.6;
       }
 
-      /* Contact */
-      .contact-box {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 3rem;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .contact-box::before {
-        content: "";
-        position: absolute;
-        top: -50%;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(
-          circle,
-          var(--accent-faint),
-          transparent 70%
-        );
-        pointer-events: none;
-      }
-
-      .contact-box h3 {
-        font-size: 1.3rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        position: relative;
-      }
-
-      .contact-box p {
+      .pcard-output pre {
+        font-family: inherit;
+        font-size: 0.75rem;
+        line-height: 1.55;
         color: var(--text-secondary);
-        margin-bottom: 1.5rem;
-        font-size: 0.95rem;
-        position: relative;
+      }
+
+      .pcard-output img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+      }
+
+      .pcard-caption {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        margin-top: 0.45rem;
+      }
+
+      /* About */
+      .about-body p {
+        color: var(--text-secondary);
+        font-size: 0.88rem;
+        margin-bottom: 0.9rem;
+        max-width: 64ch;
+      }
+
+      .about-body p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* Contact & Footer */
+      .contact-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 0.86rem;
       }
 
       .contact-email {
-        display: inline-block;
-        font-size: clamp(1.05rem, 3vw, 1.5rem);
-        font-weight: 600;
-        color: var(--text);
-        text-decoration: none;
-        border-bottom: 2px solid var(--accent);
-        padding-bottom: 0.15rem;
-        position: relative;
-        transition: color 0.2s;
+        color: var(--accent-text);
       }
 
       .contact-email:hover {
-        color: var(--accent-text);
+        color: var(--text);
       }
 
       .contact-links {
         display: flex;
-        justify-content: center;
-        gap: 0.75rem;
-        margin-top: 1.75rem;
-        position: relative;
-      }
-
-      .contact-links a {
-        display: inline-flex;
-        align-items: center;
-        min-height: 44px;
-        padding: 0.5rem 1rem;
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        color: var(--text-secondary);
-        text-decoration: none;
-        font-size: 0.85rem;
-        transition: all 0.2s;
+        gap: 1.25rem;
+        color: var(--text-muted);
+        font-size: 0.82rem;
       }
 
       .contact-links a:hover {
-        border-color: var(--border-hover);
         color: var(--text);
-        background: var(--bg-elevated);
       }
 
-      /* Footer */
       footer {
-        text-align: center;
-        padding: 3rem 5%;
-        border-top: 1px solid var(--border);
+        padding: 2rem 0 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.75rem;
         color: var(--text-muted);
-        font-size: 0.82rem;
-        position: relative;
-        z-index: 1;
       }
 
       .footer-hint {
-        margin-top: 0.5rem;
-        font-size: 0.7rem;
-        color: var(--text-muted);
-        opacity: 0.65;
-        display: inline-block;
-        padding: 0.75rem 1rem;
         cursor: pointer;
       }
 
-      /* Terminal Easter Egg */
+      .footer-hint:hover {
+        color: var(--text-secondary);
+      }
+
+      /* Terminal Modal (hidden until ~ pressed) */
       #terminal-overlay {
+        display: none;
         position: fixed;
         inset: 0;
-        background: var(--overlay-bg);
-        backdrop-filter: blur(8px);
-        z-index: 10000;
-        display: none;
-        align-items: center;
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(6px);
+        z-index: 200;
         justify-content: center;
-        opacity: 0;
-        transition: opacity 0.2s;
+        align-items: center;
+        padding: 1.5rem;
       }
 
       #terminal-overlay.active {
         display: flex;
-        opacity: 1;
       }
 
       .terminal-window {
-        position: relative;
-        width: min(720px, 92vw);
-        height: min(460px, 70vh);
+        width: 100%;
+        max-width: 640px;
+        height: 400px;
         background: var(--bg-card);
         border: 1px solid var(--border);
-        border-radius: 10px;
+        border-radius: 8px;
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
       }
 
       .terminal-header {
+        background: var(--bg);
+        padding: 0.6rem 0.9rem;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0.6rem 0.8rem;
-        background: var(--bg-elevated);
+        justify-content: space-between;
         border-bottom: 1px solid var(--border);
-      }
-
-      .terminal-btn {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-      }
-
-      .terminal-btn.red {
-        background: var(--red);
-      }
-      .terminal-btn.yellow {
-        background: var(--orange);
-      }
-      .terminal-btn.green {
-        background: var(--green);
-      }
-
-      .terminal-title {
-        margin-left: 0.5rem;
         font-size: 0.75rem;
         color: var(--text-muted);
-        font-family: "JetBrains Mono", monospace;
+      }
+
+      .terminal-close {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-family: inherit;
+        font-size: 0.75rem;
+        cursor: pointer;
+      }
+
+      .terminal-close:hover {
+        color: var(--text);
       }
 
       .terminal-body {
         flex: 1;
         padding: 1rem;
         overflow-y: auto;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.82rem;
-        line-height: 1.7;
-        color: var(--text-secondary);
+        font-size: 0.8rem;
+        line-height: 1.65;
       }
 
       .terminal-line {
-        margin-bottom: 0.15rem;
-        word-break: break-word;
+        margin-bottom: 0.2rem;
       }
 
       .terminal-prompt {
         color: var(--accent-text);
+      }
+
+      .terminal-output {
+        color: var(--text-secondary);
+        white-space: pre-wrap;
+      }
+
+      .terminal-output .ok {
+        color: var(--green);
+      }
+      .terminal-output .info {
+        color: var(--accent-text);
+      }
+      .terminal-output .warn {
+        color: var(--orange);
+      }
+      .terminal-output .err {
+        color: var(--red);
       }
 
       .terminal-input-line {
@@ -1279,10 +509,22 @@
         gap: 0.4rem;
       }
 
+      #term-mobile-input {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        border: 0;
+        padding: 0;
+        pointer-events: none;
+      }
+
       .terminal-cursor {
         display: inline-block;
         width: 7px;
-        height: 15px;
+        height: 14px;
         background: var(--accent);
         animation: blink 1s step-end infinite;
         vertical-align: middle;
@@ -1294,749 +536,293 @@
         }
       }
 
-      .terminal-output .ok {
-        color: var(--green);
-      }
-      .terminal-output .warn {
-        color: var(--orange);
-      }
-      .terminal-output .err {
-        color: var(--red);
-      }
-      .terminal-output .info {
-        color: var(--accent-text);
-      }
-
-      #term-mobile-input {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 2rem;
-        opacity: 0;
-        border: 0;
-        padding: 0;
-        font-size: 16px;
-        background: transparent;
-        color: transparent;
-        caret-color: transparent;
-        outline: none;
-        pointer-events: none;
-      }
-
-      /* Konami code flash */
-      .konami-flash {
-        animation: konami-flash 0.3s ease 3;
-      }
-
-      @keyframes konami-flash {
-        0%,
-        100% {
-          background: var(--bg);
-        }
-        50% {
-          background: rgba(100, 154, 210, 0.15);
-        }
-      }
-
-      /* Responsive */
-      @media (max-width: 1080px) {
-        .sidebar-toggle {
-          display: inline-flex;
-        }
-        .doc-sidebar {
-          transform: translateX(-100%);
-          transition: transform 0.25s ease;
-          background: rgba(15, 23, 42, 0.96);
-          width: 280px;
-        }
-        .doc-sidebar.open {
-          transform: translateX(0);
-        }
-        .main-content {
-          margin-left: 0;
-        }
-      }
-
-      @media (max-width: 900px) {
-        .projects-grid,
-        .about-grid,
-        .hero-grid {
-          grid-template-columns: 1fr;
-        }
-        .nav-status {
-          display: none;
-        }
-      }
-
-      @media (max-width: 768px) {
-        nav {
-          padding: 0 4%;
-        }
-        .nav-links {
-          gap: 0.85rem;
-        }
-        .nav-links a {
-          font-size: 0.78rem;
-          display: inline-block;
-          padding: 0.9rem 0.2rem;
-          margin: -0.9rem 0;
-        }
-        .profile-code {
-          font-size: 0.72rem;
-        }
+      @media (max-width: 600px) {
         .hero {
-          padding-top: 2.75rem;
+          padding: 3rem 0 2.25rem;
         }
-        .mini-term {
-          font-size: 0.66rem;
-        }
-        .contact-box {
-          padding: 2rem 1.25rem;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .terminal-cursor,
-        .term-caret {
-          animation: none;
+        .pcard-row {
+          flex-direction: column;
+          gap: 0.35rem;
         }
       }
     </style>
   </head>
   <body>
     <nav>
-      <div class="nav-left">
-        <button
-          class="sidebar-toggle"
-          id="sidebar-toggle"
-          type="button"
-          aria-label="Toggle technical index sidebar"
-          aria-expanded="false"
-        >
-          <span>☰</span> Index
-        </button>
+      <div class="nav-inner">
         <a href="#" class="logo">Guillermo</a>
-        <span class="nav-status" aria-hidden="true">
-          <span class="nav-status-dot"></span>
-          SYS // C11 · RUST · DSP
-        </span>
+        <ul class="nav-links">
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li>
+            <button
+              type="button"
+              class="term-trigger"
+              onclick="openTerminal()"
+              title="Open interactive terminal (~)"
+            >
+              ~
+            </button>
+          </li>
+        </ul>
       </div>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#rust">Rust</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li>
-          <button
-            type="button"
-            class="nav-term-btn"
-            onclick="openTerminal()"
-            title="Open interactive systems terminal"
-          >
-            Terminal <kbd>~</kbd>
-          </button>
-        </li>
-      </ul>
     </nav>
 
-    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <main class="page">
+      <section class="hero" id="hero">
+        <h1>Guillermo Corpas</h1>
+        <p>
+          Physicist and embedded systems engineer. I write deterministic C and
+          Rust close to the hardware—zero steady-state heap allocations, bounded
+          execution, and no external dependencies.
+        </p>
+        <div class="hero-links">
+          <a href="https://github.com/gcpino" target="_blank" rel="noopener">github.com/gcpino ↗</a>
+          <a href="https://linkedin.com/in/gcorpas" target="_blank" rel="noopener">linkedin.com/in/gcorpas ↗</a>
+          <a href="mailto:guicorpasp@gmail.com">guicorpasp@gmail.com</a>
+        </div>
+      </section>
 
-    <div class="layout-shell">
-      <!-- Fixed Left Engineering Index Sidebar -->
-      <aside class="doc-sidebar" id="doc-sidebar" aria-label="Technical Index">
-        <div>
-          <div class="sidebar-section-label">
-            <span>Sections</span>
-            <span>00–04</span>
+      <section id="projects">
+        <div class="section-head">
+          <h2>Projects</h2>
+          <div class="filter-bar" role="tablist" aria-label="Filter projects">
+            <button type="button" class="filter-btn active" data-filter="all">all</button>
+            <button type="button" class="filter-btn" data-filter="systems">systems &amp; memory</button>
+            <button type="button" class="filter-btn" data-filter="crypto">crypto &amp; mesh</button>
+            <button type="button" class="filter-btn" data-filter="dsp">dsp</button>
+            <button type="button" class="filter-btn" data-filter="ml">ml &amp; physics</button>
           </div>
-          <ul class="sidebar-nav-list">
-            <li>
-              <a href="#hero" class="sidebar-link active" data-sec="hero">
-                <span><span class="sidebar-num">00.</span>Overview</span>
-              </a>
-            </li>
-            <li>
-              <a href="#about" class="sidebar-link" data-sec="about">
-                <span><span class="sidebar-num">01.</span>Architecture</span>
-              </a>
-            </li>
-            <li>
-              <a href="#projects" class="sidebar-link" data-sec="projects">
-                <span><span class="sidebar-num">02.</span>C &amp; Systems</span>
-                <span class="sidebar-badge">6</span>
-              </a>
-            </li>
-            <li>
-              <a href="#rust" class="sidebar-link" data-sec="rust">
-                <span><span class="sidebar-num">03.</span>Rust Corner 🦀</span>
-                <span class="sidebar-badge">1</span>
-              </a>
-            </li>
-            <li>
-              <a href="#contact" class="sidebar-link" data-sec="contact">
-                <span><span class="sidebar-num">04.</span>Contact</span>
-              </a>
-            </li>
-          </ul>
         </div>
 
-        <div>
-          <div class="sidebar-section-label">
-            <span>Project Index</span>
-            <span>7 repos</span>
-          </div>
-
-          <div class="sidebar-group-title">Systems &amp; Memory</div>
-          <ul class="sidebar-proj-list">
-            <li>
-              <a href="#proj-balloc" class="sidebar-proj-link" data-proj="proj-balloc">
-                <span>balloc</span>
-                <span class="sidebar-badge">C11</span>
-              </a>
-            </li>
-          </ul>
-
-          <div class="sidebar-group-title">Crypto &amp; Networking</div>
-          <ul class="sidebar-proj-list">
-            <li>
-              <a href="#proj-aes256" class="sidebar-proj-link" data-proj="proj-aes256">
-                <span>aes256</span>
-                <span class="sidebar-badge">C11</span>
-              </a>
-            </li>
-            <li>
-              <a href="#proj-sentinelmesh" class="sidebar-proj-link" data-proj="proj-sentinelmesh">
-                <span>SentinelMesh</span>
-                <span class="sidebar-badge">C11</span>
-              </a>
-            </li>
-          </ul>
-
-          <div class="sidebar-group-title">Signal Processing</div>
-          <ul class="sidebar-proj-list">
-            <li>
-              <a href="#proj-sdr" class="sidebar-proj-link" data-proj="proj-sdr">
-                <span>sdr</span>
-                <span class="sidebar-badge">C11</span>
-              </a>
-            </li>
-          </ul>
-
-          <div class="sidebar-group-title">ML &amp; Physics</div>
-          <ul class="sidebar-proj-list">
-            <li>
-              <a href="#proj-cinfer" class="sidebar-proj-link" data-proj="proj-cinfer">
-                <span>c-infer</span>
-                <span class="sidebar-badge">C11</span>
-              </a>
-            </li>
-            <li>
-              <a href="#proj-pinn" class="sidebar-proj-link" data-proj="proj-pinn">
-                <span>PINN</span>
-                <span class="sidebar-badge">Py</span>
-              </a>
-            </li>
-          </ul>
-
-          <div class="sidebar-group-title">Concurrency (Rust)</div>
-          <ul class="sidebar-proj-list">
-            <li>
-              <a href="#proj-spsc" class="sidebar-proj-link" data-proj="proj-spsc">
-                <span>spsc</span>
-                <span class="sidebar-badge">Rs</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="sidebar-footer">
-          <div class="sidebar-meta">
-            All C/Rust modules built with zero steady-state heap allocations in hot paths.
-          </div>
-        </div>
-      </aside>
-
-      <!-- Main Page Content -->
-      <main class="main-content">
-        <section class="hero" id="hero">
-          <div class="hero-grid">
-            <div class="hero-content">
-              <div class="hero-kicker">Embedded Systems · Low-Level C/C++ · Rust</div>
-              <h1>Close to the metal.</h1>
-              <p>
-                Systems programmer and physicist. Deterministic C and Rust from
-                scratch—verified against standard vectors, bounded in memory, and
-                benchmarked end to end.
-              </p>
-              <div class="hero-actions">
-                <a href="#projects" class="btn btn-primary">Explore Projects</a>
-                <a href="#contact" class="btn btn-secondary">Contact</a>
+        <div class="projects-list">
+          <!-- 1. balloc -->
+          <article class="pcard" id="proj-balloc" data-category="systems">
+            <div class="pcard-row">
+              <div class="pcard-title-group">
+                <h4><a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener">balloc ↗</a></h4>
+                <span class="pcard-tag">Systems &amp; Memory</span>
+              </div>
+              <div class="pcard-meta">
+                <span>C11 · 3.46 ns/op</span>
+                <button type="button" class="out-toggle" aria-expanded="false">+ bench</button>
               </div>
             </div>
+            <p>
+              Single-header arena, pool, and heap allocators in C11. Pre-reserves
+              all memory up front so hot paths never invoke malloc.
+            </p>
+            <div class="pcard-output">
+              <pre>$ make bench
+small alloc/free (16 B, 200k iters):   balloc 7.22 ns/op   | glibc 12.43 ns/op
+mixed sizes, random free order:        balloc 34.09 ns/op  | glibc 55.94 ns/op
+fixed-size object pool (64 B x 1024):  balloc 3.46 ns/op   | glibc 9.86 ns/op</pre>
+            </div>
+          </article>
 
-            <!-- Right-side Systems Datasheet / Telemetry Card -->
-            <div class="sys-panel" aria-label="Systems Telemetry Summary">
-              <div class="sys-panel-header">
-                <span class="sys-panel-title">SYS_SPEC // DETERMINISTIC BASELINE</span>
-                <span class="sys-panel-tag">VERIFIED</span>
+          <!-- 2. aes256 -->
+          <article class="pcard" id="proj-aes256" data-category="crypto">
+            <div class="pcard-row">
+              <div class="pcard-title-group">
+                <h4><a href="https://github.com/gcpino/aes256" target="_blank" rel="noopener">aes256 ↗</a></h4>
+                <span class="pcard-tag">Cryptography</span>
               </div>
-              <table class="sys-spec-table">
-                <tbody>
-                  <tr>
-                    <td class="sys-spec-key">Hot-Path Allocation</td>
-                    <td class="sys-spec-val"><span class="ok">0 malloc / 0 free</span></td>
-                  </tr>
-                  <tr>
-                    <td class="sys-spec-key">Object Pool (balloc)</td>
-                    <td class="sys-spec-val"><span class="accent">3.46 ns/op</span> · O(1)</td>
-                  </tr>
-                  <tr>
-                    <td class="sys-spec-key">Lock-Free SPSC (Rust)</td>
-                    <td class="sys-spec-val"><span class="accent">498.1 Mops/s</span> · 2.01 ns</td>
-                  </tr>
-                  <tr>
-                    <td class="sys-spec-key">Crypto Verification</td>
-                    <td class="sys-spec-val">FIPS 197 · NIST SP 800-38A/D</td>
-                  </tr>
-                  <tr>
-                    <td class="sys-spec-key">Runtime Dependencies</td>
-                    <td class="sys-spec-val">libc / libm only (C11)</td>
-                  </tr>
-                </tbody>
-              </table>
-              <div class="sys-mem-bar" aria-hidden="true">
-                <div class="sys-mem-label">
-                  <span>STATIC ARENA LAYOUT</span>
-                  <span>64B CACHE-ALIGNED</span>
-                </div>
-                <div class="sys-mem-segments">
-                  <div class="sys-seg">.rodata / weights</div>
-                  <div class="sys-seg">arena / pool</div>
-                  <div class="sys-seg">ring [1024]</div>
-                  <div class="sys-seg dim">stack</div>
-                </div>
+              <div class="pcard-meta">
+                <span>C11 · FIPS 197</span>
+                <button type="button" class="out-toggle" aria-expanded="false">+ test</button>
               </div>
             </div>
-          </div>
-        </section>
-
-        <section id="about">
-          <div class="section-header rv">
-            <span class="section-eyebrow">01 // Architecture &amp; Engineering Profile</span>
-            <h2>About</h2>
-          </div>
-          <div class="about-grid">
-            <pre class="profile-code rv"><code><span class="cm">/* core profile */</span>
-<span class="kw">struct</span> <span class="type">profile</span> {
-  <span class="type">const char*</span> <span class="fn">training</span>; <span class="cm">/* CNN on real physics data */</span>
-  <span class="type">const char*</span> <span class="fn">practice</span>; <span class="cm">/* C, verified, no deps */</span>
-  <span class="type">const char*</span> <span class="fn">focus</span>;    <span class="cm">/* allocators, SDR, inference, crypto */</span>
-  <span class="type">const char*</span> <span class="fn">method</span>;   <span class="cm">/* measure, test, repeat */</span>
-};</code></pre>
-            <div class="about-text rv">
-              <p>
-                Physics graduate working close to the hardware. I design small,
-                dependency-free C and Rust systems for critical environments and
-                prove they work under strict memory and timing constraints.
-              </p>
-              <p>
-                My projects span deterministic memory allocators, cryptographic
-                primitives (AES-256-GCM, X25519, ChaCha20), mesh networking
-                daemons, SDR demodulators, and zero-allocation neural inference
-                engines.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section id="projects">
-          <div class="section-header rv">
-            <span class="section-eyebrow">02 // C11, Cryptography, DSP &amp; Physics</span>
-            <h2>Projects</h2>
-            <p>Built from scratch. Real output below, reproduced with make.</p>
-          </div>
-
-          <!-- Interactive Category Filter Bar -->
-          <div class="filter-bar" role="tablist" aria-label="Filter projects by domain">
-            <button type="button" class="filter-btn active" data-filter="all">
-              All <span class="filter-count">6</span>
-            </button>
-            <button type="button" class="filter-btn" data-filter="memory">
-              Systems &amp; Memory <span class="filter-count">1</span>
-            </button>
-            <button type="button" class="filter-btn" data-filter="crypto-net">
-              Crypto &amp; Networking <span class="filter-count">2</span>
-            </button>
-            <button type="button" class="filter-btn" data-filter="dsp">
-              Signal Processing <span class="filter-count">1</span>
-            </button>
-            <button type="button" class="filter-btn" data-filter="ml-physics">
-              ML &amp; Physics <span class="filter-count">2</span>
-            </button>
-          </div>
-
-          <div class="projects-grid">
-            <!-- 1. balloc -->
-            <article class="pcard rv" id="proj-balloc" data-category="memory">
-              <div class="pcard-visual">
-                <div class="mini-term" data-term="balloc">
-                  <div class="mini-term-bar">
-                    <div class="mini-term-dots"><span></span><span></span><span></span></div>
-                    <span class="mini-term-label">balloc // make bench</span>
-                  </div>
-                  <pre class="mini-term-body" id="term-balloc">$ make bench
-balloc benchmark (lower is better)
-small alloc/free (16 B, 200000 iters):
-  balloc heap                        7.22 ns/op
-  glibc malloc                      12.43 ns/op
-mixed sizes, random free order:
-  balloc heap                       34.09 ns/op
-  glibc malloc                      55.94 ns/op
-fixed-size object pool (64 B x 1024):
-  balloc pool                        3.46 ns/op
-  glibc malloc                       9.86 ns/op</pre>
-                </div>
-                <div class="bench" aria-hidden="true">
-                  <div class="bench-row">
-                    <span>heap 16 B</span>
-                    <div class="bench-track"><div class="bench-fill" style="--w: 58%"></div></div>
-                    <span class="bench-val">7.22 ns</span>
-                  </div>
-                  <div class="bench-row">
-                    <span></span>
-                    <div class="bench-track"><div class="bench-fill ref" style="--w: 100%"></div></div>
-                    <span class="bench-val">12.43 ns</span>
-                  </div>
-                  <div class="bench-row">
-                    <span>pool 64 B</span>
-                    <div class="bench-track"><div class="bench-fill" style="--w: 35%"></div></div>
-                    <span class="bench-val">3.46 ns</span>
-                  </div>
-                  <div class="bench-row">
-                    <span></span>
-                    <div class="bench-track"><div class="bench-fill ref" style="--w: 100%"></div></div>
-                    <span class="bench-val">9.86 ns</span>
-                  </div>
-                </div>
-              </div>
-              <div class="pcard-body">
-                <div class="pcard-top">
-                  <span class="pcard-tag">Systems &amp; Memory</span>
-                  <span class="pcard-lang">C</span>
-                </div>
-                <h4><a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener">balloc</a></h4>
-                <p>
-                  Arena, pool and heap allocators from a single header. All memory
-                  is reserved up front, so the hot path never calls malloc.
-                </p>
-                <div class="project-stats">
-                  <span class="project-stat">C11</span>
-                  <span class="project-stat">O(1) Pool: 3.46 ns</span>
-                  <span class="project-stat">No deps</span>
-                </div>
-                <a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener" class="card-link">View source ↗</a>
-              </div>
-            </article>
-
-            <!-- 2. aes256 -->
-            <article class="pcard rv" id="proj-aes256" data-category="crypto-net">
-              <div class="pcard-visual">
-                <div class="mini-term" data-term="aes256">
-                  <div class="mini-term-bar">
-                    <div class="mini-term-dots"><span></span><span></span><span></span></div>
-                    <span class="mini-term-label">aes256 // NIST KAT</span>
-                  </div>
-                  <pre class="mini-term-body" id="term-aes256">$ make test
-aes256 - FIPS 197 / SP 800-38A
-  fips197_kat_zero                             ok
-  sp800_38a_f1_5_full (4 blks ECB)             ok
-  cbc_roundtrip (80 B)                         ok
-  ctr_sp800_38a_f5                             ok
-aes256 - SP 800-38D (GCM AEAD)
-  gcm_tc1_empty                                ok
-  gcm_tc4_canonical (1 AAD + 4 PT)             ok
-  gcm_tamper_rejected                          ok
+            <p>
+              Single-header C11 implementation of AES-256 (ECB, CBC, CTR) and
+              AES-256-GCM authenticated encryption, verified against NIST SP 800-38A/D vectors.
+            </p>
+            <div class="pcard-output">
+              <pre>$ make test
+aes256 - FIPS 197 / SP 800-38A (ECB, CBC, CTR)   ok
+aes256 - SP 800-38D (GCM AEAD + tamper check)    ok
 ALL TESTS PASSED</pre>
-                </div>
-              </div>
-              <div class="pcard-body">
-                <div class="pcard-top">
-                  <span class="pcard-tag">Cryptography</span>
-                  <span class="pcard-lang">C</span>
-                </div>
-                <h4><a href="https://github.com/gcpino/aes256" target="_blank" rel="noopener">aes256</a></h4>
-                <p>
-                  Single-header C11 implementation of AES-256 (ECB, CBC, CTR) and
-                  AES-256-GCM authenticated encryption, verified against official
-                  FIPS 197 and NIST SP 800-38A/D test vectors.
-                </p>
-                <div class="project-stats">
-                  <span class="project-stat">C11</span>
-                  <span class="project-stat">Single header</span>
-                  <span class="project-stat">AES-256-GCM AEAD</span>
-                </div>
-                <a href="https://github.com/gcpino/aes256" target="_blank" rel="noopener" class="card-link">View source ↗</a>
-              </div>
-            </article>
+            </div>
+          </article>
 
-            <!-- 3. SentinelMesh -->
-            <article class="pcard rv" id="proj-sentinelmesh" data-category="crypto-net">
-              <div class="pcard-visual">
-                <div class="mini-term" data-term="sentinel">
-                  <div class="mini-term-bar">
-                    <div class="mini-term-dots"><span></span><span></span><span></span></div>
-                    <span class="mini-term-label">SentinelMesh // SWR suite</span>
-                  </div>
-                  <pre class="mini-term-body" id="term-sentinel">$ make test
-=== SentinelMesh-C Unit &amp; Integration Tests ===
+          <!-- 3. SentinelMesh -->
+          <article class="pcard" id="proj-sentinelmesh" data-category="crypto">
+            <div class="pcard-row">
+              <div class="pcard-title-group">
+                <h4><a href="https://github.com/gcpino/SentinelMesh" target="_blank" rel="noopener">SentinelMesh ↗</a></h4>
+                <span class="pcard-tag">Mesh Networking</span>
+              </div>
+              <div class="pcard-meta">
+                <span>C11 · 0 heap</span>
+                <button type="button" class="out-toggle" aria-expanded="false">+ test</button>
+              </div>
+            </div>
+            <p>
+              Assurance-oriented decentralized mesh networking daemon. Zero
+              steady-state heap allocations, POSIX poll() loop, DSDV routing, and X25519/ChaCha20 security.
+            </p>
+            <div class="pcard-output">
+              <pre>$ make test
 ==> Telemetry &amp; Logging (STD-COD-001: 0 heap)
-==> Event Multiplexer (POSIX poll)
-==> Transactional Config Rollback (SWR-041)
-==> Crypto (X25519 / ChaCha20 / HMAC-SHA256)
-==> DSDV Distance-Vector Routing (22 routes)
-==> Session Security Manager (SSM) Handshake
-==> UNIX Domain Socket IPC Management
+==> Event Multiplexer (POSIX poll) &amp; Transactional Rollback
+==> Crypto (X25519 / ChaCha20 / HMAC-SHA256) &amp; DSDV Routing
 All SentinelMesh-C tests passed successfully!</pre>
-                </div>
-              </div>
-              <div class="pcard-body">
-                <div class="pcard-top">
-                  <span class="pcard-tag">Mesh Networking</span>
-                  <span class="pcard-lang">C</span>
-                </div>
-                <h4><a href="https://github.com/gcpino/SentinelMesh" target="_blank" rel="noopener">SentinelMesh</a></h4>
-                <p>
-                  Assurance-oriented decentralized mesh networking daemon in C11.
-                  Zero steady-state heap allocations, POSIX poll() event loop,
-                  DSDV routing, and self-contained X25519/ChaCha20 session security.
-                </p>
-                <div class="project-stats">
-                  <span class="project-stat">C11</span>
-                  <span class="project-stat">Zero steady-state heap</span>
-                  <span class="project-stat">X25519 / DSDV</span>
-                </div>
-                <a href="https://github.com/gcpino/SentinelMesh" target="_blank" rel="noopener" class="card-link">View source ↗</a>
-              </div>
-            </article>
-
-            <!-- 4. sdr -->
-            <article class="pcard rv" id="proj-sdr" data-category="dsp">
-              <div class="pcard-visual">
-                <img
-                  src="assets/sdr-waveform.png"
-                  alt="Demodulated 1 kHz tone recovered from an FM signal"
-                  width="1200"
-                  height="450"
-                  loading="lazy"
-                />
-                <div class="pcard-caption">make demo: 1 kHz tone recovered from FM, 2.4 MS/s I/Q to 48 kHz PCM</div>
-              </div>
-              <div class="pcard-body">
-                <div class="pcard-top">
-                  <span class="pcard-tag">Signal Processing</span>
-                  <span class="pcard-lang">C</span>
-                </div>
-                <h4><a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">sdr</a></h4>
-                <p>
-                  FM broadcast demodulator in ~600 lines of C. I/Q samples in,
-                  audio out, nothing but libm.
-                </p>
-                <div class="project-stats">
-                  <span class="project-stat">C11</span>
-                  <span class="project-stat">libm only</span>
-                  <span class="project-stat">Self-contained</span>
-                </div>
-                <a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener" class="card-link">View source ↗</a>
-              </div>
-            </article>
-
-            <!-- 5. c-infer -->
-            <article class="pcard rv" id="proj-cinfer" data-category="ml-physics">
-              <div class="pcard-visual">
-                <div class="mini-term" data-term="cinfer">
-                  <div class="mini-term-bar">
-                    <div class="mini-term-dots"><span></span><span></span><span></span></div>
-                    <span class="mini-term-label">c-infer // parity tests</span>
-                  </div>
-                  <pre class="mini-term-body" id="term-cinfer">$ make test
-==> build/test_linear
-==> build/test_conv2d
-==> build/test_maxpool2d
-==> build/test_flatten
-==> build/test_relu
-==> build/test_sigmoid
-==> build/test_softmax
-==> build/test_end_to_end
-==> build/test_no_alloc_forward
-ALL TESTS PASSED</pre>
-                </div>
-              </div>
-              <div class="pcard-body">
-                <div class="pcard-top">
-                  <span class="pcard-tag">Machine Learning</span>
-                  <span class="pcard-lang">C</span>
-                </div>
-                <h4><a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">c-infer</a></h4>
-                <p>
-                  Neural network inference in pure C11. Zero allocations in the
-                  forward pass, verified layer by layer against PyTorch.
-                </p>
-                <div class="project-stats">
-                  <span class="project-stat">C11</span>
-                  <span class="project-stat">Zero-alloc forward</span>
-                  <span class="project-stat">Conv2D</span>
-                </div>
-                <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener" class="card-link">View source ↗</a>
-              </div>
-            </article>
-
-            <!-- 6. PINN -->
-            <article class="pcard rv" id="proj-pinn" data-category="ml-physics">
-              <div class="pcard-visual">
-                <img
-                  src="assets/pinn-comparison.png"
-                  alt="PINN solution of the 1D heat equation compared with the analytical solution"
-                  width="2520"
-                  height="720"
-                  loading="lazy"
-                />
-                <div class="pcard-caption">PINN vs analytical solution, relative L2 error 1.6e-3</div>
-              </div>
-              <div class="pcard-body">
-                <div class="pcard-top">
-                  <span class="pcard-tag">Physics</span>
-                  <span class="pcard-lang">Python</span>
-                </div>
-                <h4><a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener">PINN</a></h4>
-                <p>
-                  Physics-informed neural network for the 1D heat equation.
-                  Trained on the PDE residual alone, no solution data.
-                </p>
-                <div class="project-stats">
-                  <span class="project-stat">Python</span>
-                  <span class="project-stat">PyTorch</span>
-                  <span class="project-stat">rel. L2 1.6e-3</span>
-                </div>
-                <a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener" class="card-link">View source ↗</a>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <div class="rust-divider" aria-hidden="true"></div>
-
-        <section id="rust">
-          <div class="section-header rv">
-            <span class="section-eyebrow">03 // Lock-Free &amp; Type-Safe Systems</span>
-            <h2>Rust corner 🦀</h2>
-            <p>Same metal, safer types. Real output below, reproduced with cargo.</p>
-          </div>
-
-          <div class="projects-grid">
-            <article class="pcard rv" id="proj-spsc" data-category="rust">
-              <div class="pcard-visual">
-                <div class="mini-term" data-term="spsc">
-                  <div class="mini-term-bar">
-                    <div class="mini-term-dots"><span></span><span></span><span></span></div>
-                    <span class="mini-term-label">spsc // cargo bench</span>
-                  </div>
-                  <pre class="mini-term-body" id="term-spsc">$ cargo run --release --example bench
-spsc benchmark (lower is better)
-5000000 items, capacity 1024, one producer, one consumer:
-spsc (try_push/try_pop)           2.01 ns/op    498.1 Mops/s
-mpsc::sync_channel (send/recv)    17.75 ns/op     56.3 Mops/s
-mpsc costs 8.8x what spsc does on this workload</pre>
-                </div>
-                <div class="bench" aria-hidden="true">
-                  <div class="bench-row">
-                    <span>spsc</span>
-                    <div class="bench-track"><div class="bench-fill" style="--w: 11%"></div></div>
-                    <span class="bench-val">2.01 ns</span>
-                  </div>
-                  <div class="bench-row">
-                    <span>mpsc</span>
-                    <div class="bench-track"><div class="bench-fill ref" style="--w: 100%"></div></div>
-                    <span class="bench-val">17.75 ns</span>
-                  </div>
-                </div>
-              </div>
-              <div class="pcard-body">
-                <div class="pcard-top">
-                  <span class="pcard-tag">Concurrency</span>
-                  <span class="pcard-lang">Rust</span>
-                </div>
-                <h4><a href="https://github.com/gcpino/spsc" target="_blank" rel="noopener">spsc</a></h4>
-                <p>
-                  Lock-free SPSC ring buffer. One writer per index, bounded
-                  steps, 64-byte cache-line alignment, all memory reserved up front.
-                </p>
-                <div class="project-stats">
-                  <span class="project-stat">Lock-free</span>
-                  <span class="project-stat">498.1 Mops/s</span>
-                  <span class="project-stat">Zero-alloc hot path</span>
-                </div>
-                <a href="https://github.com/gcpino/spsc" target="_blank" rel="noopener" class="card-link">View source ↗</a>
-              </div>
-            </article>
-          </div>
-        </section>
-
-        <section id="contact">
-          <div class="contact-box rv">
-            <h3>Get in touch</h3>
-            <p>Open to interesting systems work.</p>
-            <a href="mailto:guicorpasp@gmail.com" class="contact-email"
-              >guicorpasp@gmail.com</a
-            >
-            <div class="contact-links">
-              <a href="https://github.com/gcpino" target="_blank" rel="noopener"
-                >GitHub</a
-              >
-              <a
-                href="https://linkedin.com/in/gcorpas"
-                target="_blank"
-                rel="noopener"
-                >LinkedIn</a
-              >
             </div>
-          </div>
-        </section>
+          </article>
 
-        <footer>
-          <p>Guillermo: Systems &amp; Projects. Built from scratch.</p>
-          <p class="footer-hint" id="terminal-hint" role="button" tabindex="0" title="Open terminal">
-            Press
-            <kbd
-              style="
-                font-family: &quot;JetBrains Mono&quot;, monospace;
-                font-size: 0.7rem;
-                background: var(--bg-card);
-                padding: 0.1rem 0.3rem;
-                border-radius: 3px;
-                border: 1px solid var(--border);
-              "
-              >~</kbd
-            >
-            for terminal
+          <!-- 4. spsc -->
+          <article class="pcard" id="proj-spsc" data-category="systems">
+            <div class="pcard-row">
+              <div class="pcard-title-group">
+                <h4><a href="https://github.com/gcpino/spsc" target="_blank" rel="noopener">spsc ↗</a></h4>
+                <span class="pcard-tag">Concurrency</span>
+              </div>
+              <div class="pcard-meta">
+                <span>Rust · 498.1 Mops/s</span>
+                <button type="button" class="out-toggle" aria-expanded="false">+ bench</button>
+              </div>
+            </div>
+            <p>
+              Lock-free single-producer single-consumer ring buffer in Rust with
+              64-byte cache-line alignment and acquire/release atomic ordering.
+            </p>
+            <div class="pcard-output">
+              <pre>$ cargo run --release --example bench
+spsc (try_push/try_pop)           2.01 ns/op    498.1 Mops/s
+mpsc::sync_channel (send/recv)    17.75 ns/op    56.3 Mops/s (8.8x faster)</pre>
+            </div>
+          </article>
+
+          <!-- 5. sdr -->
+          <article class="pcard" id="proj-sdr" data-category="dsp">
+            <div class="pcard-row">
+              <div class="pcard-title-group">
+                <h4><a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">sdr ↗</a></h4>
+                <span class="pcard-tag">Signal Processing</span>
+              </div>
+              <div class="pcard-meta">
+                <span>C11 · libm only</span>
+                <button type="button" class="out-toggle" aria-expanded="false">+ plot</button>
+              </div>
+            </div>
+            <p>
+              FM broadcast demodulator in ~600 lines of C11. Converts 2.4 MS/s
+              I/Q samples to 48 kHz PCM audio using only standard math primitives.
+            </p>
+            <div class="pcard-output">
+              <img
+                src="assets/sdr-waveform.png"
+                alt="Demodulated 1 kHz tone recovered from an FM signal"
+                width="1200"
+                height="450"
+                loading="lazy"
+              />
+              <div class="pcard-caption">1 kHz tone recovered from synthetic FM (2.4 MS/s I/Q to 48 kHz PCM)</div>
+            </div>
+          </article>
+
+          <!-- 6. c-infer -->
+          <article class="pcard" id="proj-cinfer" data-category="ml">
+            <div class="pcard-row">
+              <div class="pcard-title-group">
+                <h4><a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">c-infer ↗</a></h4>
+                <span class="pcard-tag">Machine Learning</span>
+              </div>
+              <div class="pcard-meta">
+                <span>C11 · 0-alloc forward</span>
+                <button type="button" class="out-toggle" aria-expanded="false">+ test</button>
+              </div>
+            </div>
+            <p>
+              Neural network inference engine in pure C11. Executes Conv2D,
+              Linear, and pooling layers with zero allocations in the forward pass, verified against PyTorch.
+            </p>
+            <div class="pcard-output">
+              <pre>$ make test
+==> test_linear / test_conv2d / test_maxpool2d / test_relu / test_softmax
+==> test_end_to_end &amp; test_no_alloc_forward
+ALL TESTS PASSED</pre>
+            </div>
+          </article>
+
+          <!-- 7. PINN -->
+          <article class="pcard" id="proj-pinn" data-category="ml">
+            <div class="pcard-row">
+              <div class="pcard-title-group">
+                <h4><a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener">PINN ↗</a></h4>
+                <span class="pcard-tag">Physics</span>
+              </div>
+              <div class="pcard-meta">
+                <span>Python · rel. L2 1.6e-3</span>
+                <button type="button" class="out-toggle" aria-expanded="false">+ plot</button>
+              </div>
+            </div>
+            <p>
+              Physics-informed neural network solving the 1D heat equation by
+              minimizing the PDE residual directly without ground-truth solution data.
+            </p>
+            <div class="pcard-output">
+              <img
+                src="assets/pinn-comparison.png"
+                alt="PINN solution of the 1D heat equation compared with the analytical solution"
+                width="2520"
+                height="720"
+                loading="lazy"
+              />
+              <div class="pcard-caption">PINN vs analytical solution (relative L2 error 1.6e-3)</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="section-head">
+          <h2>About</h2>
+        </div>
+        <div class="about-body">
+          <p>
+            Physics graduate focused on low-level software engineering. My
+            background combines numerical modeling and deep learning on physical
+            systems with bare-metal and embedded C/Rust development for
+            mission-critical environments.
           </p>
-        </footer>
-      </main>
-    </div>
+          <p>
+            Every project above is written from scratch with strict bounds on
+            memory and latency, minimal or zero external dependencies, and
+            reproducible verification suites.
+          </p>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="section-head">
+          <h2>Contact</h2>
+        </div>
+        <div class="contact-row">
+          <a href="mailto:guicorpasp@gmail.com" class="contact-email">guicorpasp@gmail.com</a>
+          <div class="contact-links">
+            <a href="https://github.com/gcpino" target="_blank" rel="noopener">GitHub ↗</a>
+            <a href="https://linkedin.com/in/gcorpas" target="_blank" rel="noopener">LinkedIn ↗</a>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <span>Guillermo Corpas</span>
+        <span class="footer-hint" id="terminal-hint" role="button" tabindex="0">Press ~ for terminal</span>
+      </footer>
+    </main>
 
     <!-- Terminal Easter Egg -->
     <div id="terminal-overlay">
       <div class="terminal-window">
         <div class="terminal-header">
-          <div class="terminal-btn red" onclick="closeTerminal()"></div>
-          <div class="terminal-btn yellow"></div>
-          <div class="terminal-btn green"></div>
-          <span class="terminal-title">guillermo@portfolio: bash</span>
+          <span>guillermo@portfolio: bash</span>
+          <button type="button" class="terminal-close" onclick="closeTerminal()">[esc]</button>
         </div>
         <div class="terminal-body" id="terminal-body">
           <div class="terminal-line">
-            Guillermo Systems Terminal. Type <span class="info">help</span> for
-            commands
+            Guillermo Systems Terminal. Type <span class="info">help</span> for commands
           </div>
           <div class="terminal-line"></div>
         </div>
@@ -2055,58 +841,10 @@ mpsc costs 8.8x what spsc does on this workload</pre>
     </div>
 
     <script>
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-
-      /* ===== Sidebar Drawer (Mobile/Tablet) & Scroll-Spy ===== */
+      /* Filter bar & inline output toggles */
       (function () {
-        const toggleBtn = document.getElementById("sidebar-toggle");
-        const sidebar = document.getElementById("doc-sidebar");
-        const backdrop = document.getElementById("sidebar-backdrop");
-
-        function closeSidebar() {
-          if (!sidebar) return;
-          sidebar.classList.remove("open");
-          if (backdrop) backdrop.classList.remove("active");
-          if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
-        }
-
-        if (toggleBtn && sidebar) {
-          toggleBtn.addEventListener("click", () => {
-            const isOpen = sidebar.classList.toggle("open");
-            if (backdrop) backdrop.classList.toggle("active", isOpen);
-            toggleBtn.setAttribute("aria-expanded", String(isOpen));
-          });
-        }
-        if (backdrop) {
-          backdrop.addEventListener("click", closeSidebar);
-        }
-
-        const projLinks = document.querySelectorAll(".sidebar-proj-link");
         const filterBtns = document.querySelectorAll(".filter-btn");
-        const cards = document.querySelectorAll("#projects .pcard");
-
-        projLinks.forEach((link) => {
-          link.addEventListener("click", () => {
-            closeSidebar();
-            const targetId = link.getAttribute("data-proj");
-            const targetCard = document.getElementById(targetId);
-            if (targetCard && targetCard.classList.contains("hidden-card")) {
-              filterBtns.forEach((b) => b.classList.toggle("active", b.dataset.filter === "all"));
-              cards.forEach((c) => c.classList.remove("hidden-card"));
-            }
-            if (targetCard) {
-              document.querySelectorAll(".pcard.spotlight").forEach((c) => c.classList.remove("spotlight"));
-              targetCard.classList.add("spotlight");
-              setTimeout(() => targetCard.classList.remove("spotlight"), 1800);
-            }
-          });
-        });
-
-        document.querySelectorAll(".sidebar-link").forEach((link) => {
-          link.addEventListener("click", closeSidebar);
-        });
+        const cards = document.querySelectorAll(".pcard");
 
         filterBtns.forEach((btn) => {
           btn.addEventListener("click", () => {
@@ -2119,207 +857,18 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           });
         });
 
-        const secIds = ["hero", "about", "projects", "rust", "contact"];
-        const secLinks = document.querySelectorAll(".sidebar-link");
-        const allCards = document.querySelectorAll(".pcard[id]");
-
-        function onScrollSpy() {
-          const y = window.innerHeight * 0.32;
-          let activeSec = "hero";
-          secIds.forEach((id) => {
-            const el = document.getElementById(id);
-            if (el && el.getBoundingClientRect().top <= y) {
-              activeSec = id;
-            }
+        document.querySelectorAll(".out-toggle").forEach((btn) => {
+          const baseLabel = btn.textContent.replace(/^[+-]\s*/, "");
+          btn.addEventListener("click", () => {
+            const out = btn.closest(".pcard").querySelector(".pcard-output");
+            const isOpen = out.classList.toggle("open");
+            btn.setAttribute("aria-expanded", String(isOpen));
+            btn.textContent = (isOpen ? "- " : "+ ") + baseLabel;
           });
-          secLinks.forEach((l) => {
-            l.classList.toggle("active", l.getAttribute("data-sec") === activeSec);
-          });
-
-          let activeProj = null;
-          allCards.forEach((card) => {
-            if (card.classList.contains("hidden-card")) return;
-            const r = card.getBoundingClientRect();
-            if (r.top <= window.innerHeight * 0.45 && r.bottom >= 120) {
-              activeProj = card.id;
-            }
-          });
-          projLinks.forEach((l) => {
-            l.classList.toggle("active", l.getAttribute("data-proj") === activeProj);
-          });
-        }
-
-        window.addEventListener("scroll", onScrollSpy, { passive: true });
-        onScrollSpy();
-      })();
-
-      /* ===== Project photo reveal ===== */
-      (function () {
-        if (prefersReducedMotion) return;
-        const imgs = Array.from(document.querySelectorAll(".pcard-visual img"));
-        if (!imgs.length) return;
-        let ticking = false;
-        function update() {
-          ticking = false;
-          const vh = window.innerHeight;
-          imgs.forEach((img) => {
-            const r = img.getBoundingClientRect();
-            if (r.height === 0) return;
-            const visible =
-              Math.min(Math.max(Math.min(r.bottom, vh) - Math.max(r.top, 0), 0) /
-                r.height,
-              1);
-            img.style.opacity = Math.min(visible / 0.6, 1).toFixed(3);
-          });
-        }
-        function onScroll() {
-          if (!ticking) {
-            ticking = true;
-            requestAnimationFrame(update);
-          }
-        }
-        window.addEventListener("scroll", onScroll, { passive: true });
-        window.addEventListener("resize", onScroll);
-        update();
-      })();
-
-      /* ===== Scroll-linked accent: blue <-> rust around the Rust corner ===== */
-      (function () {
-        const rustSection = document.getElementById("rust");
-        if (!rustSection) return;
-        const STOPS = {
-          "--bg": [[15, 23, 42], [26, 16, 12]],
-          "--bg-elevated": [[30, 41, 59], [44, 29, 22]],
-          "--bg-card": [[30, 41, 59], [44, 29, 22]],
-          "--border": [[51, 65, 85], [84, 58, 46]],
-          "--border-hover": [[71, 85, 105], [106, 76, 60]],
-          "--accent": [[100, 154, 210], [244, 76, 0]],
-          "--accent-text": [[147, 188, 232], [255, 138, 102]],
-        };
-        const rootStyle = document.documentElement.style;
-        const themeMeta = document.querySelector('meta[name="theme-color"]');
-
-        function mix(a, b, t) {
-          return a.map((v, i) => Math.round(v + (b[i] - v) * t));
-        }
-
-        let queued = false;
-        function updateAccent() {
-          queued = false;
-          const r = rustSection.getBoundingClientRect();
-          const center = r.top + r.height / 2;
-          const vh = window.innerHeight;
-          let t = 1 - Math.min(Math.abs(center - vh * 0.45) / (vh * 0.75), 1);
-          t = t * t * (3 - 2 * t);
-          for (const [name, [blue, rust]] of Object.entries(STOPS)) {
-            const c = mix(blue, rust, t);
-            rootStyle.setProperty(name, "rgb(" + c.join(", ") + ")");
-          }
-          const acc = mix(STOPS["--accent"][0], STOPS["--accent"][1], t);
-          const bg = mix(STOPS["--bg"][0], STOPS["--bg"][1], t);
-          rootStyle.setProperty("--accent-soft", "rgba(" + acc.join(", ") + ", 0.12)");
-          rootStyle.setProperty("--accent-glow", "rgba(" + acc.join(", ") + ", 0.25)");
-          rootStyle.setProperty("--accent-faint", "rgba(" + acc.join(", ") + ", 0.08)");
-          rootStyle.setProperty("--bg-nav", "rgba(" + bg.join(", ") + ", 0.85)");
-          rootStyle.setProperty("--overlay-bg", "rgba(" + bg.join(", ") + ", 0.85)");
-          if (themeMeta)
-            themeMeta.setAttribute("content", "rgb(" + bg.join(", ") + ")");
-        }
-
-        window.addEventListener(
-          "scroll",
-          () => {
-            if (!queued) {
-              queued = true;
-              requestAnimationFrame(updateAccent);
-            }
-          },
-          { passive: true }
-        );
-        window.addEventListener("resize", updateAccent);
-        updateAccent();
-      })();
-
-      /* ===== Mini terminals in project cards ===== */
-      (function () {
-        const terms = document.querySelectorAll(".mini-term-body");
-        if (!terms.length) return;
-
-        if (prefersReducedMotion) return;
-
-        const spans = [];
-        terms.forEach((pre) => {
-          const lines = pre.textContent.replace(/\n$/, "").split("\n");
-          pre.textContent = "";
-          spans.push({ pre, lines, timer: null, running: false });
         });
-
-        function run(term) {
-          if (term.running) return;
-          term.running = true;
-          const { pre, lines } = term;
-          let li = 0;
-
-          function typeLine() {
-            if (li >= lines.length) {
-              term.timer = setTimeout(() => {
-                pre.textContent = "";
-                li = 0;
-                typeLine();
-              }, 4200);
-              return;
-            }
-            const line = lines[li];
-            const isCmd = li === 0;
-            if (isCmd) {
-              let ci = 0;
-              const cmdSpan = document.createElement("span");
-              cmdSpan.className = "cmd";
-              pre.appendChild(cmdSpan);
-              const caret = document.createElement("span");
-              caret.className = "term-caret";
-              pre.appendChild(caret);
-              (function tick() {
-                cmdSpan.textContent = line.substring(0, ci + 1);
-                ci++;
-                if (ci < line.length) {
-                  term.timer = setTimeout(tick, 55);
-                } else {
-                  caret.remove();
-                  pre.appendChild(document.createTextNode("\n"));
-                  li++;
-                  term.timer = setTimeout(typeLine, 350);
-                }
-              })();
-            } else {
-              const span = document.createElement("span");
-              const isLast = li === lines.length - 1;
-              if (/PASSED|passed|\bok\b/.test(line)) span.className = "ok";
-              else if (/ns\/op/.test(line)) span.className = "num";
-              else if (isCmd) span.className = "cmd";
-              span.textContent = line;
-              pre.appendChild(span);
-              pre.appendChild(document.createTextNode("\n"));
-              li++;
-              term.timer = setTimeout(typeLine, isLast ? 500 : 130);
-            }
-          }
-          typeLine();
-        }
-
-        const io = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              const term = spans.find((t) => t.pre === entry.target);
-              if (entry.isIntersecting) run(term);
-            });
-          },
-          { threshold: 0.25 },
-        );
-        terms.forEach((pre) => io.observe(pre));
       })();
 
-      // Terminal Easter Egg
+      /* Terminal Easter Egg */
       const terminalOverlay = document.getElementById("terminal-overlay");
       const terminalBody = document.getElementById("terminal-body");
       let terminalOpen = false;
@@ -2333,46 +882,46 @@ mpsc costs 8.8x what spsc does on this workload</pre>
       const projectData = {
         balloc: {
           desc: "arena/pool/heap memory allocator, single-header C",
-          body: "All buffers are reserved up front, so the hot path never calls the system allocator. Useful for embedded targets, real-time systems, and workloads where allocation latency matters. Benchmarked faster than glibc malloc on small allocations and pooled objects.",
+          body: "All buffers are reserved up front, so the hot path never calls the system allocator. Benchmarked at 3.46 ns/op for fixed-size object pools.",
           stats: "C11 · Single header · No deps",
-          url: "https://github.com/gcpino/balloc"
+          url: "https://github.com/gcpino/balloc",
         },
         aes256: {
           desc: "single-header C11 AES-256 (ECB, CBC, CTR) and AES-256-GCM AEAD",
-          body: "Self-contained static-inline implementation verified against official FIPS 197 KATs, NIST SP 800-38A block modes, and NIST SP 800-38D GCM authenticated encryption vectors with tamper rejection.",
+          body: "Verified against official FIPS 197 KATs, NIST SP 800-38A block modes, and NIST SP 800-38D GCM authenticated encryption vectors.",
           stats: "C11 · Single header · FIPS 197 / NIST SP 800-38D",
-          url: "https://github.com/gcpino/aes256"
+          url: "https://github.com/gcpino/aes256",
         },
         sentinelmesh: {
           desc: "assurance-oriented C11 decentralized mesh networking daemon",
-          body: "Pre-allocates all neighbor tables, routing lists, session caches, and timers statically at startup (zero steady-state heap allocations). Features POSIX poll() multiplexing, DSDV distance-vector routing, and X25519/ChaCha20/HMAC-SHA256 session security.",
+          body: "Zero steady-state heap allocations, POSIX poll() multiplexing, DSDV distance-vector routing, and X25519/ChaCha20/HMAC-SHA256 session security.",
           stats: "C11 · Zero steady-state heap · X25519 / DSDV",
-          url: "https://github.com/gcpino/SentinelMesh"
+          url: "https://github.com/gcpino/SentinelMesh",
         },
         sdr: {
           desc: "FM demodulator (NCO, decimation, atan2), C11, libm only",
-          body: "Ships a synthetic FM signal generator so the project is fully testable without RF hardware. The round-trip test synthesizes a 1 kHz tone, demodulates it, and verifies the recovered spectrum is essentially a pure tone.",
+          body: "Synthesizes a 1 kHz FM tone, demodulates 2.4 MS/s I/Q to 48 kHz PCM audio, and verifies the recovered spectrum.",
           stats: "C11 · libm only · Self-contained",
-          url: "https://github.com/gcpino/sdr"
+          url: "https://github.com/gcpino/sdr",
         },
         "c-infer": {
           desc: "zero-alloc NN inference, C11, Linear/Conv2D/MaxPool",
-          body: "The engine executes pre-trained models with a strict, pre-allocated memory footprint. It implements essential linear algebra operations directly, ensuring tight control over the hardware without relying on external libraries.",
+          body: "Executes pre-trained models with a strict pre-allocated memory footprint and layer-by-layer parity checks against PyTorch.",
           stats: "C11 · Zero-alloc forward · Conv2D support",
-          url: "https://github.com/gcpino/c-infer"
+          url: "https://github.com/gcpino/c-infer",
         },
         pinn: {
           desc: "physics-informed NN, 1D heat equation, PyTorch",
-          body: "Trained on the PDE residual plus initial and boundary conditions only, no solution data. Relative L2 error 1.6e-3 against the analytical solution on an 80x80 grid.",
+          body: "Trained on the PDE residual plus initial and boundary conditions only. Relative L2 error 1.6e-3 against the analytical solution.",
           stats: "Python · PyTorch · rel. L2 1.6e-3",
-          url: "https://github.com/gcpino/PINN"
+          url: "https://github.com/gcpino/PINN",
         },
         spsc: {
           desc: "lock-free SPSC ring buffer in Rust (498.1 Mops/s, 2.01 ns/op)",
-          body: "One writer per index with acquire/release ordering, 64-byte cache-line alignment, and cached remote indices. Delivers 5M items 8.8x faster than std::sync::mpsc::sync_channel.",
+          body: "One writer per index with acquire/release ordering and 64-byte cache-line alignment. 8.8x faster than std::sync::mpsc::sync_channel.",
           stats: "Rust · Lock-free · Zero-alloc hot path",
-          url: "https://github.com/gcpino/spsc"
-        }
+          url: "https://github.com/gcpino/spsc",
+        },
       };
 
       function openTerminal() {
@@ -2399,8 +948,7 @@ mpsc costs 8.8x what spsc does on this workload</pre>
       function printLine(text, cls) {
         const div = document.createElement("div");
         div.className = "terminal-line terminal-output";
-        if (cls)
-          div.innerHTML = `<span class="${cls}">${escapeHtml(text)}</span>`;
+        if (cls) div.innerHTML = `<span class="${cls}">${escapeHtml(text)}</span>`;
         else div.innerHTML = text;
         terminalBody.appendChild(div);
       }
@@ -2429,7 +977,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
 
         commandHistory.push(cmd);
         historyIndex = commandHistory.length;
-
         printLine("$ " + cmd);
 
         const args = input.split(/\s+/);
@@ -2451,12 +998,12 @@ mpsc costs 8.8x what spsc does on this workload</pre>
             printLine("balloc/        arena/pool/heap memory");
             printLine("aes256/        single-header AES-256 & GCM");
             printLine("sentinelmesh/  zero-heap mesh daemon");
+            printLine("spsc/          lock-free Rust ring buffer");
             printLine("sdr/           FM demodulator");
             printLine("c-infer/       zero-alloc NN inference");
             printLine("pinn/          physics-informed NN");
-            printLine("spsc/          lock-free Rust ring buffer");
             break;
-          case "cat":
+          case "cat": {
             const name = (args[1] || "").replace(/\/$/, "");
             if (!name) {
               printLine("usage: cat <project_name>");
@@ -2472,16 +1019,17 @@ mpsc costs 8.8x what spsc does on this workload</pre>
               printLine(`cat: ${name}: No such file or directory`, "err");
             }
             break;
+          }
           case "whoami":
             printLine("Guillermo: Software Engineer");
             printLine("Training: CNN on real physics data (B.Sc. thesis)");
-            printLine("Practice: C, single-header, verified");
+            printLine("Practice: C & Rust, deterministic, verified");
             break;
           case "skills":
-            printLine("C / C11     [██████████] Bare-metal, RTOS, Memory, Crypto");
-            printLine("Rust        [█████████░] Lock-free concurrency, no_std");
-            printLine("Python      [██████████] PyTorch, PINNs, Verification");
-            printLine("Physics     [██████████] Signal processing, PDEs, DSP");
+            printLine("C / C11     Bare-metal, RTOS, Memory, Crypto");
+            printLine("Rust        Lock-free concurrency, no_std");
+            printLine("Python      PyTorch, PINNs, Verification");
+            printLine("Physics     Signal processing, PDEs, DSP");
             break;
           case "contact":
             printLine("email:    guicorpasp@gmail.com");
@@ -2495,8 +1043,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           case "quit":
             closeTerminal();
             return;
-          case "":
-            break;
           default:
             printLine(
               main + ": command not found. Type help for available commands.",
@@ -2515,25 +1061,20 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           else openTerminal();
           return;
         }
-
         if (!terminalOpen) return;
-
         if (e.key === "Escape") {
           closeTerminal();
           return;
         }
-
         if (e.key === "Enter") {
           executeCommand(currentInput);
           return;
         }
-
         if (e.key === "Backspace") {
           currentInput = currentInput.slice(0, -1);
           renderPrompt();
           return;
         }
-
         if (e.key === "ArrowUp") {
           e.preventDefault();
           if (historyIndex > 0) {
@@ -2543,7 +1084,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           }
           return;
         }
-
         if (e.key === "ArrowDown") {
           e.preventDefault();
           if (historyIndex < commandHistory.length - 1) {
@@ -2556,7 +1096,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           renderPrompt();
           return;
         }
-
         if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
           currentInput += e.key;
           renderPrompt();
@@ -2575,22 +1114,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           executeCommand(termInput.value);
         } else if (e.key === "Escape") {
           closeTerminal();
-        } else if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-          e.preventDefault();
-          if (e.key === "ArrowUp") {
-            if (historyIndex > 0) {
-              historyIndex--;
-              currentInput = commandHistory[historyIndex] || "";
-            }
-          } else if (historyIndex < commandHistory.length - 1) {
-            historyIndex++;
-            currentInput = commandHistory[historyIndex];
-          } else {
-            historyIndex = commandHistory.length;
-            currentInput = "";
-          }
-          termInput.value = currentInput;
-          renderPrompt();
         }
       });
 
@@ -2605,100 +1128,12 @@ mpsc costs 8.8x what spsc does on this workload</pre>
 
       const terminalHint = document.getElementById("terminal-hint");
       if (terminalHint) {
-        const isTouch =
-          "ontouchstart" in window || navigator.maxTouchPoints > 0;
-        if (isTouch) terminalHint.textContent = "Tap for terminal";
+        if (isTouchDevice) terminalHint.textContent = "Tap for terminal";
         terminalHint.addEventListener("click", () => {
           if (terminalOpen) closeTerminal();
           else openTerminal();
         });
-        terminalHint.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            if (terminalOpen) closeTerminal();
-            else openTerminal();
-          }
-        });
       }
-
-      /* ===== Konami Code ===== */
-      const konamiSequence = [
-        "ArrowUp",
-        "ArrowUp",
-        "ArrowDown",
-        "ArrowDown",
-        "ArrowLeft",
-        "ArrowRight",
-        "ArrowLeft",
-        "ArrowRight",
-        "b",
-        "a",
-      ];
-      let konamiIdx = 0;
-      document.addEventListener("keydown", (e) => {
-        if (e.key === konamiSequence[konamiIdx]) {
-          konamiIdx++;
-          if (konamiIdx === konamiSequence.length) {
-            konamiIdx = 0;
-            document.body.classList.add("konami-flash");
-            setTimeout(
-              () => document.body.classList.remove("konami-flash"),
-              1000,
-            );
-            openTerminal();
-            setTimeout(() => {
-              printLine(" ");
-              printLine("=== KONAMI CODE DETECTED ===", "ok");
-              printLine("Access granted to sector 7-G.", "info");
-              printLine(" ");
-              printLine("Special commands unlocked:");
-              printLine("  snake        about this site");
-              printLine("  easteregg    hidden message");
-              currentInput = "";
-              renderPrompt();
-            }, 300);
-          }
-        } else {
-          konamiIdx = 0;
-        }
-      });
-
-      const originalExecute = executeCommand;
-      window.executeCommand = function (cmd) {
-        const input = cmd.trim().toLowerCase();
-        const args = input.split(/\s+/);
-        if (args[0] === "snake") {
-          printLine(" ");
-          printLine(
-            "This portfolio was forged in the trenches of low-level programming.",
-            "info",
-          );
-          printLine(
-            "Built with vanilla HTML/CSS/JS. No frameworks. No bullshit.",
-            "info",
-          );
-          printLine("Press ~ anytime to access the terminal.", "info");
-          printLine(" ");
-          currentInput = "";
-          renderPrompt();
-          return;
-        }
-        if (args[0] === "easteregg") {
-          printLine(" ");
-          printLine(
-            '"The only way to do great work is to love what you do."',
-            "ok",
-          );
-          printLine("                    Steve Jobs", "info");
-          printLine(" ");
-          printLine("Also: the cake is a lie.", "warn");
-          printLine(" ");
-          currentInput = "";
-          renderPrompt();
-          return;
-        }
-        return originalExecute(cmd);
-      };
     </script>
   </body>
 </html>

@@ -57,9 +57,8 @@ def test_portfolio():
         assert name in content, f"{name} project not found"
         assert url in content, f"{name} GitHub link ({url}) not found"
         assert f'id="{anchor}"' in content, f"Card anchor id={anchor} not found"
-        assert f'href="#{anchor}"' in content, f"Sidebar link to #{anchor} not found"
 
-    # 6. Check project categories and filter bar
+    # 6. Check project categories, minimal filter bar, and collapsible output toggles
     assert ">Systems &amp; Memory<" in content, "Systems & Memory category not found"
     assert ">Cryptography<" in content, "Cryptography category not found"
     assert ">Mesh Networking<" in content, "Mesh Networking category not found"
@@ -67,12 +66,13 @@ def test_portfolio():
     assert ">Machine Learning<" in content, "Machine Learning category not found"
     assert ">Physics<" in content, "Physics category not found"
     assert ">Concurrency<" in content, "Concurrency category not found"
-    assert 'id="doc-sidebar"' in content, "Fixed technical index sidebar missing"
-    assert 'class="filter-bar"' in content, "Interactive category filter bar missing"
+    assert 'class="filter-bar"' in content, "Minimal category filter bar missing"
+    assert 'class="out-toggle"' in content, "Collapsible output toggle missing"
     
-    # 7. Check clean systems datasheet hero replaced shader/matrix effects
+    # 7. Check minimalist layout (no heavy sidebar, shader canvas, or telemetry panel clutter)
+    assert 'id="doc-sidebar"' not in content, "Heavy fixed sidebar still present"
     assert 'id="shader-canvas"' not in content, "Old shader canvas still present"
-    assert 'class="sys-panel"' in content, "Systems telemetry panel missing from hero"
+    assert 'class="sys-panel"' not in content, "Cluttered hero telemetry panel still present"
     assert "matrix-canvas" not in content, "Matrix rain canvas still present"
     assert "Matrix Rain" not in content, "Matrix rain JS still present"
 
