@@ -6,7 +6,7 @@
     <title>Guillermo: Systems & Projects</title>
     <meta
       name="description"
-      content="Physicist and developer focused on low-level C, systems programming, and reliable AI, bridging science and engineering."
+      content="Physicist and embedded systems engineer focused on low-level C, cryptography, deterministic networking, and reliable AI."
     />
     <meta name="author" content="Guillermo" />
     <meta name="theme-color" content="#0f172a" />
@@ -17,7 +17,7 @@
     <meta property="og:title" content="Guillermo: Systems & Projects" />
     <meta
       property="og:description"
-      content="Physicist and developer focused on low-level C, systems programming, and reliable AI, bridging science and engineering."
+      content="Physicist and embedded systems engineer focused on low-level C, cryptography, deterministic networking, and reliable AI."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://gcpino.github.io" />
@@ -31,7 +31,7 @@
     <meta name="twitter:title" content="Guillermo: Systems & Projects" />
     <meta
       name="twitter:description"
-      content="Physicist and developer focused on low-level C, systems programming, and reliable AI, bridging science and engineering."
+      content="Physicist and embedded systems engineer focused on low-level C, cryptography, deterministic networking, and reliable AI."
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -55,7 +55,7 @@
         --accent-soft: rgba(100, 154, 210, 0.12);
         --accent-glow: rgba(100, 154, 210, 0.25);
         --accent-text: #93bce8;
-        --bg-nav: rgba(15, 23, 42, 0.8);
+        --bg-nav: rgba(15, 23, 42, 0.85);
         --overlay-bg: rgba(15, 23, 42, 0.85);
         --accent-faint: rgba(100, 154, 210, 0.08);
         --rust: #f74c00;
@@ -65,6 +65,8 @@
         --green: #10b981;
         --orange: #f59e0b;
         --red: #ef4444;
+        --sidebar-w: 268px;
+        --nav-h: 60px;
       }
 
       * {
@@ -75,6 +77,7 @@
 
       html {
         scroll-behavior: smooth;
+        scroll-padding-top: calc(var(--nav-h) + 1.5rem);
       }
 
       body {
@@ -96,56 +99,83 @@
         color: #fff;
       }
 
-      /* Subtle grid background */
+      /* Subtle technical blueprint grid background */
       body::before {
         content: "";
         position: fixed;
         inset: 0;
         background-image:
-          linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+          linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
           linear-gradient(
             90deg,
-            rgba(255, 255, 255, 0.015) 1px,
+            rgba(255, 255, 255, 0.018) 1px,
             transparent 1px
           );
-        background-size: 60px 60px;
+        background-size: 56px 56px;
         pointer-events: none;
         z-index: 0;
         mask-image: linear-gradient(
           to bottom,
           transparent 0%,
-          black 15%,
-          black 85%,
+          black 12%,
+          black 88%,
           transparent 100%
         );
         -webkit-mask-image: linear-gradient(
           to bottom,
           transparent 0%,
-          black 15%,
-          black 85%,
+          black 12%,
+          black 88%,
           transparent 100%
         );
       }
 
-      /* Nav */
+      /* Top Navigation Bar */
       nav {
         position: fixed;
         top: 0;
         left: 0;
         right: 0;
-        z-index: 100;
-        padding: 1.25rem 4%;
+        height: var(--nav-h);
+        z-index: 120;
+        padding: 0 1.75rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: var(--nav-bg);
+        background: var(--bg-nav);
         backdrop-filter: blur(16px);
         border-bottom: 1px solid var(--border);
       }
 
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .sidebar-toggle {
+        display: none;
+        align-items: center;
+        gap: 0.45rem;
+        background: var(--bg-elevated);
+        color: var(--text-secondary);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 0.35rem 0.65rem;
+        font-family: inherit;
+        font-size: 0.76rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .sidebar-toggle:hover {
+        color: var(--text);
+        border-color: var(--accent);
+      }
+
       .logo {
         font-weight: 700;
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         color: var(--text);
         text-decoration: none;
         letter-spacing: -0.02em;
@@ -167,9 +197,30 @@
         width: 100%;
       }
 
+      .nav-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid var(--border);
+      }
+
+      .nav-status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 8px var(--green);
+      }
+
       .nav-links {
         display: flex;
-        gap: 2rem;
+        align-items: center;
+        gap: 1.6rem;
         list-style: none;
       }
 
@@ -177,7 +228,7 @@
         color: var(--text-secondary);
         text-decoration: none;
         font-weight: 400;
-        font-size: 0.88rem;
+        font-size: 0.84rem;
         transition: color 0.2s;
         position: relative;
       }
@@ -201,13 +252,220 @@
         width: 100%;
       }
 
-      /* Hero */
-      .hero {
+      .nav-term-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: var(--bg-elevated);
+        color: var(--accent-text);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 0.32rem 0.65rem;
+        font-family: inherit;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .nav-term-btn:hover {
+        border-color: var(--accent);
+        color: var(--text);
+        background: var(--accent-soft);
+      }
+
+      .nav-term-btn kbd {
+        font-family: inherit;
+        font-size: 0.7rem;
+        padding: 0.05rem 0.3rem;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 3px;
+        color: var(--text-secondary);
+      }
+
+      /* App Shell with Fixed Left Technical Index Sidebar */
+      .layout-shell {
+        display: flex;
+        padding-top: var(--nav-h);
         min-height: 100vh;
+        position: relative;
+        z-index: 1;
+      }
+
+      .doc-sidebar {
+        position: fixed;
+        top: var(--nav-h);
+        left: 0;
+        bottom: 0;
+        width: var(--sidebar-w);
+        background: rgba(15, 23, 42, 0.75);
+        backdrop-filter: blur(12px);
+        border-right: 1px solid var(--border);
+        padding: 1.4rem 1.1rem;
+        overflow-y: auto;
+        z-index: 110;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .sidebar-section-label {
+        font-size: 0.66rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--text-muted);
+        padding: 0 0.5rem;
+        margin-bottom: 0.4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .sidebar-nav-list,
+      .sidebar-proj-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+      }
+
+      .sidebar-link {
         display: flex;
         align-items: center;
-        padding: 8rem 4% 4rem;
-        max-width: 1320px;
+        justify-content: space-between;
+        gap: 0.5rem;
+        padding: 0.42rem 0.6rem;
+        border-radius: 6px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.78rem;
+        border-left: 2px solid transparent;
+        transition: all 0.18s ease;
+      }
+
+      .sidebar-link:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .sidebar-link.active {
+        color: var(--text);
+        background: var(--accent-soft);
+        border-left-color: var(--accent);
+        font-weight: 500;
+      }
+
+      .sidebar-num {
+        color: var(--text-muted);
+        font-size: 0.7rem;
+        margin-right: 0.35rem;
+      }
+
+      .sidebar-link.active .sidebar-num {
+        color: var(--accent-text);
+      }
+
+      .sidebar-badge {
+        font-size: 0.64rem;
+        color: var(--text-muted);
+        background: var(--bg);
+        border: 1px solid var(--border);
+        padding: 0.08rem 0.38rem;
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+
+      .sidebar-group-title {
+        font-size: 0.68rem;
+        color: var(--accent-text);
+        padding: 0.55rem 0.6rem 0.2rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .sidebar-proj-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.34rem 0.6rem 0.34rem 1.15rem;
+        border-radius: 5px;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.75rem;
+        border-left: 2px solid transparent;
+        transition: all 0.16s ease;
+        position: relative;
+      }
+
+      .sidebar-proj-link::before {
+        content: "├─";
+        position: absolute;
+        left: 0.35rem;
+        color: var(--border-hover);
+        font-size: 0.68rem;
+      }
+
+      .sidebar-proj-list li:last-child .sidebar-proj-link::before {
+        content: "└─";
+      }
+
+      .sidebar-proj-link:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .sidebar-proj-link.active {
+        color: var(--accent-text);
+        background: var(--accent-faint);
+        border-left-color: var(--accent);
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .sidebar-meta {
+        font-size: 0.68rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+        padding: 0 0.35rem;
+      }
+
+      .sidebar-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.65);
+        backdrop-filter: blur(4px);
+        z-index: 105;
+      }
+
+      .sidebar-backdrop.active {
+        display: block;
+      }
+
+      /* Main Content Area */
+      .main-content {
+        flex: 1;
+        margin-left: var(--sidebar-w);
+        min-width: 0;
+      }
+
+      /* Hero */
+      .hero {
+        min-height: calc(92vh - var(--nav-h));
+        display: flex;
+        align-items: center;
+        padding: 5.5rem 5% 4rem;
+        max-width: 1200px;
         margin: 0 auto;
         position: relative;
         z-index: 1;
@@ -223,29 +481,68 @@
       }
 
       .hero-content {
-        max-width: 800px;
+        max-width: 780px;
         position: relative;
         z-index: 1;
       }
 
-      .hero h1 {
-        font-size: clamp(2.2rem, 5vw, 3.6rem);
-        font-weight: 700;
-        line-height: 1.15;
-        letter-spacing: -0.03em;
-        margin-bottom: 1.25rem;
+      .hero-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.74rem;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--accent-text);
+        background: var(--accent-soft);
+        border: 1px solid rgba(100, 154, 210, 0.3);
+        padding: 0.28rem 0.75rem;
+        border-radius: 4px;
+        margin-bottom: 1.15rem;
       }
 
-      .hero h1 em {
-        font-style: normal;
-        color: var(--text-secondary);
+      .hero h1 {
+        font-size: clamp(2.2rem, 4.6vw, 3.5rem);
+        font-weight: 700;
+        line-height: 1.12;
+        letter-spacing: -0.03em;
+        margin-bottom: 1.15rem;
       }
 
       .hero p {
         color: var(--text-secondary);
-        font-size: 1.05rem;
-        max-width: 520px;
+        font-size: 1.02rem;
+        max-width: 58ch;
+        margin-bottom: 1.75rem;
+      }
+
+      .hero-telemetry {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+        gap: 0.75rem;
+        max-width: 660px;
         margin-bottom: 2rem;
+      }
+
+      .telemetry-cell {
+        background: rgba(30, 41, 59, 0.72);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 0.65rem 0.85rem;
+      }
+
+      .telemetry-val {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text);
+        display: block;
+      }
+
+      .telemetry-lbl {
+        font-size: 0.68rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
       }
 
       .hero-actions {
@@ -258,10 +555,10 @@
         display: inline-flex;
         align-items: center;
         gap: 0.4rem;
-        padding: 0.7rem 1.4rem;
+        padding: 0.68rem 1.35rem;
         border-radius: 6px;
         font-weight: 500;
-        font-size: 0.88rem;
+        font-size: 0.86rem;
         text-decoration: none;
         transition: all 0.2s;
         cursor: pointer;
@@ -294,15 +591,24 @@
 
       /* Sections */
       section {
-        padding: 5rem 4%;
-        max-width: 1320px;
+        padding: 4.5rem 5%;
+        max-width: 1200px;
         margin: 0 auto;
         position: relative;
         z-index: 1;
       }
 
       .section-header {
-        margin-bottom: 2.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .section-eyebrow {
+        font-size: 0.7rem;
+        color: var(--accent-text);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+        display: block;
       }
 
       .section-header h2 {
@@ -313,34 +619,38 @@
 
       .section-header p {
         color: var(--text-secondary);
-        margin-top: 0.4rem;
-        font-size: 0.95rem;
+        margin-top: 0.35rem;
+        font-size: 0.92rem;
       }
 
-      /* About */
-      .about-text {
-        max-width: 68ch;
+      /* About Grid */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: 1.5rem;
+        align-items: start;
       }
 
       .about-text p {
         color: var(--text-secondary);
         margin-bottom: 1rem;
         line-height: 1.75;
+        font-size: 0.92rem;
       }
 
       .profile-code {
         display: block;
         max-width: 100%;
         overflow-x: auto;
-        margin: 0 0 1.5rem;
-        padding: 1rem 1.25rem;
+        margin: 0;
+        padding: 1.1rem 1.25rem;
         background: var(--bg-card);
         border: 1px solid var(--border);
         border-radius: 8px;
         color: var(--text-secondary);
         font-family: "JetBrains Mono", monospace;
-        font-size: 0.78rem;
-        line-height: 1.8;
+        font-size: 0.77rem;
+        line-height: 1.78;
       }
 
       .profile-code .kw { color: var(--accent); }
@@ -348,11 +658,55 @@
       .profile-code .fn { color: var(--text); }
       .profile-code .cm { color: var(--text-muted); }
 
-      /* Projects */
+      /* Filter Toolbar */
+      .filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.75rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .filter-btn {
+        background: var(--bg-card);
+        color: var(--text-secondary);
+        border: 1px solid var(--border);
+        padding: 0.38rem 0.8rem;
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 0.76rem;
+        cursor: pointer;
+        transition: all 0.18s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+
+      .filter-btn:hover {
+        color: var(--text);
+        border-color: var(--border-hover);
+      }
+
+      .filter-btn.active {
+        background: var(--accent-soft);
+        color: var(--accent-text);
+        border-color: var(--accent);
+      }
+
+      .filter-count {
+        font-size: 0.66rem;
+        color: var(--text-muted);
+        background: var(--bg);
+        padding: 0.05rem 0.35rem;
+        border-radius: 4px;
+      }
+
+      /* Projects Grid */
       .projects-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1.25rem;
+        gap: 1.35rem;
       }
 
       .pcard {
@@ -364,6 +718,15 @@
         flex-direction: column;
         transition: border-color 0.25s ease, box-shadow 0.25s ease;
         position: relative;
+      }
+
+      .pcard.hidden-card {
+        display: none;
+      }
+
+      .pcard.spotlight {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px var(--accent-glow), 0 12px 36px rgba(0, 0, 0, 0.45);
       }
 
       .pcard::before {
@@ -422,7 +785,7 @@
       }
 
       .pcard-body {
-        padding: 1.25rem 1.5rem 1.5rem;
+        padding: 1.25rem 1.45rem 1.45rem;
         display: flex;
         flex-direction: column;
         flex: 1;
@@ -469,7 +832,7 @@
       }
 
       .pcard p {
-        font-size: 0.86rem;
+        font-size: 0.85rem;
         color: var(--text-secondary);
         line-height: 1.6;
         margin-bottom: 0.9rem;
@@ -477,14 +840,14 @@
 
       .project-stats {
         display: flex;
-        gap: 0.5rem;
+        gap: 0.45rem;
         flex-wrap: wrap;
-        margin-bottom: 1rem;
+        margin-bottom: 0.95rem;
       }
 
       .project-stat {
         font-family: "JetBrains Mono", monospace;
-        font-size: 0.72rem;
+        font-size: 0.71rem;
         color: var(--text-muted);
         background: var(--bg);
         padding: 0.2rem 0.5rem;
@@ -492,20 +855,13 @@
         border: 1px solid var(--border);
       }
 
-      .pcard-note {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 0.7rem;
-        color: var(--text-muted);
-        margin: -0.5rem 0 0.9rem;
-      }
-
       .card-link {
         margin-top: auto;
         align-self: flex-start;
         display: inline-flex;
         align-items: center;
-        min-height: 44px;
-        font-size: 0.82rem;
+        min-height: 40px;
+        font-size: 0.81rem;
         color: var(--accent-text);
         text-decoration: none;
         border-bottom: 1px solid transparent;
@@ -519,23 +875,34 @@
       /* Mini terminals inside project cards */
       .mini-term {
         font-family: "JetBrains Mono", monospace;
-        font-size: 0.72rem;
+        font-size: 0.71rem;
         line-height: 1.55;
       }
 
       .mini-term-bar {
         display: flex;
-        gap: 6px;
-        padding: 0.5rem 0.75rem;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.45rem 0.75rem;
         background: var(--bg-elevated);
         border-bottom: 1px solid var(--border);
       }
 
-      .mini-term-bar span {
+      .mini-term-dots {
+        display: flex;
+        gap: 6px;
+      }
+
+      .mini-term-dots span {
         width: 8px;
         height: 8px;
         border-radius: 50%;
         background: var(--border);
+      }
+
+      .mini-term-label {
+        font-size: 0.65rem;
+        color: var(--text-muted);
       }
 
       .mini-term-body {
@@ -551,6 +918,8 @@
 
       #term-balloc { height: calc(1.55em * 12 + 1.5rem); }
       #term-cinfer { height: calc(1.55em * 11 + 1.5rem); }
+      #term-aes256 { height: calc(1.55em * 11 + 1.5rem); }
+      #term-sentinel { height: calc(1.55em * 10 + 1.5rem); }
       #term-spsc { height: calc(1.55em * 7 + 1.5rem); }
 
       .mini-term-body .cmd { color: var(--text); }
@@ -567,7 +936,7 @@
         animation: blink 1s step-end infinite;
       }
 
-      /* Benchmark bars (balloc) */
+      /* Benchmark bars */
       .bench {
         padding: 0.75rem 0.9rem 0.9rem;
         border-top: 1px solid var(--border);
@@ -616,9 +985,9 @@
       /* Rust corner divider */
       .rust-divider {
         height: 1px;
-        max-width: 1320px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 0 4%;
+        padding: 0 5%;
         background: none;
       }
 
@@ -723,7 +1092,7 @@
       /* Footer */
       footer {
         text-align: center;
-        padding: 3rem 4%;
+        padding: 3rem 5%;
         border-top: 1px solid var(--border);
         color: var(--text-muted);
         font-size: 0.82rem;
@@ -735,7 +1104,7 @@
         margin-top: 0.5rem;
         font-size: 0.7rem;
         color: var(--text-muted);
-        opacity: 0.5;
+        opacity: 0.65;
         display: inline-block;
         padding: 0.75rem 1rem;
         cursor: pointer;
@@ -858,9 +1227,6 @@
         color: var(--accent-text);
       }
 
-      /* Real input that gives mobile soft keyboards a focus target.
-         Invisible and click-through; focus is set in JS on touch devices.
-         font-size >= 16px so iOS does not zoom on focus. */
       #term-mobile-input {
         position: absolute;
         left: 0;
@@ -893,18 +1259,38 @@
         }
       }
 
-      /* Project cards stay spatially fixed while scrolling. */
-
       /* Responsive */
+      @media (max-width: 1080px) {
+        .sidebar-toggle {
+          display: inline-flex;
+        }
+        .doc-sidebar {
+          transform: translateX(-100%);
+          transition: transform 0.25s ease;
+          background: rgba(15, 23, 42, 0.96);
+          width: 280px;
+        }
+        .doc-sidebar.open {
+          transform: translateX(0);
+        }
+        .main-content {
+          margin-left: 0;
+        }
+      }
+
       @media (max-width: 900px) {
-        .projects-grid {
+        .projects-grid,
+        .about-grid {
           grid-template-columns: 1fr;
+        }
+        .nav-status {
+          display: none;
         }
       }
 
       @media (max-width: 768px) {
         nav {
-          padding: 0.9rem 4%;
+          padding: 0 4%;
         }
         .nav-links {
           gap: 0.85rem;
@@ -919,7 +1305,7 @@
           font-size: 0.72rem;
         }
         .hero {
-          padding-top: 6rem;
+          padding-top: 3.5rem;
         }
         .mini-term {
           font-size: 0.66rem;
@@ -939,65 +1325,259 @@
   </head>
   <body>
     <nav>
-      <a href="#" class="logo">Guillermo</a>
+      <div class="nav-left">
+        <button
+          class="sidebar-toggle"
+          id="sidebar-toggle"
+          type="button"
+          aria-label="Toggle technical index sidebar"
+          aria-expanded="false"
+        >
+          <span>☰</span> Index
+        </button>
+        <a href="#" class="logo">Guillermo</a>
+        <span class="nav-status" aria-hidden="true">
+          <span class="nav-status-dot"></span>
+          SYS // C11 · RUST · DSP
+        </span>
+      </div>
       <ul class="nav-links">
         <li><a href="#about">About</a></li>
         <li><a href="#projects">Projects</a></li>
+        <li><a href="#rust">Rust</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li>
+          <button
+            type="button"
+            class="nav-term-btn"
+            onclick="openTerminal()"
+            title="Open interactive systems terminal"
+          >
+            Terminal <kbd>~</kbd>
+          </button>
+        </li>
       </ul>
     </nav>
 
-    <section class="hero">
-      <canvas id="shader-canvas" aria-hidden="true"></canvas>
-      <div class="hero-content">
-        <h1>Close to the metal.</h1>
-        <p>
-          Systems programmer. C from scratch, verified by construction,
-          benchmarked end to end.
-        </p>
-        <div class="hero-actions">
-          <a href="#projects" class="btn btn-primary">View Projects</a>
-          <a href="#contact" class="btn btn-secondary">Contact</a>
-        </div>
-      </div>
-    </section>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
-    <section id="about">
-      <div class="section-header rv">
-        <h2>About</h2>
-      </div>
-      <pre class="profile-code rv"><code><span class="cm">/* core profile */</span>
+    <div class="layout-shell">
+      <!-- Fixed Left Engineering Index Sidebar -->
+      <aside class="doc-sidebar" id="doc-sidebar" aria-label="Technical Index">
+        <div>
+          <div class="sidebar-section-label">
+            <span>Sections</span>
+            <span>00–04</span>
+          </div>
+          <ul class="sidebar-nav-list">
+            <li>
+              <a href="#hero" class="sidebar-link active" data-sec="hero">
+                <span><span class="sidebar-num">00.</span>Overview</span>
+              </a>
+            </li>
+            <li>
+              <a href="#about" class="sidebar-link" data-sec="about">
+                <span><span class="sidebar-num">01.</span>Architecture</span>
+              </a>
+            </li>
+            <li>
+              <a href="#projects" class="sidebar-link" data-sec="projects">
+                <span><span class="sidebar-num">02.</span>C &amp; Systems</span>
+                <span class="sidebar-badge">6</span>
+              </a>
+            </li>
+            <li>
+              <a href="#rust" class="sidebar-link" data-sec="rust">
+                <span><span class="sidebar-num">03.</span>Rust Corner 🦀</span>
+                <span class="sidebar-badge">1</span>
+              </a>
+            </li>
+            <li>
+              <a href="#contact" class="sidebar-link" data-sec="contact">
+                <span><span class="sidebar-num">04.</span>Contact</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="sidebar-section-label">
+            <span>Project Index</span>
+            <span>7 repos</span>
+          </div>
+
+          <div class="sidebar-group-title">Systems &amp; Memory</div>
+          <ul class="sidebar-proj-list">
+            <li>
+              <a href="#proj-balloc" class="sidebar-proj-link" data-proj="proj-balloc">
+                <span>balloc</span>
+                <span class="sidebar-badge">C11</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="sidebar-group-title">Crypto &amp; Networking</div>
+          <ul class="sidebar-proj-list">
+            <li>
+              <a href="#proj-aes256" class="sidebar-proj-link" data-proj="proj-aes256">
+                <span>aes256</span>
+                <span class="sidebar-badge">C11</span>
+              </a>
+            </li>
+            <li>
+              <a href="#proj-sentinelmesh" class="sidebar-proj-link" data-proj="proj-sentinelmesh">
+                <span>SentinelMesh</span>
+                <span class="sidebar-badge">C11</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="sidebar-group-title">Signal Processing</div>
+          <ul class="sidebar-proj-list">
+            <li>
+              <a href="#proj-sdr" class="sidebar-proj-link" data-proj="proj-sdr">
+                <span>sdr</span>
+                <span class="sidebar-badge">C11</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="sidebar-group-title">ML &amp; Physics</div>
+          <ul class="sidebar-proj-list">
+            <li>
+              <a href="#proj-cinfer" class="sidebar-proj-link" data-proj="proj-cinfer">
+                <span>c-infer</span>
+                <span class="sidebar-badge">C11</span>
+              </a>
+            </li>
+            <li>
+              <a href="#proj-pinn" class="sidebar-proj-link" data-proj="proj-pinn">
+                <span>PINN</span>
+                <span class="sidebar-badge">Py</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="sidebar-group-title">Concurrency (Rust)</div>
+          <ul class="sidebar-proj-list">
+            <li>
+              <a href="#proj-spsc" class="sidebar-proj-link" data-proj="proj-spsc">
+                <span>spsc</span>
+                <span class="sidebar-badge">Rs</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sidebar-footer">
+          <div class="sidebar-meta">
+            All C/Rust modules built with zero steady-state heap allocations in hot paths.
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Page Content -->
+      <main class="main-content">
+        <section class="hero" id="hero">
+          <canvas id="shader-canvas" aria-hidden="true"></canvas>
+          <div class="hero-content">
+            <div class="hero-kicker">Embedded Systems · Low-Level C/C++ · Rust</div>
+            <h1>Close to the metal.</h1>
+            <p>
+              Systems programmer and physicist. Deterministic C and Rust from
+              scratch—verified against standard vectors, bounded in memory, and
+              benchmarked end to end.
+            </p>
+            <div class="hero-telemetry">
+              <div class="telemetry-cell">
+                <span class="telemetry-val">0 malloc</span>
+                <span class="telemetry-lbl">Hot-path policy</span>
+              </div>
+              <div class="telemetry-cell">
+                <span class="telemetry-val">3.46 ns/op</span>
+                <span class="telemetry-lbl">O(1) pool alloc</span>
+              </div>
+              <div class="telemetry-cell">
+                <span class="telemetry-val">498 Mops/s</span>
+                <span class="telemetry-lbl">Lock-free SPSC</span>
+              </div>
+              <div class="telemetry-cell">
+                <span class="telemetry-val">FIPS / NIST</span>
+                <span class="telemetry-lbl">KAT verified</span>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a href="#projects" class="btn btn-primary">Explore Projects</a>
+              <a href="#contact" class="btn btn-secondary">Contact</a>
+            </div>
+          </div>
+        </section>
+
+        <section id="about">
+          <div class="section-header rv">
+            <span class="section-eyebrow">01 // Architecture &amp; Engineering Profile</span>
+            <h2>About</h2>
+          </div>
+          <div class="about-grid">
+            <pre class="profile-code rv"><code><span class="cm">/* core profile */</span>
 <span class="kw">struct</span> <span class="type">profile</span> {
   <span class="type">const char*</span> <span class="fn">training</span>; <span class="cm">/* CNN on real physics data */</span>
   <span class="type">const char*</span> <span class="fn">practice</span>; <span class="cm">/* C, verified, no deps */</span>
-  <span class="type">const char*</span> <span class="fn">focus</span>;    <span class="cm">/* allocators, SDR, inference */</span>
+  <span class="type">const char*</span> <span class="fn">focus</span>;    <span class="cm">/* allocators, SDR, inference, crypto */</span>
   <span class="type">const char*</span> <span class="fn">method</span>;   <span class="cm">/* measure, test, repeat */</span>
 };</code></pre>
-      <div class="about-text rv">
-        <p>
-          Physics grad who ended up close to the metal. I build small,
-          dependency-free C systems and prove they work.
-        </p>
-        <p>
-          My projects range from memory allocators and SDR to neural networks
-          trained on real physics data. I care about explicit data flow,
-          predictable memory use, and measurements I can reproduce.
-        </p>
-      </div>
-    </section>
+            <div class="about-text rv">
+              <p>
+                Physics graduate working close to the hardware. I design small,
+                dependency-free C and Rust systems for critical environments and
+                prove they work under strict memory and timing constraints.
+              </p>
+              <p>
+                My projects span deterministic memory allocators, cryptographic
+                primitives (AES-256-GCM, X25519, ChaCha20), mesh networking
+                daemons, SDR demodulators, and zero-allocation neural inference
+                engines.
+              </p>
+            </div>
+          </div>
+        </section>
 
-    <section id="projects">
-      <div class="section-header rv">
-        <h2>Projects</h2>
-        <p>Built from scratch. Real output below, reproduced with make.</p>
-      </div>
+        <section id="projects">
+          <div class="section-header rv">
+            <span class="section-eyebrow">02 // C11, Cryptography, DSP &amp; Physics</span>
+            <h2>Projects</h2>
+            <p>Built from scratch. Real output below, reproduced with make.</p>
+          </div>
 
-      <div class="projects-grid">
-        <article class="pcard rv">
-          <div class="pcard-visual">
-            <div class="mini-term" data-term="balloc">
-              <div class="mini-term-bar"><span></span><span></span><span></span></div>
-              <pre class="mini-term-body" id="term-balloc">$ make bench
+          <!-- Interactive Category Filter Bar -->
+          <div class="filter-bar" role="tablist" aria-label="Filter projects by domain">
+            <button type="button" class="filter-btn active" data-filter="all">
+              All <span class="filter-count">6</span>
+            </button>
+            <button type="button" class="filter-btn" data-filter="memory">
+              Systems &amp; Memory <span class="filter-count">1</span>
+            </button>
+            <button type="button" class="filter-btn" data-filter="crypto-net">
+              Crypto &amp; Networking <span class="filter-count">2</span>
+            </button>
+            <button type="button" class="filter-btn" data-filter="dsp">
+              Signal Processing <span class="filter-count">1</span>
+            </button>
+            <button type="button" class="filter-btn" data-filter="ml-physics">
+              ML &amp; Physics <span class="filter-count">2</span>
+            </button>
+          </div>
+
+          <div class="projects-grid">
+            <!-- 1. balloc -->
+            <article class="pcard rv" id="proj-balloc" data-category="memory">
+              <div class="pcard-visual">
+                <div class="mini-term" data-term="balloc">
+                  <div class="mini-term-bar">
+                    <div class="mini-term-dots"><span></span><span></span><span></span></div>
+                    <span class="mini-term-label">balloc // make bench</span>
+                  </div>
+                  <pre class="mini-term-body" id="term-balloc">$ make bench
 balloc benchmark (lower is better)
 small alloc/free (16 B, 200000 iters):
   balloc heap                        7.22 ns/op
@@ -1008,84 +1588,170 @@ mixed sizes, random free order:
 fixed-size object pool (64 B x 1024):
   balloc pool                        3.46 ns/op
   glibc malloc                       9.86 ns/op</pre>
-            </div>
-            <div class="bench" aria-hidden="true">
-              <div class="bench-row">
-                <span>heap 16 B</span>
-                <div class="bench-track"><div class="bench-fill" style="--w: 58%"></div></div>
-                <span class="bench-val">7.22 ns</span>
+                </div>
+                <div class="bench" aria-hidden="true">
+                  <div class="bench-row">
+                    <span>heap 16 B</span>
+                    <div class="bench-track"><div class="bench-fill" style="--w: 58%"></div></div>
+                    <span class="bench-val">7.22 ns</span>
+                  </div>
+                  <div class="bench-row">
+                    <span></span>
+                    <div class="bench-track"><div class="bench-fill ref" style="--w: 100%"></div></div>
+                    <span class="bench-val">12.43 ns</span>
+                  </div>
+                  <div class="bench-row">
+                    <span>pool 64 B</span>
+                    <div class="bench-track"><div class="bench-fill" style="--w: 35%"></div></div>
+                    <span class="bench-val">3.46 ns</span>
+                  </div>
+                  <div class="bench-row">
+                    <span></span>
+                    <div class="bench-track"><div class="bench-fill ref" style="--w: 100%"></div></div>
+                    <span class="bench-val">9.86 ns</span>
+                  </div>
+                </div>
               </div>
-              <div class="bench-row">
-                <span></span>
-                <div class="bench-track"><div class="bench-fill ref" style="--w: 100%"></div></div>
-                <span class="bench-val">12.43 ns</span>
+              <div class="pcard-body">
+                <div class="pcard-top">
+                  <span class="pcard-tag">Systems &amp; Memory</span>
+                  <span class="pcard-lang">C</span>
+                </div>
+                <h4><a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener">balloc</a></h4>
+                <p>
+                  Arena, pool and heap allocators from a single header. All memory
+                  is reserved up front, so the hot path never calls malloc.
+                </p>
+                <div class="project-stats">
+                  <span class="project-stat">C11</span>
+                  <span class="project-stat">O(1) Pool: 3.46 ns</span>
+                  <span class="project-stat">No deps</span>
+                </div>
+                <a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener" class="card-link">View source ↗</a>
               </div>
-              <div class="bench-row">
-                <span>pool 64 B</span>
-                <div class="bench-track"><div class="bench-fill" style="--w: 35%"></div></div>
-                <span class="bench-val">3.46 ns</span>
-              </div>
-              <div class="bench-row">
-                <span></span>
-                <div class="bench-track"><div class="bench-fill ref" style="--w: 100%"></div></div>
-                <span class="bench-val">9.86 ns</span>
-              </div>
-            </div>
-          </div>
-          <div class="pcard-body">
-            <div class="pcard-top">
-              <span class="pcard-tag">Systems &amp; Memory</span>
-              <span class="pcard-lang">C</span>
-            </div>
-            <h4><a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener">balloc</a></h4>
-            <p>
-              Arena, pool and heap allocators from a single header. All memory
-              is reserved up front, so the hot path never calls malloc.
-            </p>
-            <div class="project-stats">
-              <span class="project-stat">C11</span>
-              <span class="project-stat">Single header</span>
-              <span class="project-stat">No deps</span>
-            </div>
-            <a href="https://github.com/gcpino/balloc" target="_blank" rel="noopener" class="card-link">View source ↗</a>
-          </div>
-        </article>
+            </article>
 
-        <article class="pcard rv">
-          <div class="pcard-visual">
-            <img
-              src="assets/sdr-waveform.png"
-              alt="Demodulated 1 kHz tone recovered from an FM signal"
-              width="1200"
-              height="450"
-              loading="lazy"
-            />
-            <div class="pcard-caption">make demo: 1 kHz tone recovered from FM, 2.4 MS/s I/Q to 48 kHz PCM</div>
-          </div>
-          <div class="pcard-body">
-            <div class="pcard-top">
-              <span class="pcard-tag">Signal Processing</span>
-              <span class="pcard-lang">C</span>
-            </div>
-            <h4><a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">sdr</a></h4>
-            <p>
-              FM broadcast demodulator in ~600 lines of C. I/Q samples in,
-              audio out, nothing but libm.
-            </p>
-            <div class="project-stats">
-              <span class="project-stat">C11</span>
-              <span class="project-stat">libm only</span>
-              <span class="project-stat">Self-contained</span>
-            </div>
-            <a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener" class="card-link">View source ↗</a>
-          </div>
-        </article>
+            <!-- 2. aes256 -->
+            <article class="pcard rv" id="proj-aes256" data-category="crypto-net">
+              <div class="pcard-visual">
+                <div class="mini-term" data-term="aes256">
+                  <div class="mini-term-bar">
+                    <div class="mini-term-dots"><span></span><span></span><span></span></div>
+                    <span class="mini-term-label">aes256 // NIST KAT</span>
+                  </div>
+                  <pre class="mini-term-body" id="term-aes256">$ make test
+aes256 - FIPS 197 / SP 800-38A
+  fips197_kat_zero                             ok
+  sp800_38a_f1_5_full (4 blks ECB)             ok
+  cbc_roundtrip (80 B)                         ok
+  ctr_sp800_38a_f5                             ok
+aes256 - SP 800-38D (GCM AEAD)
+  gcm_tc1_empty                                ok
+  gcm_tc4_canonical (1 AAD + 4 PT)             ok
+  gcm_tamper_rejected                          ok
+ALL TESTS PASSED</pre>
+                </div>
+              </div>
+              <div class="pcard-body">
+                <div class="pcard-top">
+                  <span class="pcard-tag">Cryptography</span>
+                  <span class="pcard-lang">C</span>
+                </div>
+                <h4><a href="https://github.com/gcpino/aes256" target="_blank" rel="noopener">aes256</a></h4>
+                <p>
+                  Single-header C11 implementation of AES-256 (ECB, CBC, CTR) and
+                  AES-256-GCM authenticated encryption, verified against official
+                  FIPS 197 and NIST SP 800-38A/D test vectors.
+                </p>
+                <div class="project-stats">
+                  <span class="project-stat">C11</span>
+                  <span class="project-stat">Single header</span>
+                  <span class="project-stat">AES-256-GCM AEAD</span>
+                </div>
+                <a href="https://github.com/gcpino/aes256" target="_blank" rel="noopener" class="card-link">View source ↗</a>
+              </div>
+            </article>
 
-        <article class="pcard rv">
-          <div class="pcard-visual">
-            <div class="mini-term" data-term="cinfer">
-              <div class="mini-term-bar"><span></span><span></span><span></span></div>
-              <pre class="mini-term-body" id="term-cinfer">$ make test
+            <!-- 3. SentinelMesh -->
+            <article class="pcard rv" id="proj-sentinelmesh" data-category="crypto-net">
+              <div class="pcard-visual">
+                <div class="mini-term" data-term="sentinel">
+                  <div class="mini-term-bar">
+                    <div class="mini-term-dots"><span></span><span></span><span></span></div>
+                    <span class="mini-term-label">SentinelMesh // SWR suite</span>
+                  </div>
+                  <pre class="mini-term-body" id="term-sentinel">$ make test
+=== SentinelMesh-C Unit &amp; Integration Tests ===
+==> Telemetry &amp; Logging (STD-COD-001: 0 heap)
+==> Event Multiplexer (POSIX poll)
+==> Transactional Config Rollback (SWR-041)
+==> Crypto (X25519 / ChaCha20 / HMAC-SHA256)
+==> DSDV Distance-Vector Routing (22 routes)
+==> Session Security Manager (SSM) Handshake
+==> UNIX Domain Socket IPC Management
+All SentinelMesh-C tests passed successfully!</pre>
+                </div>
+              </div>
+              <div class="pcard-body">
+                <div class="pcard-top">
+                  <span class="pcard-tag">Mesh Networking</span>
+                  <span class="pcard-lang">C</span>
+                </div>
+                <h4><a href="https://github.com/gcpino/SentinelMesh" target="_blank" rel="noopener">SentinelMesh</a></h4>
+                <p>
+                  Assurance-oriented decentralized mesh networking daemon in C11.
+                  Zero steady-state heap allocations, POSIX poll() event loop,
+                  DSDV routing, and self-contained X25519/ChaCha20 session security.
+                </p>
+                <div class="project-stats">
+                  <span class="project-stat">C11</span>
+                  <span class="project-stat">Zero steady-state heap</span>
+                  <span class="project-stat">X25519 / DSDV</span>
+                </div>
+                <a href="https://github.com/gcpino/SentinelMesh" target="_blank" rel="noopener" class="card-link">View source ↗</a>
+              </div>
+            </article>
+
+            <!-- 4. sdr -->
+            <article class="pcard rv" id="proj-sdr" data-category="dsp">
+              <div class="pcard-visual">
+                <img
+                  src="assets/sdr-waveform.png"
+                  alt="Demodulated 1 kHz tone recovered from an FM signal"
+                  width="1200"
+                  height="450"
+                  loading="lazy"
+                />
+                <div class="pcard-caption">make demo: 1 kHz tone recovered from FM, 2.4 MS/s I/Q to 48 kHz PCM</div>
+              </div>
+              <div class="pcard-body">
+                <div class="pcard-top">
+                  <span class="pcard-tag">Signal Processing</span>
+                  <span class="pcard-lang">C</span>
+                </div>
+                <h4><a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener">sdr</a></h4>
+                <p>
+                  FM broadcast demodulator in ~600 lines of C. I/Q samples in,
+                  audio out, nothing but libm.
+                </p>
+                <div class="project-stats">
+                  <span class="project-stat">C11</span>
+                  <span class="project-stat">libm only</span>
+                  <span class="project-stat">Self-contained</span>
+                </div>
+                <a href="https://github.com/gcpino/sdr" target="_blank" rel="noopener" class="card-link">View source ↗</a>
+              </div>
+            </article>
+
+            <!-- 5. c-infer -->
+            <article class="pcard rv" id="proj-cinfer" data-category="ml-physics">
+              <div class="pcard-visual">
+                <div class="mini-term" data-term="cinfer">
+                  <div class="mini-term-bar">
+                    <div class="mini-term-dots"><span></span><span></span><span></span></div>
+                    <span class="mini-term-label">c-infer // parity tests</span>
+                  </div>
+                  <pre class="mini-term-body" id="term-cinfer">$ make test
 ==> build/test_linear
 ==> build/test_conv2d
 ==> build/test_maxpool2d
@@ -1096,153 +1762,159 @@ fixed-size object pool (64 B x 1024):
 ==> build/test_end_to_end
 ==> build/test_no_alloc_forward
 ALL TESTS PASSED</pre>
-            </div>
+                </div>
+              </div>
+              <div class="pcard-body">
+                <div class="pcard-top">
+                  <span class="pcard-tag">Machine Learning</span>
+                  <span class="pcard-lang">C</span>
+                </div>
+                <h4><a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">c-infer</a></h4>
+                <p>
+                  Neural network inference in pure C11. Zero allocations in the
+                  forward pass, verified layer by layer against PyTorch.
+                </p>
+                <div class="project-stats">
+                  <span class="project-stat">C11</span>
+                  <span class="project-stat">Zero-alloc forward</span>
+                  <span class="project-stat">Conv2D</span>
+                </div>
+                <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener" class="card-link">View source ↗</a>
+              </div>
+            </article>
+
+            <!-- 6. PINN -->
+            <article class="pcard rv" id="proj-pinn" data-category="ml-physics">
+              <div class="pcard-visual">
+                <img
+                  src="assets/pinn-comparison.png"
+                  alt="PINN solution of the 1D heat equation compared with the analytical solution"
+                  width="2520"
+                  height="720"
+                  loading="lazy"
+                />
+                <div class="pcard-caption">PINN vs analytical solution, relative L2 error 1.6e-3</div>
+              </div>
+              <div class="pcard-body">
+                <div class="pcard-top">
+                  <span class="pcard-tag">Physics</span>
+                  <span class="pcard-lang">Python</span>
+                </div>
+                <h4><a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener">PINN</a></h4>
+                <p>
+                  Physics-informed neural network for the 1D heat equation.
+                  Trained on the PDE residual alone, no solution data.
+                </p>
+                <div class="project-stats">
+                  <span class="project-stat">Python</span>
+                  <span class="project-stat">PyTorch</span>
+                  <span class="project-stat">rel. L2 1.6e-3</span>
+                </div>
+                <a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener" class="card-link">View source ↗</a>
+              </div>
+            </article>
           </div>
-          <div class="pcard-body">
-            <div class="pcard-top">
-              <span class="pcard-tag">Machine Learning</span>
-              <span class="pcard-lang">C</span>
-            </div>
-            <h4><a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">c-infer</a></h4>
-            <p>
-              Neural network inference in pure C11. Zero allocations in the
-              forward pass, verified layer by layer against PyTorch.
-            </p>
-            <div class="project-stats">
-              <span class="project-stat">C11</span>
-              <span class="project-stat">Zero-alloc forward</span>
-              <span class="project-stat">Conv2D</span>
-            </div>
-            <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener" class="card-link">View source ↗</a>
+        </section>
+
+        <div class="rust-divider" aria-hidden="true"></div>
+
+        <section id="rust">
+          <div class="section-header rv">
+            <span class="section-eyebrow">03 // Lock-Free &amp; Type-Safe Systems</span>
+            <h2>Rust corner 🦀</h2>
+            <p>Same metal, safer types. Real output below, reproduced with cargo.</p>
           </div>
-        </article>
 
-        <article class="pcard rv">
-          <div class="pcard-visual">
-            <img
-              src="assets/pinn-comparison.png"
-              alt="PINN solution of the 1D heat equation compared with the analytical solution"
-              width="2520"
-              height="720"
-              loading="lazy"
-            />
-            <div class="pcard-caption">PINN vs analytical solution, relative L2 error 1.6e-3</div>
-          </div>
-          <div class="pcard-body">
-            <div class="pcard-top">
-              <span class="pcard-tag">Physics</span>
-              <span class="pcard-lang">Python</span>
-            </div>
-            <h4><a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener">PINN</a></h4>
-            <p>
-              Physics-informed neural network for the 1D heat equation.
-              Trained on the PDE residual alone, no solution data.
-            </p>
-            <div class="project-stats">
-              <span class="project-stat">Python</span>
-              <span class="project-stat">PyTorch</span>
-              <span class="project-stat">rel. L2 1.6e-3</span>
-            </div>
-            <a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener" class="card-link">View source ↗</a>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <div class="rust-divider" aria-hidden="true"></div>
-
-    <section id="rust">
-      <div class="section-header rv">
-        <h2>Rust corner 🦀</h2>
-        <p>Same metal, safer types. Real output below, reproduced with cargo.</p>
-      </div>
-
-      <div class="projects-grid">
-        <article class="pcard rv">
-          <div class="pcard-visual">
-            <div class="mini-term" data-term="spsc">
-              <div class="mini-term-bar"><span></span><span></span><span></span></div>
-              <pre class="mini-term-body" id="term-spsc">$ cargo run --release --example bench
+          <div class="projects-grid">
+            <article class="pcard rv" id="proj-spsc" data-category="rust">
+              <div class="pcard-visual">
+                <div class="mini-term" data-term="spsc">
+                  <div class="mini-term-bar">
+                    <div class="mini-term-dots"><span></span><span></span><span></span></div>
+                    <span class="mini-term-label">spsc // cargo bench</span>
+                  </div>
+                  <pre class="mini-term-body" id="term-spsc">$ cargo run --release --example bench
 spsc benchmark (lower is better)
 5000000 items, capacity 1024, one producer, one consumer:
 spsc (try_push/try_pop)           2.01 ns/op    498.1 Mops/s
 mpsc::sync_channel (send/recv)    17.75 ns/op     56.3 Mops/s
 mpsc costs 8.8x what spsc does on this workload</pre>
-            </div>
-            <div class="bench" aria-hidden="true">
-              <div class="bench-row">
-                <span>spsc</span>
-                <div class="bench-track"><div class="bench-fill" style="--w: 11%"></div></div>
-                <span class="bench-val">2.01 ns</span>
+                </div>
+                <div class="bench" aria-hidden="true">
+                  <div class="bench-row">
+                    <span>spsc</span>
+                    <div class="bench-track"><div class="bench-fill" style="--w: 11%"></div></div>
+                    <span class="bench-val">2.01 ns</span>
+                  </div>
+                  <div class="bench-row">
+                    <span>mpsc</span>
+                    <div class="bench-track"><div class="bench-fill ref" style="--w: 100%"></div></div>
+                    <span class="bench-val">17.75 ns</span>
+                  </div>
+                </div>
               </div>
-              <div class="bench-row">
-                <span>mpsc</span>
-                <div class="bench-track"><div class="bench-fill ref" style="--w: 100%"></div></div>
-                <span class="bench-val">17.75 ns</span>
+              <div class="pcard-body">
+                <div class="pcard-top">
+                  <span class="pcard-tag">Concurrency</span>
+                  <span class="pcard-lang">Rust</span>
+                </div>
+                <h4><a href="https://github.com/gcpino/spsc" target="_blank" rel="noopener">spsc</a></h4>
+                <p>
+                  Lock-free SPSC ring buffer. One writer per index, bounded
+                  steps, 64-byte cache-line alignment, all memory reserved up front.
+                </p>
+                <div class="project-stats">
+                  <span class="project-stat">Lock-free</span>
+                  <span class="project-stat">498.1 Mops/s</span>
+                  <span class="project-stat">Zero-alloc hot path</span>
+                </div>
+                <a href="https://github.com/gcpino/spsc" target="_blank" rel="noopener" class="card-link">View source ↗</a>
               </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="contact">
+          <div class="contact-box rv">
+            <h3>Get in touch</h3>
+            <p>Open to interesting systems work.</p>
+            <a href="mailto:guicorpasp@gmail.com" class="contact-email"
+              >guicorpasp@gmail.com</a
+            >
+            <div class="contact-links">
+              <a href="https://github.com/gcpino" target="_blank" rel="noopener"
+                >GitHub</a
+              >
+              <a
+                href="https://linkedin.com/in/gcorpas"
+                target="_blank"
+                rel="noopener"
+                >LinkedIn</a
+              >
             </div>
           </div>
-          <div class="pcard-body">
-            <div class="pcard-top">
-              <span class="pcard-tag">Concurrency</span>
-              <span class="pcard-lang">Rust</span>
-            </div>
-            <h4><a href="https://github.com/gcpino/spsc" target="_blank" rel="noopener">spsc</a></h4>
-            <p>
-              Lock-free SPSC ring buffer. One writer per index, bounded
-              steps, all memory reserved up front.
-            </p>
-            <div class="project-stats">
-              <span class="project-stat">Lock-free</span>
-              <span class="project-stat">No deps</span>
-              <span class="project-stat">Zero-alloc hot path</span>
-            </div>
-            <a href="https://github.com/gcpino/spsc" target="_blank" rel="noopener" class="card-link">View source ↗</a>
-          </div>
-        </article>
-      </div>
-    </section>
+        </section>
 
-    <section id="contact">
-      <div class="contact-box rv">
-        <h3>Get in touch</h3>
-        <p>Open to interesting systems work.</p>
-        <a href="mailto:guicorpasp@gmail.com" class="contact-email"
-          >guicorpasp@gmail.com</a
-        >
-        <div class="contact-links">
-          <a href="https://github.com/gcpino" target="_blank" rel="noopener"
-            >GitHub</a
-          >
-          <a
-            href="https://linkedin.com/in/gcorpas"
-            target="_blank"
-            rel="noopener"
-            >LinkedIn</a
-          >
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      <p>Guillermo: Systems & Projects. Built from scratch.</p>
-      <p class="footer-hint" id="terminal-hint" role="button" tabindex="0" title="Open terminal">
-        Press
-        <kbd
-          style="
-            font-family: &quot;JetBrains Mono&quot;, monospace;
-            font-size: 0.7rem;
-            background: var(--bg-card);
-            padding: 0.1rem 0.3rem;
-            border-radius: 3px;
-            border: 1px solid var(--border);
-          "
-          >~</kbd
-        >
-        for terminal
-      </p>
-    </footer>
+        <footer>
+          <p>Guillermo: Systems &amp; Projects. Built from scratch.</p>
+          <p class="footer-hint" id="terminal-hint" role="button" tabindex="0" title="Open terminal">
+            Press
+            <kbd
+              style="
+                font-family: &quot;JetBrains Mono&quot;, monospace;
+                font-size: 0.7rem;
+                background: var(--bg-card);
+                padding: 0.1rem 0.3rem;
+                border-radius: 3px;
+                border: 1px solid var(--border);
+              "
+              >~</kbd
+            >
+            for terminal
+          </p>
+        </footer>
+      </main>
+    </div>
 
     <!-- Terminal Easter Egg -->
     <div id="terminal-overlay">
@@ -1279,10 +1951,105 @@ mpsc costs 8.8x what spsc does on this workload</pre>
         "(prefers-reduced-motion: reduce)",
       ).matches;
 
-      // Scroll progress: JS fallback only where CSS scroll timelines are missing
+      /* ===== Sidebar Drawer (Mobile/Tablet) & Scroll-Spy ===== */
+      (function () {
+        const toggleBtn = document.getElementById("sidebar-toggle");
+        const sidebar = document.getElementById("doc-sidebar");
+        const backdrop = document.getElementById("sidebar-backdrop");
 
-      /* Shared scroll-linked palette mix: 0 = blue, 1 = rust. Set by the
-         accent section below, read by the shader each frame. */
+        function closeSidebar() {
+          if (!sidebar) return;
+          sidebar.classList.remove("open");
+          if (backdrop) backdrop.classList.remove("active");
+          if (toggleBtn) toggleBtn.setAttribute("aria-expanded", "false");
+        }
+
+        if (toggleBtn && sidebar) {
+          toggleBtn.addEventListener("click", () => {
+            const isOpen = sidebar.classList.toggle("open");
+            if (backdrop) backdrop.classList.toggle("active", isOpen);
+            toggleBtn.setAttribute("aria-expanded", String(isOpen));
+          });
+        }
+        if (backdrop) {
+          backdrop.addEventListener("click", closeSidebar);
+        }
+
+        // Smooth jump & spotlight on project card when clicked from sidebar
+        const projLinks = document.querySelectorAll(".sidebar-proj-link");
+        const filterBtns = document.querySelectorAll(".filter-btn");
+        const cards = document.querySelectorAll("#projects .pcard");
+
+        projLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            closeSidebar();
+            // Reset filter to 'all' if target card is currently hidden
+            const targetId = link.getAttribute("data-proj");
+            const targetCard = document.getElementById(targetId);
+            if (targetCard && targetCard.classList.contains("hidden-card")) {
+              filterBtns.forEach((b) => b.classList.toggle("active", b.dataset.filter === "all"));
+              cards.forEach((c) => c.classList.remove("hidden-card"));
+            }
+            if (targetCard) {
+              document.querySelectorAll(".pcard.spotlight").forEach((c) => c.classList.remove("spotlight"));
+              targetCard.classList.add("spotlight");
+              setTimeout(() => targetCard.classList.remove("spotlight"), 1800);
+            }
+          });
+        });
+
+        document.querySelectorAll(".sidebar-link").forEach((link) => {
+          link.addEventListener("click", closeSidebar);
+        });
+
+        // Category Filter Buttons
+        filterBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const f = btn.dataset.filter;
+            filterBtns.forEach((b) => b.classList.toggle("active", b === btn));
+            cards.forEach((card) => {
+              const match = f === "all" || card.dataset.category === f;
+              card.classList.toggle("hidden-card", !match);
+            });
+          });
+        });
+
+        // Scroll-Spy for Sections and Project Cards
+        const secIds = ["hero", "about", "projects", "rust", "contact"];
+        const secLinks = document.querySelectorAll(".sidebar-link");
+        const allCards = document.querySelectorAll(".pcard[id]");
+
+        function onScrollSpy() {
+          const y = window.innerHeight * 0.32;
+          let activeSec = "hero";
+          secIds.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el && el.getBoundingClientRect().top <= y) {
+              activeSec = id;
+            }
+          });
+          secLinks.forEach((l) => {
+            l.classList.toggle("active", l.getAttribute("data-sec") === activeSec);
+          });
+
+          let activeProj = null;
+          allCards.forEach((card) => {
+            if (card.classList.contains("hidden-card")) return;
+            const r = card.getBoundingClientRect();
+            if (r.top <= window.innerHeight * 0.45 && r.bottom >= 120) {
+              activeProj = card.id;
+            }
+          });
+          projLinks.forEach((l) => {
+            l.classList.toggle("active", l.getAttribute("data-proj") === activeProj);
+          });
+        }
+
+        window.addEventListener("scroll", onScrollSpy, { passive: true });
+        onScrollSpy();
+      })();
+
+      /* Shared scroll-linked palette mix: 0 = blue, 1 = rust. */
       let rustMix = 0;
 
       /* ===== Hero shader (hand-written WebGL, no libraries) ===== */
@@ -1378,7 +2145,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
         const uBase = gl.getUniformLocation(prog, "u_base");
         const uWave = gl.getUniformLocation(prog, "u_wave");
 
-        // Palette endpoints, normalized to 0..1
         const BASE_BLUE = [15 / 255, 23 / 255, 42 / 255];
         const BASE_RUST = [26 / 255, 16 / 255, 12 / 255];
         const WAVE_BLUE = [100 / 255, 154 / 255, 210 / 255];
@@ -1443,7 +2209,7 @@ mpsc costs 8.8x what spsc does on this workload</pre>
         }
       })();
 
-      /* ===== Project photo reveal: fade in as the card scrolls into view ===== */
+      /* ===== Project photo reveal ===== */
       (function () {
         if (prefersReducedMotion) return;
         const imgs = Array.from(document.querySelectorAll(".pcard-visual img"));
@@ -1477,7 +2243,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
       (function () {
         const rustSection = document.getElementById("rust");
         if (!rustSection) return;
-        // Blue side -> rust side, whole page palette
         const STOPS = {
           "--bg": [[15, 23, 42], [26, 16, 12]],
           "--bg-elevated": [[30, 41, 59], [44, 29, 22]],
@@ -1501,7 +2266,7 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           const center = r.top + r.height / 2;
           const vh = window.innerHeight;
           let t = 1 - Math.min(Math.abs(center - vh * 0.45) / (vh * 0.75), 1);
-          t = t * t * (3 - 2 * t); // smoothstep
+          t = t * t * (3 - 2 * t);
           rustMix = t;
           for (const [name, [blue, rust]] of Object.entries(STOPS)) {
             const c = mix(blue, rust, t);
@@ -1512,7 +2277,7 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           rootStyle.setProperty("--accent-soft", "rgba(" + acc.join(", ") + ", 0.12)");
           rootStyle.setProperty("--accent-glow", "rgba(" + acc.join(", ") + ", 0.25)");
           rootStyle.setProperty("--accent-faint", "rgba(" + acc.join(", ") + ", 0.08)");
-          rootStyle.setProperty("--bg-nav", "rgba(" + bg.join(", ") + ", 0.8)");
+          rootStyle.setProperty("--bg-nav", "rgba(" + bg.join(", ") + ", 0.85)");
           rootStyle.setProperty("--overlay-bg", "rgba(" + bg.join(", ") + ", 0.85)");
           if (themeMeta)
             themeMeta.setAttribute("content", "rgb(" + bg.join(", ") + ")");
@@ -1537,7 +2302,7 @@ mpsc costs 8.8x what spsc does on this workload</pre>
         const terms = document.querySelectorAll(".mini-term-body");
         if (!terms.length) return;
 
-        if (prefersReducedMotion) return; // full output already in the markup
+        if (prefersReducedMotion) return;
 
         const spans = [];
         terms.forEach((pre) => {
@@ -1564,7 +2329,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
             const line = lines[li];
             const isCmd = li === 0;
             if (isCmd) {
-              // type the command character by character
               let ci = 0;
               const cmdSpan = document.createElement("span");
               cmdSpan.className = "cmd";
@@ -1587,7 +2351,7 @@ mpsc costs 8.8x what spsc does on this workload</pre>
             } else {
               const span = document.createElement("span");
               const isLast = li === lines.length - 1;
-              if (/PASSED/.test(line)) span.className = "ok";
+              if (/PASSED|passed|\bok\b/.test(line)) span.className = "ok";
               else if (/ns\/op/.test(line)) span.className = "num";
               else if (isCmd) span.className = "cmd";
               span.textContent = line;
@@ -1630,6 +2394,18 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           stats: "C11 · Single header · No deps",
           url: "https://github.com/gcpino/balloc"
         },
+        aes256: {
+          desc: "single-header C11 AES-256 (ECB, CBC, CTR) and AES-256-GCM AEAD",
+          body: "Self-contained static-inline implementation verified against official FIPS 197 KATs, NIST SP 800-38A block modes, and NIST SP 800-38D GCM authenticated encryption vectors with tamper rejection.",
+          stats: "C11 · Single header · FIPS 197 / NIST SP 800-38D",
+          url: "https://github.com/gcpino/aes256"
+        },
+        sentinelmesh: {
+          desc: "assurance-oriented C11 decentralized mesh networking daemon",
+          body: "Pre-allocates all neighbor tables, routing lists, session caches, and timers statically at startup (zero steady-state heap allocations). Features POSIX poll() multiplexing, DSDV distance-vector routing, and X25519/ChaCha20/HMAC-SHA256 session security.",
+          stats: "C11 · Zero steady-state heap · X25519 / DSDV",
+          url: "https://github.com/gcpino/SentinelMesh"
+        },
         sdr: {
           desc: "FM demodulator (NCO, decimation, atan2), C11, libm only",
           body: "Ships a synthetic FM signal generator so the project is fully testable without RF hardware. The round-trip test synthesizes a 1 kHz tone, demodulates it, and verifies the recovered spectrum is essentially a pure tone.",
@@ -1647,6 +2423,12 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           body: "Trained on the PDE residual plus initial and boundary conditions only, no solution data. Relative L2 error 1.6e-3 against the analytical solution on an 80x80 grid.",
           stats: "Python · PyTorch · rel. L2 1.6e-3",
           url: "https://github.com/gcpino/PINN"
+        },
+        spsc: {
+          desc: "lock-free SPSC ring buffer in Rust (498.1 Mops/s, 2.01 ns/op)",
+          body: "One writer per index with acquire/release ordering, 64-byte cache-line alignment, and cached remote indices. Delivers 5M items 8.8x faster than std::sync::mpsc::sync_channel.",
+          stats: "Rust · Lock-free · Zero-alloc hot path",
+          url: "https://github.com/gcpino/spsc"
         }
       };
 
@@ -1723,13 +2505,16 @@ mpsc costs 8.8x what spsc does on this workload</pre>
             printLine("  exit         close terminal");
             break;
           case "ls":
-            printLine("balloc/     arena/pool/heap memory");
-            printLine("sdr/        FM demodulator");
-            printLine("c-infer/    zero-alloc NN inference");
-            printLine("pinn/       physics-informed NN");
+            printLine("balloc/        arena/pool/heap memory");
+            printLine("aes256/        single-header AES-256 & GCM");
+            printLine("sentinelmesh/  zero-heap mesh daemon");
+            printLine("sdr/           FM demodulator");
+            printLine("c-infer/       zero-alloc NN inference");
+            printLine("pinn/          physics-informed NN");
+            printLine("spsc/          lock-free Rust ring buffer");
             break;
           case "cat":
-            const name = args[1];
+            const name = (args[1] || "").replace(/\/$/, "");
             if (!name) {
               printLine("usage: cat <project_name>");
             } else if (projectData[name]) {
@@ -1750,14 +2535,14 @@ mpsc costs 8.8x what spsc does on this workload</pre>
             printLine("Practice: C, single-header, verified");
             break;
           case "skills":
-            printLine("C           [██████████] Systems, Memory management");
-            printLine("Python      [██████████] PyTorch, Data extraction");
-            printLine("Physics     [██████████] Analytical problem solving");
-            printLine("Machine L.  [████████░░] Reliable AI architectures");
+            printLine("C / C11     [██████████] Bare-metal, RTOS, Memory, Crypto");
+            printLine("Rust        [█████████░] Lock-free concurrency, no_std");
+            printLine("Python      [██████████] PyTorch, PINNs, Verification");
+            printLine("Physics     [██████████] Signal processing, PDEs, DSP");
             break;
           case "contact":
-            printLine("email:  guicorpasp@gmail.com");
-            // printLine("github: github.com/gcpino");
+            printLine("email:    guicorpasp@gmail.com");
+            printLine("github:   github.com/gcpino");
             printLine("linkedin: linkedin.com/in/gcorpas");
             break;
           case "clear":
@@ -1835,10 +2620,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
         }
       });
 
-      // Mobile input path: the soft keyboard types into a real input.
-      // Text (including backspace edits) arrives via "input"; Enter, Escape
-      // and history keys arrive via "keydown". stopPropagation keeps the
-      // document-level handler from double-processing these events.
       termInput.addEventListener("input", () => {
         currentInput = termInput.value;
         renderPrompt();
@@ -1870,7 +2651,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
         }
       });
 
-      // Tapping the terminal re-opens the soft keyboard if it was dismissed
       terminalBody.addEventListener("click", () => {
         if (terminalOpen && isTouchDevice)
           termInput.focus({ preventScroll: true });
@@ -1880,7 +2660,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
         if (e.target === terminalOverlay) closeTerminal();
       });
 
-      // Footer hint opens the terminal too (touch devices have no `~` key)
       const terminalHint = document.getElementById("terminal-hint");
       if (terminalHint) {
         const isTouch =
@@ -1941,7 +2720,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
         }
       });
 
-      // Add special terminal commands for Konami mode
       const originalExecute = executeCommand;
       window.executeCommand = function (cmd) {
         const input = cmd.trim().toLowerCase();

@@ -27,7 +27,7 @@ def test_portfolio():
     assert '--accent: #649ad2;' in content, "Accent color not updated to site blue"
     assert "rgba(15, 23, 42" in content, "Navbar or Matrix canvas RGB clear color not updated to slate-900"
     
-    # 5. Check projects removal
+    # 4. Check old template projects removal
     assert "<h4>forge</h4>" not in content, "forge project header still exists"
     assert "details-forge" not in content, "forge project details still exists"
     assert "<h4>bedrock</h4>" not in content, "bedrock project header still exists"
@@ -43,33 +43,39 @@ def test_portfolio():
     assert "<h4>trace</h4>" not in content, "trace project header still exists"
     assert "details-trace" not in content, "trace project details still exists"
     
-    # Check c-infer project is present
-    assert "c-infer" in content, "c-infer project not found"
+    # 5. Check all 7 projects and their GitHub links are present
+    expected_projects = [
+        ("balloc", "https://github.com/gcpino/balloc", "proj-balloc"),
+        ("aes256", "https://github.com/gcpino/aes256", "proj-aes256"),
+        ("SentinelMesh", "https://github.com/gcpino/SentinelMesh", "proj-sentinelmesh"),
+        ("sdr", "https://github.com/gcpino/sdr", "proj-sdr"),
+        ("c-infer", "https://github.com/gcpino/c-infer", "proj-cinfer"),
+        ("PINN", "https://github.com/gcpino/PINN", "proj-pinn"),
+        ("spsc", "https://github.com/gcpino/spsc", "proj-spsc"),
+    ]
+    for name, url, anchor in expected_projects:
+        assert name in content, f"{name} project not found"
+        assert url in content, f"{name} GitHub link ({url}) not found"
+        assert f'id="{anchor}"' in content, f"Card anchor id={anchor} not found"
+        assert f'href="#{anchor}"' in content, f"Sidebar link to #{anchor} not found"
 
-    # Check balloc project is present
-    assert "balloc" in content, "balloc project not found"
-    assert "https://github.com/gcpino/balloc" in content, "balloc GitHub link not found"
-
-    # Check sdr project is present
-    assert "sdr" in content, "sdr project not found"
-    assert "https://github.com/gcpino/sdr" in content, "sdr GitHub link not found"
-
-    # Check PINN project is present
-    assert "PINN" in content, "PINN project not found"
-    assert "https://github.com/gcpino/PINN" in content, "PINN GitHub link not found"
-
-    # Check project categories are present
+    # 6. Check project categories and filter bar
     assert ">Systems &amp; Memory<" in content, "Systems & Memory category not found"
+    assert ">Cryptography<" in content, "Cryptography category not found"
+    assert ">Mesh Networking<" in content, "Mesh Networking category not found"
     assert ">Signal Processing<" in content, "Signal Processing category not found"
     assert ">Machine Learning<" in content, "Machine Learning category not found"
     assert ">Physics<" in content, "Physics category not found"
+    assert ">Concurrency<" in content, "Concurrency category not found"
+    assert 'id="doc-sidebar"' in content, "Fixed technical index sidebar missing"
+    assert 'class="filter-bar"' in content, "Interactive category filter bar missing"
     
-    # 6. Check shader hero replaced matrix rain
+    # 7. Check shader hero replaced matrix rain
     assert 'id="shader-canvas"' in content, "Shader canvas missing"
     assert "matrix-canvas" not in content, "Matrix rain canvas still present"
     assert "Matrix Rain" not in content, "Matrix rain JS still present"
 
-    # 7. Check LinkedIn handle is gcorpas
+    # 8. Check LinkedIn handle is gcorpas
     assert 'linkedin.com/in/gcorpas' in content, "LinkedIn handle not updated to gcorpas"
 
     print("All portfolio tests PASSED successfully!")
