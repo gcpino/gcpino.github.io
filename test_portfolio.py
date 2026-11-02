@@ -70,8 +70,9 @@ def test_portfolio():
     assert 'id="doc-sidebar"' in content, "Fixed technical index sidebar missing"
     assert 'class="filter-bar"' in content, "Interactive category filter bar missing"
     
-    # 7. Check shader hero replaced matrix rain
-    assert 'id="shader-canvas"' in content, "Shader canvas missing"
+    # 7. Check clean systems datasheet hero replaced shader/matrix effects
+    assert 'id="shader-canvas"' not in content, "Old shader canvas still present"
+    assert 'class="sys-panel"' in content, "Systems telemetry panel missing from hero"
     assert "matrix-canvas" not in content, "Matrix rain canvas still present"
     assert "Matrix Rain" not in content, "Matrix rain JS still present"
 

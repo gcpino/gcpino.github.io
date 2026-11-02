@@ -459,29 +459,24 @@
         min-width: 0;
       }
 
-      /* Hero */
+      /* Hero — Clean Systems Datasheet / Engineering Spec Layout (No Blurry Shader) */
       .hero {
-        min-height: calc(92vh - var(--nav-h));
-        display: flex;
-        align-items: center;
-        padding: 5.5rem 5% 4rem;
+        padding: 4.5rem 5% 3.5rem;
         max-width: 1200px;
         margin: 0 auto;
         position: relative;
         z-index: 1;
+        border-bottom: 1px solid var(--border);
       }
 
-      #shader-canvas {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        pointer-events: none;
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.95fr;
+        gap: 2.25rem;
+        align-items: center;
       }
 
       .hero-content {
-        max-width: 780px;
         position: relative;
         z-index: 1;
       }
@@ -490,65 +485,150 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        font-size: 0.74rem;
+        font-size: 0.72rem;
         text-transform: uppercase;
         letter-spacing: 0.14em;
         color: var(--accent-text);
         background: var(--accent-soft);
         border: 1px solid rgba(100, 154, 210, 0.3);
-        padding: 0.28rem 0.75rem;
+        padding: 0.26rem 0.7rem;
         border-radius: 4px;
-        margin-bottom: 1.15rem;
+        margin-bottom: 1.1rem;
       }
 
       .hero h1 {
-        font-size: clamp(2.2rem, 4.6vw, 3.5rem);
+        font-size: clamp(2.1rem, 4.2vw, 3.25rem);
         font-weight: 700;
         line-height: 1.12;
         letter-spacing: -0.03em;
-        margin-bottom: 1.15rem;
+        margin-bottom: 1.1rem;
       }
 
       .hero p {
         color: var(--text-secondary);
-        font-size: 1.02rem;
-        max-width: 58ch;
+        font-size: 0.96rem;
+        max-width: 54ch;
         margin-bottom: 1.75rem;
-      }
-
-      .hero-telemetry {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
-        gap: 0.75rem;
-        max-width: 660px;
-        margin-bottom: 2rem;
-      }
-
-      .telemetry-cell {
-        background: rgba(30, 41, 59, 0.72);
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        padding: 0.65rem 0.85rem;
-      }
-
-      .telemetry-val {
-        font-size: 0.95rem;
-        font-weight: 700;
-        color: var(--text);
-        display: block;
-      }
-
-      .telemetry-lbl {
-        font-size: 0.68rem;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
+        line-height: 1.7;
       }
 
       .hero-actions {
         display: flex;
         gap: 0.75rem;
         flex-wrap: wrap;
+      }
+
+      /* Right-side Hardware/Systems Inspection Panel in Hero */
+      .sys-panel {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+      }
+
+      .sys-panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.6rem 1rem;
+        background: var(--bg-elevated);
+        border-bottom: 1px solid var(--border);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+
+      .sys-panel-title {
+        color: var(--text-secondary);
+        font-weight: 600;
+        letter-spacing: 0.05em;
+      }
+
+      .sys-panel-tag {
+        color: var(--green);
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        padding: 0.08rem 0.45rem;
+        border-radius: 4px;
+        font-size: 0.65rem;
+      }
+
+      .sys-spec-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.75rem;
+      }
+
+      .sys-spec-table tr {
+        border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+      }
+
+      .sys-spec-table tr:last-child {
+        border-bottom: none;
+      }
+
+      .sys-spec-table td {
+        padding: 0.62rem 1rem;
+      }
+
+      .sys-spec-key {
+        color: var(--text-muted);
+        white-space: nowrap;
+        width: 38%;
+      }
+
+      .sys-spec-val {
+        color: var(--text);
+        font-weight: 500;
+        text-align: right;
+      }
+
+      .sys-spec-val .accent {
+        color: var(--accent-text);
+      }
+
+      .sys-spec-val .ok {
+        color: var(--green);
+      }
+
+      .sys-mem-bar {
+        padding: 0.75rem 1rem;
+        background: var(--bg);
+        border-top: 1px solid var(--border);
+      }
+
+      .sys-mem-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.66rem;
+        color: var(--text-muted);
+        margin-bottom: 0.4rem;
+      }
+
+      .sys-mem-segments {
+        display: grid;
+        grid-template-columns: 2fr 2fr 1.5fr 1fr;
+        gap: 3px;
+        height: 18px;
+      }
+
+      .sys-seg {
+        background: var(--accent-soft);
+        border: 1px solid var(--accent);
+        border-radius: 2px;
+        font-size: 0.6rem;
+        color: var(--accent-text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+
+      .sys-seg.dim {
+        background: rgba(51, 65, 85, 0.35);
+        border-color: var(--border);
+        color: var(--text-muted);
       }
 
       .btn {
@@ -1280,7 +1360,8 @@
 
       @media (max-width: 900px) {
         .projects-grid,
-        .about-grid {
+        .about-grid,
+        .hero-grid {
           grid-template-columns: 1fr;
         }
         .nav-status {
@@ -1305,7 +1386,7 @@
           font-size: 0.72rem;
         }
         .hero {
-          padding-top: 3.5rem;
+          padding-top: 2.75rem;
         }
         .mini-term {
           font-size: 0.66rem;
@@ -1479,36 +1560,63 @@
       <!-- Main Page Content -->
       <main class="main-content">
         <section class="hero" id="hero">
-          <canvas id="shader-canvas" aria-hidden="true"></canvas>
-          <div class="hero-content">
-            <div class="hero-kicker">Embedded Systems · Low-Level C/C++ · Rust</div>
-            <h1>Close to the metal.</h1>
-            <p>
-              Systems programmer and physicist. Deterministic C and Rust from
-              scratch—verified against standard vectors, bounded in memory, and
-              benchmarked end to end.
-            </p>
-            <div class="hero-telemetry">
-              <div class="telemetry-cell">
-                <span class="telemetry-val">0 malloc</span>
-                <span class="telemetry-lbl">Hot-path policy</span>
-              </div>
-              <div class="telemetry-cell">
-                <span class="telemetry-val">3.46 ns/op</span>
-                <span class="telemetry-lbl">O(1) pool alloc</span>
-              </div>
-              <div class="telemetry-cell">
-                <span class="telemetry-val">498 Mops/s</span>
-                <span class="telemetry-lbl">Lock-free SPSC</span>
-              </div>
-              <div class="telemetry-cell">
-                <span class="telemetry-val">FIPS / NIST</span>
-                <span class="telemetry-lbl">KAT verified</span>
+          <div class="hero-grid">
+            <div class="hero-content">
+              <div class="hero-kicker">Embedded Systems · Low-Level C/C++ · Rust</div>
+              <h1>Close to the metal.</h1>
+              <p>
+                Systems programmer and physicist. Deterministic C and Rust from
+                scratch—verified against standard vectors, bounded in memory, and
+                benchmarked end to end.
+              </p>
+              <div class="hero-actions">
+                <a href="#projects" class="btn btn-primary">Explore Projects</a>
+                <a href="#contact" class="btn btn-secondary">Contact</a>
               </div>
             </div>
-            <div class="hero-actions">
-              <a href="#projects" class="btn btn-primary">Explore Projects</a>
-              <a href="#contact" class="btn btn-secondary">Contact</a>
+
+            <!-- Right-side Systems Datasheet / Telemetry Card -->
+            <div class="sys-panel" aria-label="Systems Telemetry Summary">
+              <div class="sys-panel-header">
+                <span class="sys-panel-title">SYS_SPEC // DETERMINISTIC BASELINE</span>
+                <span class="sys-panel-tag">VERIFIED</span>
+              </div>
+              <table class="sys-spec-table">
+                <tbody>
+                  <tr>
+                    <td class="sys-spec-key">Hot-Path Allocation</td>
+                    <td class="sys-spec-val"><span class="ok">0 malloc / 0 free</span></td>
+                  </tr>
+                  <tr>
+                    <td class="sys-spec-key">Object Pool (balloc)</td>
+                    <td class="sys-spec-val"><span class="accent">3.46 ns/op</span> · O(1)</td>
+                  </tr>
+                  <tr>
+                    <td class="sys-spec-key">Lock-Free SPSC (Rust)</td>
+                    <td class="sys-spec-val"><span class="accent">498.1 Mops/s</span> · 2.01 ns</td>
+                  </tr>
+                  <tr>
+                    <td class="sys-spec-key">Crypto Verification</td>
+                    <td class="sys-spec-val">FIPS 197 · NIST SP 800-38A/D</td>
+                  </tr>
+                  <tr>
+                    <td class="sys-spec-key">Runtime Dependencies</td>
+                    <td class="sys-spec-val">libc / libm only (C11)</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="sys-mem-bar" aria-hidden="true">
+                <div class="sys-mem-label">
+                  <span>STATIC ARENA LAYOUT</span>
+                  <span>64B CACHE-ALIGNED</span>
+                </div>
+                <div class="sys-mem-segments">
+                  <div class="sys-seg">.rodata / weights</div>
+                  <div class="sys-seg">arena / pool</div>
+                  <div class="sys-seg">ring [1024]</div>
+                  <div class="sys-seg dim">stack</div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -1975,7 +2083,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           backdrop.addEventListener("click", closeSidebar);
         }
 
-        // Smooth jump & spotlight on project card when clicked from sidebar
         const projLinks = document.querySelectorAll(".sidebar-proj-link");
         const filterBtns = document.querySelectorAll(".filter-btn");
         const cards = document.querySelectorAll("#projects .pcard");
@@ -1983,7 +2090,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
         projLinks.forEach((link) => {
           link.addEventListener("click", () => {
             closeSidebar();
-            // Reset filter to 'all' if target card is currently hidden
             const targetId = link.getAttribute("data-proj");
             const targetCard = document.getElementById(targetId);
             if (targetCard && targetCard.classList.contains("hidden-card")) {
@@ -2002,7 +2108,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           link.addEventListener("click", closeSidebar);
         });
 
-        // Category Filter Buttons
         filterBtns.forEach((btn) => {
           btn.addEventListener("click", () => {
             const f = btn.dataset.filter;
@@ -2014,7 +2119,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           });
         });
 
-        // Scroll-Spy for Sections and Project Cards
         const secIds = ["hero", "about", "projects", "rust", "contact"];
         const secLinks = document.querySelectorAll(".sidebar-link");
         const allCards = document.querySelectorAll(".pcard[id]");
@@ -2047,166 +2151,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
 
         window.addEventListener("scroll", onScrollSpy, { passive: true });
         onScrollSpy();
-      })();
-
-      /* Shared scroll-linked palette mix: 0 = blue, 1 = rust. */
-      let rustMix = 0;
-
-      /* ===== Hero shader (hand-written WebGL, no libraries) ===== */
-      (function () {
-        const canvas = document.getElementById("shader-canvas");
-        if (!canvas) return;
-        const gl = canvas.getContext("webgl", { antialias: true });
-        if (!gl) {
-          canvas.remove();
-          return;
-        }
-
-        const vsSource = `
-          attribute vec2 a_pos;
-          void main() {
-            gl_Position = vec4(a_pos, 0.0, 1.0);
-          }
-        `;
-
-        const fsSource = `
-          precision highp float;
-          uniform vec2 u_res;
-          uniform float u_t;
-          uniform vec3 u_base;
-          uniform vec3 u_wave;
-
-          void main() {
-            vec2 uv = gl_FragCoord.xy / u_res.xy;
-            vec3 col = u_base;
-
-            for (int i = 0; i < 3; i++) {
-              float fi = float(i);
-              float center = 0.66 - fi * 0.17;
-              float drift = u_t * (0.12 + 0.05 * fi);
-              float y = center
-                + (0.085 + 0.03 * fi)
-                  * sin(uv.x * (3.2 + fi * 0.8) + drift + fi * 2.1);
-              float d = uv.y - y;
-              float glow = 0.00006 / (d * d + 0.00006) * 0.55;
-              col += u_wave * glow * (1.0 - fi * 0.28);
-            }
-
-            float fadeX = smoothstep(0.0, 0.12, uv.x)
-                        * smoothstep(1.0, 0.88, uv.x);
-            float fadeY = smoothstep(0.0, 0.18, uv.y)
-                        * smoothstep(1.0, 0.82, uv.y);
-            col = mix(u_base, col, fadeX * fadeY);
-
-            gl_FragColor = vec4(col, 1.0);
-          }
-        `;
-
-        function compile(type, source) {
-          const s = gl.createShader(type);
-          gl.shaderSource(s, source);
-          gl.compileShader(s);
-          if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-            return null;
-          }
-          return s;
-        }
-
-        const vs = compile(gl.VERTEX_SHADER, vsSource);
-        const fs = compile(gl.FRAGMENT_SHADER, fsSource);
-        if (!vs || !fs) {
-          canvas.remove();
-          return;
-        }
-
-        const prog = gl.createProgram();
-        gl.attachShader(prog, vs);
-        gl.attachShader(prog, fs);
-        gl.linkProgram(prog);
-        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-          canvas.remove();
-          return;
-        }
-        gl.useProgram(prog);
-
-        const buf = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-        gl.bufferData(
-          gl.ARRAY_BUFFER,
-          new Float32Array([-1, -1, 3, -1, -1, 3]),
-          gl.STATIC_DRAW,
-        );
-        const loc = gl.getAttribLocation(prog, "a_pos");
-        gl.enableVertexAttribArray(loc);
-        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-
-        const uRes = gl.getUniformLocation(prog, "u_res");
-        const uT = gl.getUniformLocation(prog, "u_t");
-        const uBase = gl.getUniformLocation(prog, "u_base");
-        const uWave = gl.getUniformLocation(prog, "u_wave");
-
-        const BASE_BLUE = [15 / 255, 23 / 255, 42 / 255];
-        const BASE_RUST = [26 / 255, 16 / 255, 12 / 255];
-        const WAVE_BLUE = [100 / 255, 154 / 255, 210 / 255];
-        const WAVE_RUST = [244 / 255, 76 / 255, 0 / 255];
-
-        function setPalette() {
-          const b = BASE_BLUE.map(
-            (v, i) => v + (BASE_RUST[i] - v) * rustMix
-          );
-          const w = WAVE_BLUE.map(
-            (v, i) => v + (WAVE_RUST[i] - v) * rustMix
-          );
-          gl.uniform3f(uBase, b[0], b[1], b[2]);
-          gl.uniform3f(uWave, w[0], w[1], w[2]);
-        }
-
-        function resize() {
-          const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-          const w = Math.floor(canvas.clientWidth * dpr);
-          const h = Math.floor(canvas.clientHeight * dpr);
-          if (canvas.width !== w || canvas.height !== h) {
-            canvas.width = w;
-            canvas.height = h;
-            gl.viewport(0, 0, w, h);
-          }
-        }
-        resize();
-        window.addEventListener("resize", resize);
-
-        let visible = true;
-        new IntersectionObserver(
-          (entries) => {
-            visible = entries[0].isIntersecting;
-          },
-          { threshold: 0 },
-        ).observe(canvas);
-
-        function frame(t) {
-          if (visible && !document.hidden) {
-            resize();
-            gl.uniform2f(uRes, canvas.width, canvas.height);
-            gl.uniform1f(uT, t * 0.001);
-            setPalette();
-            gl.drawArrays(gl.TRIANGLES, 0, 3);
-          }
-          requestAnimationFrame(frame);
-        }
-
-        function drawStill() {
-          resize();
-          gl.uniform2f(uRes, canvas.width, canvas.height);
-          gl.uniform1f(uT, 12);
-          setPalette();
-          gl.drawArrays(gl.TRIANGLES, 0, 3);
-        }
-
-        if (prefersReducedMotion) {
-          requestAnimationFrame(drawStill);
-          window.addEventListener("resize", drawStill);
-        } else {
-          requestAnimationFrame(frame);
-        }
       })();
 
       /* ===== Project photo reveal ===== */
@@ -2267,7 +2211,6 @@ mpsc costs 8.8x what spsc does on this workload</pre>
           const vh = window.innerHeight;
           let t = 1 - Math.min(Math.abs(center - vh * 0.45) / (vh * 0.75), 1);
           t = t * t * (3 - 2 * t);
-          rustMix = t;
           for (const [name, [blue, rust]] of Object.entries(STOPS)) {
             const c = mix(blue, rust, t);
             rootStyle.setProperty(name, "rgb(" + c.join(", ") + ")");
