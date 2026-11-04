@@ -3,21 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Guillermo: Systems & Projects</title>
+    <title>Guillermo Corpas — Systems &amp; Computational Physics</title>
     <meta
       name="description"
-      content="Physicist and software engineer focused on low-level systems, mathematical modeling, and machine learning."
+      content="Physicist and software engineer focused on low-level C11 systems, mathematical modeling, and physics-informed machine learning."
     />
-    <meta name="author" content="Guillermo" />
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="author" content="Guillermo Corpas" />
+    <meta name="theme-color" content="#0b0e14" />
 
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Guillermo: Systems & Projects" />
+    <meta property="og:title" content="Guillermo Corpas — Systems &amp; Computational Physics" />
     <meta
       property="og:description"
-      content="Physicist and software engineer focused on low-level systems, mathematical modeling, and machine learning."
+      content="Physicist and software engineer focused on low-level C11 systems, mathematical modeling, and physics-informed machine learning."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://gcpino.github.io" />
@@ -28,10 +28,10 @@
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Guillermo: Systems & Projects" />
+    <meta name="twitter:title" content="Guillermo Corpas — Systems &amp; Computational Physics" />
     <meta
       name="twitter:description"
-      content="Physicist and software engineer focused on low-level systems, mathematical modeling, and machine learning."
+      content="Physicist and software engineer focused on low-level C11 systems, mathematical modeling, and physics-informed machine learning."
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -43,25 +43,27 @@
 
     <style>
       :root {
-        --bg: #0f172a;
-        --bg-card: #1e293b;
-        --border: #334155;
-        --accent: #649ad2;
-        --color-paper: #10141f;
-        --color-surface: #182030;
-        --color-ink: #f8fafc;
+        --color-paper: #0b0e14;
+        --color-surface: #111621;
+        --color-surface-raised: #161d2b;
+        --color-ink: #f1f5f9;
         --color-muted: #94a3b8;
         --color-soft: #64748b;
         --color-accent: #f08a59;
         --color-accent-soft: rgba(240, 138, 89, 0.12);
-        --color-rule: rgba(245, 245, 245, 0.12);
-        --color-rule-solid: rgba(148, 163, 184, 0.25);
-        --font-serif: 'Instrument Serif', Georgia, serif;
-        --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        --font-mono: 'Geist Mono', monospace;
+        --color-accent-glow: rgba(240, 138, 89, 0.24);
+        --color-signal: #739fdf;
+        --color-rule: rgba(241, 245, 249, 0.09);
+        --color-rule-solid: rgba(148, 163, 184, 0.24);
+        --font-serif: "Instrument Serif", Georgia, serif;
+        --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --font-mono: "Geist Mono", ui-monospace, monospace;
+        --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
       }
 
-      *, *::before, *::after {
+      *,
+      *::before,
+      *::after {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
@@ -73,16 +75,24 @@
 
       body {
         font-family: var(--font-sans);
-        background: var(--color-paper);
+        background-color: var(--color-paper);
+        background-image:
+          radial-gradient(ellipse 80% 50% at 50% -15%, rgba(240, 138, 89, 0.08), transparent),
+          radial-gradient(ellipse 60% 40% at 85% 10%, rgba(115, 159, 223, 0.05), transparent),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+          linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+        background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+        background-attachment: scroll;
         color: var(--color-ink);
-        line-height: 1.6;
+        line-height: 1.65;
         font-size: 15px;
         -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
       }
 
       ::selection {
         background: var(--color-accent);
-        color: #111111;
+        color: #0b0e14;
       }
 
       a {
@@ -90,8 +100,13 @@
         text-decoration: none;
       }
 
+      :focus-visible {
+        outline: 1px solid var(--color-accent);
+        outline-offset: 3px;
+      }
+
       .container {
-        max-width: 820px;
+        max-width: 840px;
         margin: 0 auto;
         padding: 0 1.5rem 5rem;
       }
@@ -101,16 +116,17 @@
         position: sticky;
         top: 0;
         z-index: 50;
-        background: rgba(15, 23, 42, 0.94);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        background: rgba(11, 14, 20, 0.82);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border-bottom: 1px solid var(--color-rule);
+        transition: border-color 0.25s var(--ease-out-expo);
       }
 
       .nav-inner {
-        max-width: 820px;
+        max-width: 840px;
         margin: 0 auto;
-        padding: 1.1rem 1.5rem;
+        padding: 1rem 1.5rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -119,89 +135,218 @@
       .logo {
         font-family: var(--font-mono);
         font-weight: 500;
-        font-size: 0.92rem;
+        font-size: 0.9rem;
         letter-spacing: -0.01em;
         color: var(--color-ink);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        transition: color 0.2s ease;
+      }
+
+      .logo-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--color-accent);
+        box-shadow: 0 0 10px var(--color-accent);
+        animation: pulse-dot 3s ease-in-out infinite;
+      }
+
+      @keyframes pulse-dot {
+        0%, 100% {
+          opacity: 0.85;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: scale(0.88);
+        }
       }
 
       .nav-links {
         display: flex;
         align-items: center;
-        gap: 1.5rem;
+        gap: 1.6rem;
         list-style: none;
         font-family: var(--font-mono);
-        font-size: 0.82rem;
+        font-size: 0.8rem;
         color: var(--color-muted);
+      }
+
+      .nav-links a {
+        position: relative;
+        padding: 0.2rem 0;
+        transition: color 0.2s ease;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 100%;
+        height: 1px;
+        background: var(--color-accent);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s var(--ease-out-expo);
       }
 
       .nav-links a:hover {
         color: var(--color-ink);
       }
 
+      .nav-links a:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+
       .term-trigger {
-        background: transparent;
-        border: 1px solid var(--color-rule);
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--color-rule-solid);
         color: var(--color-muted);
         font-family: var(--font-mono);
-        font-size: 0.75rem;
-        padding: 0.2rem 0.5rem;
-        border-radius: 4px;
+        font-size: 0.74rem;
+        padding: 0.25rem 0.6rem;
+        border-radius: 5px;
         cursor: pointer;
-        transition: border-color 0.15s, color 0.15s;
+        transition:
+          border-color 0.2s ease,
+          color 0.2s ease,
+          background-color 0.2s ease,
+          transform 0.2s var(--ease-out-expo);
       }
 
       .term-trigger:hover {
         color: var(--color-ink);
         border-color: var(--color-accent);
+        background: var(--color-accent-soft);
+        transform: translateY(-1px);
+      }
+
+      /* Entrance & Scroll Reveal Animations */
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero-animate {
+        opacity: 0;
+        animation: fade-up 0.75s var(--ease-out-expo) forwards;
+      }
+
+      .hero-delay-1 { animation-delay: 0.06s; }
+      .hero-delay-2 { animation-delay: 0.15s; }
+      .hero-delay-3 { animation-delay: 0.24s; }
+      .hero-delay-4 { animation-delay: 0.32s; }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition:
+          opacity 0.7s var(--ease-out-expo),
+          transform 0.7s var(--ease-out-expo);
+      }
+
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
       }
 
       /* Hero */
       .hero {
-        padding: 5rem 0 3.5rem;
+        padding: 5.25rem 0 3.75rem;
         border-bottom: 1px solid var(--color-rule);
+        position: relative;
+      }
+
+      .hero-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--color-accent);
+        background: var(--color-accent-soft);
+        border: 1px solid rgba(240, 138, 89, 0.25);
+        padding: 0.28rem 0.7rem;
+        border-radius: 999px;
+        margin-bottom: 1.35rem;
       }
 
       .hero h1 {
         font-family: var(--font-serif);
-        font-size: clamp(2.5rem, 4.5vw + 1rem, 3.75rem);
+        font-size: clamp(2.75rem, 5vw + 1rem, 4.1rem);
         font-weight: 400;
         letter-spacing: -0.025em;
-        line-height: 1.05;
+        line-height: 1.04;
         margin-bottom: 1.25rem;
         color: #ffffff;
       }
 
       .hero-statement {
-        font-size: 1.15rem;
+        font-size: 1.14rem;
         color: var(--color-muted);
-        line-height: 1.65;
-        max-width: 62ch;
-        margin-bottom: 1.8rem;
+        line-height: 1.7;
+        max-width: 60ch;
+        margin-bottom: 2rem;
+      }
+
+      .hero-statement strong {
+        color: var(--color-ink);
+        font-weight: 500;
       }
 
       .hero-links {
         display: flex;
         flex-wrap: wrap;
-        gap: 1.5rem;
+        gap: 1rem;
         font-family: var(--font-mono);
-        font-size: 0.82rem;
+        font-size: 0.8rem;
       }
 
       .hero-links a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
         color: var(--color-ink);
-        border-bottom: 1px solid var(--color-rule-solid);
-        padding-bottom: 1px;
-        transition: border-color 0.15s, color 0.15s;
+        background: var(--color-surface);
+        border: 1px solid var(--color-rule-solid);
+        padding: 0.42rem 0.85rem;
+        border-radius: 6px;
+        transition:
+          border-color 0.2s ease,
+          background-color 0.2s ease,
+          color 0.2s ease,
+          transform 0.2s var(--ease-out-expo);
       }
 
       .hero-links a:hover {
         color: var(--color-accent);
         border-color: var(--color-accent);
+        background: var(--color-surface-raised);
+        transform: translateY(-2px);
+      }
+
+      .ext-arrow {
+        display: inline-block;
+        transition: transform 0.2s var(--ease-out-expo);
+      }
+
+      a:hover .ext-arrow {
+        transform: translate(2px, -2px);
       }
 
       /* Section Layout */
       section {
-        padding: 4rem 0;
+        padding: 4.25rem 0;
         border-bottom: 1px solid var(--color-rule);
       }
 
@@ -212,7 +357,7 @@
       .section-header {
         display: flex;
         justify-content: space-between;
-        align-items: baseline;
+        align-items: center;
         flex-wrap: wrap;
         gap: 1rem;
         margin-bottom: 2.5rem;
@@ -220,7 +365,7 @@
 
       h2 {
         font-family: var(--font-serif);
-        font-size: 1.85rem;
+        font-size: 2rem;
         font-weight: 400;
         letter-spacing: -0.015em;
         color: var(--color-ink);
@@ -229,9 +374,10 @@
       .filter-bar {
         display: flex;
         gap: 0.25rem;
+        background: var(--color-surface);
         border: 1px solid var(--color-rule);
-        border-radius: 6px;
-        padding: 0.2rem;
+        border-radius: 7px;
+        padding: 0.22rem;
       }
 
       .filter-btn {
@@ -240,9 +386,13 @@
         font-family: var(--font-mono);
         font-size: 0.75rem;
         color: var(--color-muted);
-        padding: 0.25rem 0.65rem;
-        border-radius: 4px;
+        padding: 0.3rem 0.75rem;
+        border-radius: 5px;
         cursor: pointer;
+        transition:
+          color 0.2s ease,
+          background-color 0.2s ease,
+          box-shadow 0.2s ease;
       }
 
       .filter-btn:hover {
@@ -251,20 +401,54 @@
 
       .filter-btn.active {
         color: var(--color-ink);
-        background: var(--color-surface);
+        background: var(--color-surface-raised);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(240, 138, 89, 0.3);
       }
 
       /* Project Case Studies */
       .projects-wrapper {
         display: flex;
         flex-direction: column;
-        gap: 4rem;
+        gap: 2.75rem;
       }
 
       .project-block {
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+        background: rgba(17, 22, 33, 0.65);
+        border: 1px solid var(--color-rule);
+        border-radius: 10px;
+        padding: 1.85rem;
+        position: relative;
+        transition:
+          border-color 0.3s var(--ease-out-expo),
+          background-color 0.3s var(--ease-out-expo),
+          transform 0.3s var(--ease-out-expo),
+          box-shadow 0.3s var(--ease-out-expo),
+          opacity 0.25s ease;
+      }
+
+      .project-block::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 1.5rem;
+        right: 1.5rem;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+        opacity: 0;
+        transition: opacity 0.35s ease;
+      }
+
+      .project-block:hover {
+        border-color: rgba(148, 163, 184, 0.26);
+        background: rgba(22, 29, 43, 0.75);
+        box-shadow: 0 16px 40px -20px rgba(0, 0, 0, 0.6);
+      }
+
+      .project-block:hover::before {
+        opacity: 0.75;
       }
 
       .project-block.hidden-card {
@@ -278,83 +462,140 @@
         flex-wrap: wrap;
         gap: 1rem;
         border-bottom: 1px solid var(--color-rule);
-        padding-bottom: 0.75rem;
+        padding-bottom: 0.85rem;
+      }
+
+      .project-title-group {
+        display: flex;
+        align-items: baseline;
+        gap: 0.85rem;
+        flex-wrap: wrap;
       }
 
       .project-title-row h3 {
         font-family: var(--font-serif);
-        font-size: 1.8rem;
+        font-size: 1.9rem;
         font-weight: 400;
         letter-spacing: -0.01em;
+      }
+
+      .project-title-row h3 a {
+        transition: color 0.2s ease;
       }
 
       .project-title-row h3 a:hover {
         color: var(--color-accent);
       }
 
+      .project-tag {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        color: var(--color-accent);
+        background: var(--color-accent-soft);
+        border: 1px solid rgba(240, 138, 89, 0.22);
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+      }
+
       .project-meta-links {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 1.15rem;
         font-family: var(--font-mono);
-        font-size: 0.8rem;
+        font-size: 0.78rem;
       }
 
       .doc-link {
         color: var(--color-accent);
-        border-bottom: 1px dashed var(--color-accent);
+        border-bottom: 1px dashed rgba(240, 138, 89, 0.55);
         padding-bottom: 1px;
+        transition: border-color 0.2s ease, color 0.2s ease;
+      }
+
+      .doc-link:hover {
+        border-bottom-style: solid;
+        border-color: var(--color-accent);
+      }
+
+      .source-link {
+        color: var(--color-muted);
+        transition: color 0.2s ease;
+      }
+
+      .source-link:hover {
+        color: var(--color-ink);
       }
 
       .project-lead {
-        font-size: 1rem;
+        font-size: 0.98rem;
         color: var(--color-muted);
-        line-height: 1.7;
+        line-height: 1.72;
+      }
+
+      .project-lead code {
+        font-family: var(--font-mono);
+        font-size: 0.88em;
+        color: var(--color-accent);
+        background: var(--color-accent-soft);
+        padding: 0.1rem 0.35rem;
+        border-radius: 4px;
       }
 
       /* Spec Table */
       .specs-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 0.85rem;
-        margin: 0.5rem 0;
+        font-size: 0.84rem;
+        margin: 0.15rem 0;
       }
 
       .specs-table tr {
         border-bottom: 1px solid var(--color-rule);
+        transition: background-color 0.18s ease;
+      }
+
+      .specs-table tr:hover {
+        background-color: rgba(255, 255, 255, 0.015);
       }
 
       .specs-table td {
-        padding: 0.65rem 0;
+        padding: 0.65rem 0.4rem;
         vertical-align: top;
       }
 
       .specs-table td:first-child {
         font-family: var(--font-mono);
         color: var(--color-soft);
-        width: 32%;
-        font-size: 0.78rem;
+        width: 30%;
+        font-size: 0.75rem;
+        letter-spacing: 0.03em;
       }
 
       .specs-table td:last-child {
         color: var(--color-ink);
         font-family: var(--font-mono);
+        font-size: 0.82rem;
       }
 
       /* Architecture Visual Container */
       .diagram-box {
-        background: var(--color-surface);
+        background: #0d121c;
         border: 1px solid var(--color-rule);
-        border-radius: 6px;
+        border-radius: 8px;
         padding: 1.25rem;
         overflow-x: auto;
+        transition: border-color 0.25s ease;
+      }
+
+      .diagram-box:hover {
+        border-color: var(--color-rule-solid);
       }
 
       .diagram-caption {
         font-family: var(--font-mono);
         font-size: 0.72rem;
         color: var(--color-muted);
-        letter-spacing: 0.08em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
         margin-bottom: 1rem;
         display: flex;
@@ -364,6 +605,8 @@
 
       .diagram-caption a {
         color: var(--color-accent);
+        text-transform: none;
+        letter-spacing: 0;
       }
 
       .diagram-box svg {
@@ -373,47 +616,98 @@
         height: auto;
       }
 
+      /* Subtle Dataflow Animation on SVG Connectors */
+      @keyframes flow-dash {
+        to {
+          stroke-dashoffset: -16;
+        }
+      }
+
+      .flow-line {
+        stroke-dasharray: 5 3;
+        animation: flow-dash 1.2s linear infinite;
+      }
+
+      .svg-node {
+        transition: filter 0.25s ease;
+      }
+
+      .diagram-box:hover .svg-node-accent {
+        filter: drop-shadow(0 0 8px rgba(240, 138, 89, 0.2));
+      }
+
+      /* Smooth Collapsible Output Drawer */
       .output-panel {
         display: flex;
         flex-direction: column;
-        gap: 0.75rem;
       }
 
       .out-toggle {
         align-self: flex-start;
-        background: transparent;
-        border: 1px solid var(--color-rule);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--color-rule-solid);
         font-family: var(--font-mono);
         font-size: 0.75rem;
         color: var(--color-muted);
-        padding: 0.35rem 0.75rem;
-        border-radius: 4px;
+        padding: 0.4rem 0.8rem;
+        border-radius: 5px;
         cursor: pointer;
-        transition: all 0.15s;
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease,
+          background-color 0.2s ease;
       }
 
       .out-toggle:hover {
         color: var(--color-ink);
-        border-color: var(--color-rule-solid);
+        border-color: var(--color-accent);
+        background: var(--color-accent-soft);
+      }
+
+      .out-chevron {
+        display: inline-block;
+        font-size: 0.68rem;
+        transition: transform 0.3s var(--ease-out-expo);
+      }
+
+      .out-toggle[aria-expanded="true"] .out-chevron {
+        transform: rotate(90deg);
+        color: var(--color-accent);
       }
 
       .pcard-output {
-        display: none;
+        display: grid;
+        grid-template-rows: 0fr;
+        opacity: 0;
+        transition:
+          grid-template-rows 0.38s var(--ease-out-expo),
+          opacity 0.3s ease,
+          margin-top 0.3s var(--ease-out-expo);
+        margin-top: 0;
       }
 
       .pcard-output.open {
-        display: block;
+        grid-template-rows: 1fr;
+        opacity: 1;
+        margin-top: 0.85rem;
+      }
+
+      .pcard-output-inner {
+        overflow: hidden;
       }
 
       pre.console {
-        background: #090c14;
+        background: #070a10;
         border: 1px solid var(--color-rule);
         border-radius: 6px;
-        padding: 1rem;
+        padding: 1.1rem;
         font-family: var(--font-mono);
         font-size: 0.78rem;
-        line-height: 1.6;
-        color: #739fdf;
+        line-height: 1.65;
+        color: var(--color-signal);
         overflow-x: auto;
       }
 
@@ -421,6 +715,7 @@
         border: 1px solid var(--color-rule);
         border-radius: 6px;
         overflow: hidden;
+        background: #070a10;
       }
 
       .plot-image-wrapper img {
@@ -434,15 +729,22 @@
         font-size: 0.74rem;
         color: var(--color-muted);
         text-align: center;
-        padding: 0.5rem;
+        padding: 0.6rem 0.75rem;
         background: var(--color-surface);
+        border-top: 1px solid var(--color-rule);
       }
 
       /* About Section */
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
       .about-prose {
         display: flex;
         flex-direction: column;
-        gap: 1.25rem;
+        gap: 1.2rem;
         font-size: 1.02rem;
         line-height: 1.75;
         color: var(--color-muted);
@@ -453,22 +755,66 @@
         font-weight: 500;
       }
 
+      .pillars-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+
+      .pillar-card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-rule);
+        border-radius: 8px;
+        padding: 1.1rem 1.2rem;
+        transition:
+          border-color 0.25s ease,
+          transform 0.25s var(--ease-out-expo);
+      }
+
+      .pillar-card:hover {
+        border-color: var(--color-rule-solid);
+        transform: translateY(-2px);
+      }
+
+      .pillar-title {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--color-accent);
+        margin-bottom: 0.35rem;
+      }
+
+      .pillar-desc {
+        font-size: 0.86rem;
+        color: var(--color-muted);
+        line-height: 1.55;
+      }
+
       /* Contact Section */
       .contact-strip {
         display: flex;
         justify-content: space-between;
-        align-items: baseline;
+        align-items: center;
         flex-wrap: wrap;
         gap: 1.5rem;
-        padding: 2rem 0;
+        background: var(--color-surface);
+        border: 1px solid var(--color-rule);
+        border-radius: 10px;
+        padding: 1.75rem 2rem;
+        transition: border-color 0.25s ease;
+      }
+
+      .contact-strip:hover {
+        border-color: var(--color-rule-solid);
       }
 
       .contact-strip a.email {
         font-family: var(--font-mono);
-        font-size: 1.05rem;
+        font-size: 1.02rem;
         color: var(--color-ink);
         border-bottom: 1px solid var(--color-rule-solid);
         padding-bottom: 2px;
+        transition: color 0.2s ease, border-color 0.2s ease;
       }
 
       .contact-strip a.email:hover {
@@ -480,8 +826,12 @@
         display: flex;
         gap: 1.5rem;
         font-family: var(--font-mono);
-        font-size: 0.85rem;
+        font-size: 0.84rem;
         color: var(--color-muted);
+      }
+
+      .social-row a {
+        transition: color 0.2s ease;
       }
 
       .social-row a:hover {
@@ -500,41 +850,62 @@
 
       .footer-hint {
         cursor: pointer;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        border: 1px solid transparent;
+        transition: color 0.2s ease, border-color 0.2s ease;
       }
 
       .footer-hint:hover {
-        color: var(--color-muted);
+        color: var(--color-ink);
+        border-color: var(--color-rule-solid);
       }
 
       /* Terminal Overlay */
       #terminal-overlay {
-        display: none;
         position: fixed;
         inset: 0;
         z-index: 100;
-        background: rgba(0, 0, 0, 0.82);
-        backdrop-filter: blur(4px);
+        background: rgba(5, 7, 11, 0.8);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        display: flex;
         align-items: center;
         justify-content: center;
         padding: 1rem;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 0.22s var(--ease-out-expo),
+          visibility 0.22s var(--ease-out-expo);
       }
 
       #terminal-overlay.active {
-        display: flex;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
       }
 
       .terminal-window {
-        background: #0d111a;
+        background: #0b0f17;
         border: 1px solid var(--color-rule-solid);
-        border-radius: 6px;
+        border-radius: 8px;
         width: 100%;
         max-width: 660px;
         overflow: hidden;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+        transform: scale(0.96) translateY(8px);
+        transition: transform 0.25s var(--ease-out-expo);
+      }
+
+      #terminal-overlay.active .terminal-window {
+        transform: scale(1) translateY(0);
       }
 
       .terminal-header {
-        background: #141a26;
-        padding: 0.6rem 0.9rem;
+        background: #121826;
+        padding: 0.65rem 1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -550,10 +921,11 @@
         font-family: var(--font-mono);
         color: var(--color-muted);
         cursor: pointer;
+        transition: color 0.15s ease;
       }
 
       .terminal-close:hover {
-        color: var(--color-ink);
+        color: var(--color-accent);
       }
 
       .terminal-body {
@@ -567,8 +939,12 @@
         line-height: 1.6;
       }
 
-      .terminal-line { margin-bottom: 0.35rem; }
-      .terminal-prompt { color: var(--color-accent); }
+      .terminal-line {
+        margin-bottom: 0.35rem;
+      }
+      .terminal-prompt {
+        color: var(--color-accent);
+      }
       .terminal-cursor {
         display: inline-block;
         width: 7px;
@@ -579,11 +955,56 @@
         animation: blink 1s step-start infinite;
       }
 
-      @keyframes blink { 50% { opacity: 0; } }
-      .info { color: #739fdf; }
-      .err { color: #f87171; }
-      .succ { color: var(--color-accent); }
-      #term-mobile-input { position: absolute; opacity: 0; pointer-events: none; }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+      .info {
+        color: var(--color-signal);
+      }
+      .err {
+        color: #f87171;
+      }
+      .succ {
+        color: var(--color-accent);
+      }
+      #term-mobile-input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      @media (max-width: 640px) {
+        .hero {
+          padding: 3.5rem 0 2.75rem;
+        }
+        .project-block {
+          padding: 1.35rem;
+        }
+        .specs-table td:first-child {
+          width: 38%;
+        }
+        .contact-strip {
+          padding: 1.35rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+        .hero-animate,
+        .reveal {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
     </style>
   </head>
 
@@ -591,7 +1012,10 @@
     <!-- Navigation -->
     <nav>
       <div class="nav-inner">
-        <a href="#hero" class="logo">Guillermo</a>
+        <a href="#hero" class="logo">
+          <span class="logo-dot" aria-hidden="true"></span>
+          <span>Guillermo</span>
+        </a>
         <ul class="nav-links">
           <li><a href="#projects">Projects</a></li>
           <li><a href="#about">About</a></li>
@@ -613,19 +1037,31 @@
     <main class="container">
       <!-- Hero -->
       <section class="hero" id="hero">
-        <h1>Guillermo Corpas</h1>
-        <p class="hero-statement">
-          Physicist and software engineer focused on low-level systems, mathematical modeling, and machine learning.
+        <div class="hero-kicker hero-animate hero-delay-1">
+          <span>C11 Systems · Scientific Computing · Physics-Informed ML</span>
+        </div>
+        <h1 class="hero-animate hero-delay-2">Guillermo Corpas</h1>
+        <p class="hero-statement hero-animate hero-delay-3">
+          <strong>Physicist and software engineer</strong> building deterministic low-level systems,
+          mathematical models, and machine learning runtimes from first principles.
         </p>
-        <div class="hero-links">
-          <a href="https://github.com/gcpino" target="_blank" rel="noopener">github.com/gcpino</a>
-          <a href="https://linkedin.com/in/gcorpas" target="_blank" rel="noopener">linkedin.com/in/gcorpas</a>
-          <a href="mailto:guicorpasp@gmail.com">guicorpasp@gmail.com</a>
+        <div class="hero-links hero-animate hero-delay-4">
+          <a href="https://github.com/gcpino" target="_blank" rel="noopener">
+            <span>github.com/gcpino</span>
+            <span class="ext-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a href="https://linkedin.com/in/gcorpas" target="_blank" rel="noopener">
+            <span>linkedin.com/in/gcorpas</span>
+            <span class="ext-arrow" aria-hidden="true">↗</span>
+          </a>
+          <a href="mailto:guicorpasp@gmail.com">
+            <span>guicorpasp@gmail.com</span>
+          </a>
         </div>
       </section>
 
       <!-- Projects Section -->
-      <section id="projects">
+      <section id="projects" class="reveal">
         <div class="section-header">
           <h2>Featured Projects</h2>
           <div class="filter-bar" role="tablist" aria-label="Filter projects">
@@ -639,19 +1075,29 @@
           <!-- 1. c-infer -->
           <article class="project-block" id="proj-cinfer" data-category="c11">
             <div class="project-title-row">
-              <h3>
-                <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">
-                  c-infer
-                </a>
-              </h3>
+              <div class="project-title-group">
+                <h3>
+                  <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">
+                    c-infer
+                  </a>
+                </h3>
+                <span class="project-tag">C11 · Zero-Alloc Runtime</span>
+              </div>
               <div class="project-meta-links">
-                <a href="docs/cinfer-architecture.html" class="doc-link" target="_blank">Full Architecture Spec ↗</a>
-                <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">Source ↗</a>
+                <a href="docs/cinfer-architecture.html" class="doc-link" target="_blank">
+                  Full Architecture Spec <span class="ext-arrow" aria-hidden="true">↗</span>
+                </a>
+                <a href="https://github.com/gcpino/c-infer" class="source-link" target="_blank" rel="noopener">
+                  Source <span class="ext-arrow" aria-hidden="true">↗</span>
+                </a>
               </div>
             </div>
 
             <p class="project-lead">
-              A standalone neural network inference runtime implemented in pure C11 without BLAS, external matrix libraries, or dynamic memory in the forward pass. Trained weights are serialized from PyTorch into a custom binary format (<code style="font-family: var(--font-mono); color: var(--color-accent);">.cinf</code>) and dispatched across a preallocated linear arena.
+              A standalone neural network inference runtime implemented in pure C11 without BLAS,
+              external matrix libraries, or dynamic memory in the forward pass. Trained weights are
+              serialized from PyTorch into a custom binary format (<code>.cinf</code>) and dispatched
+              across a preallocated linear arena.
             </p>
 
             <table class="specs-table">
@@ -669,73 +1115,79 @@
               </tr>
             </table>
 
-            <!-- Editorial Architecture Diagram (Diagram-Design Standard) -->
+            <!-- Editorial Architecture Diagram -->
             <div class="diagram-box">
               <div class="diagram-caption">
                 <span>Architecture Diagram · Dataflow &amp; Memory Isolation</span>
-                <a href="docs/cinfer-architecture.html" target="_blank">Expand ↗</a>
+                <a href="docs/cinfer-architecture.html" target="_blank">
+                  Expand <span class="ext-arrow" aria-hidden="true">↗</span>
+                </a>
               </div>
               <svg viewBox="0 0 760 170" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="c-infer Architecture flow">
                 <defs>
                   <marker id="arr" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
-                    <polygon points="0 0, 7 2.5, 0 5" fill="#bfc0c0"/>
+                    <polygon points="0 0, 7 2.5, 0 5" fill="#bfc0c0" />
                   </marker>
                   <marker id="arr-acc" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
-                    <polygon points="0 0, 7 2.5, 0 5" fill="#f08a59"/>
+                    <polygon points="0 0, 7 2.5, 0 5" fill="#f08a59" />
                   </marker>
                 </defs>
 
                 <!-- Zone 1 -->
-                <rect x="10" y="15" width="180" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8"/>
+                <rect x="10" y="15" width="180" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8" />
                 <text x="100" y="32" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.12em">OFFLINE PYTHON</text>
-                <rect x="25" y="45" width="150" height="42" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8"/>
+                <rect x="25" y="45" width="150" height="42" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
                 <text x="100" y="64" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">PyTorch Model</text>
                 <text x="100" y="78" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">export.py serialization</text>
-                <rect x="35" y="98" width="130" height="36" rx="4" fill="#10141f" stroke="#334155" stroke-width="0.8"/>
+                <rect x="35" y="98" width="130" height="36" rx="4" fill="#10141f" stroke="#334155" stroke-width="0.8" />
                 <text x="100" y="117" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle">model.cinf (binary)</text>
-                <line x1="100" y1="87" x2="100" y2="98" stroke="#bfc0c0" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="100" y1="87" x2="100" y2="98" stroke="#bfc0c0" stroke-width="1" marker-end="url(#arr)" />
 
                 <!-- Connector 1->2 -->
-                <line x1="190" y1="116" x2="230" y2="116" stroke="#f08a59" stroke-width="1.2" marker-end="url(#arr-acc)"/>
+                <line class="flow-line" x1="190" y1="116" x2="230" y2="116" stroke="#f08a59" stroke-width="1.3" marker-end="url(#arr-acc)" />
 
                 <!-- Zone 2 -->
-                <rect x="235" y="15" width="315" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8"/>
+                <rect x="235" y="15" width="315" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8" />
                 <text x="392" y="32" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.12em">C11 RUNTIME CORE</text>
-                
-                <rect x="250" y="45" width="135" height="92" rx="4" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1.2"/>
+
+                <rect class="svg-node svg-node-accent" x="250" y="45" width="135" height="92" rx="4" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1.2" />
                 <text x="317" y="68" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">Static Arena</text>
                 <text x="317" y="84" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">cinf_arena_t</text>
                 <text x="317" y="104" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Zero heap during fwd</text>
                 <text x="317" y="118" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Fixed buffer footprint</text>
 
                 <!-- Connector into engine -->
-                <line x1="385" y1="91" x2="405" y2="91" stroke="#bfc0c0" stroke-width="1" marker-end="url(#arr)"/>
+                <line x1="385" y1="91" x2="405" y2="91" stroke="#bfc0c0" stroke-width="1" marker-end="url(#arr)" />
 
-                <rect x="410" y="45" width="125" height="92" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8"/>
+                <rect x="410" y="45" width="125" height="92" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
                 <text x="472" y="68" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">Dispatch Loop</text>
                 <text x="472" y="84" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">cinf_forward()</text>
                 <text x="472" y="102" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">Conv2D · Linear</text>
                 <text x="472" y="116" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">MaxPool · Softmax</text>
 
                 <!-- Connector 2->3 -->
-                <line x1="550" y1="91" x2="585" y2="91" stroke="#bfc0c0" stroke-width="1" marker-end="url(#arr)"/>
+                <line class="flow-line" x1="550" y1="91" x2="585" y2="91" stroke="#bfc0c0" stroke-width="1.1" marker-end="url(#arr)" />
 
                 <!-- Zone 3 -->
-                <rect x="590" y="15" width="160" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8"/>
+                <rect x="590" y="15" width="160" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8" />
                 <text x="670" y="32" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.12em">VERIFICATION</text>
-                <rect x="605" y="45" width="130" height="42" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8"/>
+                <rect x="605" y="45" width="130" height="42" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
                 <text x="670" y="64" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">PyTorch Parity</text>
                 <text x="670" y="78" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Delta &lt; 1e-5 abs</text>
-                <rect x="605" y="98" width="130" height="36" rx="4" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1"/>
+                <rect class="svg-node svg-node-accent" x="605" y="98" width="130" height="36" rx="4" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1" />
                 <text x="670" y="116" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8.5" font-weight="600" text-anchor="middle">All Tests Pass</text>
-                <line x1="670" y1="87" x2="670" y2="98" stroke="#f08a59" stroke-width="1" marker-end="url(#arr-acc)"/>
+                <line x1="670" y1="87" x2="670" y2="98" stroke="#f08a59" stroke-width="1" marker-end="url(#arr-acc)" />
               </svg>
             </div>
 
             <div class="output-panel">
-              <button type="button" class="out-toggle" aria-expanded="false">View test suite verification</button>
+              <button type="button" class="out-toggle" aria-expanded="false">
+                <span class="out-chevron" aria-hidden="true">▸</span>
+                <span class="out-label">View test suite verification</span>
+              </button>
               <div class="pcard-output">
-                <pre class="console">$ make test
+                <div class="pcard-output-inner">
+                  <pre class="console">$ make test
 ==> test_linear       fully connected forward pass        [tol 1e-5]: OK
 ==> test_conv2d       2D convolution forward pass         [tol 1e-5]: OK
 ==> test_maxpool2d    2D spatial max pooling              [bit-exact]: OK
@@ -745,6 +1197,7 @@
 ==> test_end_to_end   full MLP classification pipeline    [tol 1e-5]: OK
 ==> test_no_alloc_forward: verified 0 bytes heap allocated during inference
 ALL TESTS PASSED (8/8)</pre>
+                </div>
               </div>
             </div>
           </article>
@@ -752,19 +1205,29 @@ ALL TESTS PASSED (8/8)</pre>
           <!-- 2. PINN -->
           <article class="project-block" id="proj-pinn" data-category="ml">
             <div class="project-title-row">
-              <h3>
-                <a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener">
-                  PINN
-                </a>
-              </h3>
+              <div class="project-title-group">
+                <h3>
+                  <a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener">
+                    PINN
+                  </a>
+                </h3>
+                <span class="project-tag">PyTorch · PDE Solver</span>
+              </div>
               <div class="project-meta-links">
-                <a href="docs/pinn-architecture.html" class="doc-link" target="_blank">Full Architecture Spec ↗</a>
-                <a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener">Source ↗</a>
+                <a href="docs/pinn-architecture.html" class="doc-link" target="_blank">
+                  Full Architecture Spec <span class="ext-arrow" aria-hidden="true">↗</span>
+                </a>
+                <a href="https://github.com/gcpino/PINN" class="source-link" target="_blank" rel="noopener">
+                  Source <span class="ext-arrow" aria-hidden="true">↗</span>
+                </a>
               </div>
             </div>
 
             <p class="project-lead">
-              A Physics-Informed Neural Network solving the one-dimensional non-linear heat diffusion equation (<code style="font-family: var(--font-mono); color: var(--color-accent);">&part;u/&part;t = &alpha; &part;&sup2;u/&part;x&sup2;</code>). Trained completely unsupervised without simulation ground truth by optimizing the partial differential equation residual directly through PyTorch automatic differentiation.
+              A Physics-Informed Neural Network solving the one-dimensional non-linear heat diffusion
+              equation (<code>&part;u/&part;t = &alpha; &part;&sup2;u/&part;x&sup2;</code>). Trained
+              completely unsupervised without simulation ground truth by optimizing the partial
+              differential equation residual directly through PyTorch automatic differentiation.
             </p>
 
             <table class="specs-table">
@@ -782,73 +1245,80 @@ ALL TESTS PASSED (8/8)</pre>
               </tr>
             </table>
 
-            <!-- Editorial Architecture Diagram (Diagram-Design Standard) -->
+            <!-- Editorial Architecture Diagram -->
             <div class="diagram-box">
               <div class="diagram-caption">
                 <span>Architecture Diagram · PDE Loss Formulation &amp; Autodiff</span>
-                <a href="docs/pinn-architecture.html" target="_blank">Expand ↗</a>
+                <a href="docs/pinn-architecture.html" target="_blank">
+                  Expand <span class="ext-arrow" aria-hidden="true">↗</span>
+                </a>
               </div>
               <svg viewBox="0 0 760 170" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PINN Architecture flow">
                 <!-- Zone 1 -->
-                <rect x="10" y="15" width="180" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8"/>
+                <rect x="10" y="15" width="180" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8" />
                 <text x="100" y="32" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.12em">SAMPLING DOMAIN</text>
-                <rect x="25" y="45" width="150" height="42" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8"/>
+                <rect x="25" y="45" width="150" height="42" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
                 <text x="100" y="64" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">Interior Grid (x, t)</text>
                 <text x="100" y="78" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Random Collocation</text>
-                <rect x="25" y="98" width="150" height="36" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8"/>
+                <rect x="25" y="98" width="150" height="36" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
                 <text x="100" y="116" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">IC: sin(&pi;x) · BC: u=0</text>
 
                 <!-- Connector 1->2 -->
-                <line x1="190" y1="88" x2="230" y2="88" stroke="#bfc0c0" stroke-width="1" marker-end="url(#arr)"/>
+                <line class="flow-line" x1="190" y1="88" x2="230" y2="88" stroke="#bfc0c0" stroke-width="1.1" marker-end="url(#arr)" />
 
                 <!-- Zone 2 -->
-                <rect x="235" y="15" width="315" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8"/>
+                <rect x="235" y="15" width="315" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8" />
                 <text x="392" y="32" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.12em">SURROGATE &amp; AUTODIFF</text>
-                
-                <rect x="250" y="45" width="125" height="92" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8"/>
+
+                <rect x="250" y="45" width="125" height="92" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
                 <text x="312" y="68" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">Surrogate MLP</text>
                 <text x="312" y="84" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">3 layers &times; 32 units</text>
                 <text x="312" y="104" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">Output field</text>
                 <text x="312" y="118" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">u_pred(x, t)</text>
 
                 <!-- Connector into autodiff -->
-                <line x1="375" y1="91" x2="395" y2="91" stroke="#f08a59" stroke-width="1.2" marker-end="url(#arr-acc)"/>
+                <line class="flow-line" x1="375" y1="91" x2="395" y2="91" stroke="#f08a59" stroke-width="1.3" marker-end="url(#arr-acc)" />
 
-                <rect x="400" y="45" width="135" height="92" rx="4" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1.2"/>
+                <rect class="svg-node svg-node-accent" x="400" y="45" width="135" height="92" rx="4" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1.2" />
                 <text x="467" y="68" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">PyTorch Autodiff</text>
                 <text x="467" y="84" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">torch.autograd.grad()</text>
                 <text x="467" y="102" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">&part;u/&part;t (1st order)</text>
                 <text x="467" y="116" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">&part;&sup2;u/&part;x&sup2; (2nd order)</text>
 
                 <!-- Connector 2->3 -->
-                <line x1="550" y1="91" x2="585" y2="91" stroke="#bfc0c0" stroke-width="1" marker-end="url(#arr)"/>
+                <line class="flow-line" x1="550" y1="91" x2="585" y2="91" stroke="#bfc0c0" stroke-width="1.1" marker-end="url(#arr)" />
 
                 <!-- Zone 3 -->
-                <rect x="590" y="15" width="160" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8"/>
+                <rect x="590" y="15" width="160" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8" />
                 <text x="670" y="32" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.12em">RESIDUAL LOSS</text>
-                <rect x="605" y="45" width="130" height="42" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8"/>
+                <rect x="605" y="45" width="130" height="42" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
                 <text x="670" y="64" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="9.5" font-weight="600" text-anchor="middle">PDE Residual Loss</text>
                 <text x="670" y="78" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">mean( (u_t - &alpha;u_xx)&sup2; )</text>
-                <rect x="605" y="98" width="130" height="36" rx="4" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1"/>
+                <rect class="svg-node svg-node-accent" x="605" y="98" width="130" height="36" rx="4" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1" />
                 <text x="670" y="114" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" text-anchor="middle">Rel L2: 1.6e-3</text>
                 <text x="670" y="126" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="6.5" text-anchor="middle">Exact Mode Decay</text>
-                <line x1="670" y1="87" x2="670" y2="98" stroke="#f08a59" stroke-width="1" marker-end="url(#arr-acc)"/>
+                <line x1="670" y1="87" x2="670" y2="98" stroke="#f08a59" stroke-width="1" marker-end="url(#arr-acc)" />
               </svg>
             </div>
 
             <div class="output-panel">
-              <button type="button" class="out-toggle" aria-expanded="false">View simulation vs analytical plot</button>
+              <button type="button" class="out-toggle" aria-expanded="false">
+                <span class="out-chevron" aria-hidden="true">▸</span>
+                <span class="out-label">View simulation vs analytical plot</span>
+              </button>
               <div class="pcard-output">
-                <div class="plot-image-wrapper">
-                  <img
-                    src="assets/pinn-comparison.png"
-                    alt="PINN solution of the 1D heat equation compared with the analytical solution"
-                    width="2520"
-                    height="720"
-                    loading="lazy"
-                  />
-                  <div class="plot-legend">
-                    Figure 1: Neural network predicted field (left) vs analytical Fourier solution (center) and pointwise residual error (right).
+                <div class="pcard-output-inner">
+                  <div class="plot-image-wrapper">
+                    <img
+                      src="assets/pinn-comparison.png"
+                      alt="PINN solution of the 1D heat equation compared with the analytical solution"
+                      width="2520"
+                      height="720"
+                      loading="lazy"
+                    />
+                    <div class="plot-legend">
+                      Figure 1: Neural network predicted field (left) vs analytical Fourier solution (center) and pointwise residual error (right).
+                    </div>
                   </div>
                 </div>
               </div>
@@ -858,31 +1328,60 @@ ALL TESTS PASSED (8/8)</pre>
       </section>
 
       <!-- About Section -->
-      <section id="about">
+      <section id="about" class="reveal">
         <div class="section-header">
           <h2>About</h2>
         </div>
-        <div class="about-prose">
-          <p>
-            I hold a degree in <strong>Physics</strong> and work as a software engineer across low-level systems, mathematical modeling, and machine learning.
-            My approach combines analytical rigor with clean, reliable software engineering.
-          </p>
-          <p>
-            I enjoy building systems from first principles, prioritizing predictable execution, performance, and thorough verification across diverse problem domains.
-          </p>
+        <div class="about-grid">
+          <div class="about-prose">
+            <p>
+              I hold a degree in <strong>Physics</strong> and work as a software engineer across
+              low-level systems, mathematical modeling, and machine learning. My approach combines
+              analytical rigor with clean, reliable software engineering.
+            </p>
+            <p>
+              I enjoy building systems from first principles, prioritizing predictable execution,
+              deterministic memory layouts, and thorough numerical verification across diverse
+              problem domains.
+            </p>
+          </div>
+          <div class="pillars-row">
+            <div class="pillar-card">
+              <div class="pillar-title">Systems C / C11</div>
+              <div class="pillar-desc">
+                Zero-allocation hot paths, static memory arenas, and dependency-free runtimes.
+              </div>
+            </div>
+            <div class="pillar-card">
+              <div class="pillar-title">Computational Physics</div>
+              <div class="pillar-desc">
+                Differential equations, numerical stability, and analytical benchmark validation.
+              </div>
+            </div>
+            <div class="pillar-card">
+              <div class="pillar-title">Scientific ML</div>
+              <div class="pillar-desc">
+                Physics-informed neural networks, custom binary weight serialization, and parity testing.
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- Contact Section -->
-      <section id="contact">
+      <section id="contact" class="reveal">
         <div class="section-header">
           <h2>Contact</h2>
         </div>
         <div class="contact-strip">
           <a href="mailto:guicorpasp@gmail.com" class="email">guicorpasp@gmail.com</a>
           <div class="social-row">
-            <a href="https://github.com/gcpino" target="_blank" rel="noopener">GitHub ↗</a>
-            <a href="https://linkedin.com/in/gcorpas" target="_blank" rel="noopener">LinkedIn ↗</a>
+            <a href="https://github.com/gcpino" target="_blank" rel="noopener">
+              GitHub <span class="ext-arrow" aria-hidden="true">↗</span>
+            </a>
+            <a href="https://linkedin.com/in/gcorpas" target="_blank" rel="noopener">
+              LinkedIn <span class="ext-arrow" aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
       </section>
@@ -895,8 +1394,8 @@ ALL TESTS PASSED (8/8)</pre>
     </main>
 
     <!-- Terminal Overlay (Easter Egg) -->
-    <div id="terminal-overlay">
-      <div class="terminal-window">
+    <div id="terminal-overlay" aria-hidden="true">
+      <div class="terminal-window" role="dialog" aria-label="Interactive Systems Terminal">
         <div class="terminal-header">
           <span>guillermo@portfolio: bash</span>
           <button type="button" class="terminal-close" onclick="closeTerminal()">[esc]</button>
@@ -922,7 +1421,7 @@ ALL TESTS PASSED (8/8)</pre>
     </div>
 
     <script>
-      /* Filter buttons & collapsible toggles */
+      /* Filter buttons, smooth collapsible toggles & scroll reveal */
       (function () {
         const filterBtns = document.querySelectorAll(".filter-btn");
         const cards = document.querySelectorAll(".project-block");
@@ -939,16 +1438,43 @@ ALL TESTS PASSED (8/8)</pre>
         });
 
         document.querySelectorAll(".out-toggle").forEach((btn) => {
-          const baseLabel = btn.textContent.replace(/^(Hide|View)\s*/i, "");
+          const labelEl = btn.querySelector(".out-label");
+          const baseLabel = labelEl.textContent.replace(/^(Hide|View)\s*/i, "");
           btn.addEventListener("click", () => {
             const out = btn.closest(".project-block").querySelector(".pcard-output");
             const isOpen = out.classList.toggle("open");
             btn.setAttribute("aria-expanded", String(isOpen));
-            btn.textContent = (isOpen ? "Hide " : "View ") + baseLabel;
+            labelEl.textContent = (isOpen ? "Hide " : "View ") + baseLabel;
           });
         });
 
-        document.getElementById("terminal-hint").addEventListener("click", openTerminal);
+        const hint = document.getElementById("terminal-hint");
+        hint.addEventListener("click", openTerminal);
+        hint.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openTerminal();
+          }
+        });
+
+        /* Scroll-triggered section reveal */
+        const reveals = document.querySelectorAll(".reveal");
+        if ("IntersectionObserver" in window) {
+          const io = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("visible");
+                  io.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+          );
+          reveals.forEach((el) => io.observe(el));
+        } else {
+          reveals.forEach((el) => el.classList.add("visible"));
+        }
       })();
 
       /* Terminal Easter Egg */
@@ -979,6 +1505,7 @@ ALL TESTS PASSED (8/8)</pre>
 
       function openTerminal() {
         terminalOverlay.classList.add("active");
+        terminalOverlay.setAttribute("aria-hidden", "false");
         terminalOpen = true;
         renderPrompt();
         scrollTerminal();
@@ -990,6 +1517,7 @@ ALL TESTS PASSED (8/8)</pre>
 
       function closeTerminal() {
         terminalOverlay.classList.remove("active");
+        terminalOverlay.setAttribute("aria-hidden", "true");
         terminalOpen = false;
         termInput.blur();
       }
@@ -1009,7 +1537,7 @@ ALL TESTS PASSED (8/8)</pre>
       function escapeHtml(str) {
         return str.replace(
           /[&<>"]/g,
-          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]
         );
       }
 
@@ -1094,7 +1622,7 @@ ALL TESTS PASSED (8/8)</pre>
           default:
             printLine(
               main + ": command not found. Type help for available commands.",
-              "err",
+              "err"
             );
         }
         currentInput = "";
