@@ -1,272 +1,505 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>c-infer Inference Engine Architecture</title>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --color-paper:       #1b1e2b;
-      --color-paper-2:     #232738;
-      --color-ink:         #f5f5f5;
-      --color-muted:       #bfc0c0;
-      --color-soft:        #949eb2;
-      --color-rule:        rgba(245,245,245,0.12);
-      --color-rule-solid:  rgba(191,192,192,0.25);
-      --color-accent:      #f08a59;
-      --color-accent-tint: rgba(240,138,89,0.12);
-      --color-link:        #739fdf;
-      --font-sans:   'Geist', system-ui, sans-serif;
-      --font-serif:  'Instrument Serif', serif;
-      --font-mono:   'Geist Mono', ui-monospace, monospace;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>c-infer Architecture — Guillermo Corpas</title>
+    <meta name="theme-color" content="#0b0e14" />
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    body {
-      font-family: var(--font-sans);
-      background: var(--color-paper);
-      min-height: 100vh;
-      padding: 3rem 2rem;
-      color: var(--color-ink);
-      line-height: 1.5;
-    }
+      :root {
+        --color-paper: #0b0e14;
+        --color-surface: #111621;
+        --color-surface-raised: #161d2b;
+        --color-ink: #f1f5f9;
+        --color-muted: #94a3b8;
+        --color-soft: #64748b;
+        --color-accent: #f08a59;
+        --color-accent-soft: rgba(240, 138, 89, 0.12);
+        --color-signal: #739fdf;
+        --color-rule: rgba(241, 245, 249, 0.09);
+        --color-rule-solid: rgba(148, 163, 184, 0.24);
+        --font-serif: "Instrument Serif", Georgia, serif;
+        --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --font-mono: "Geist Mono", ui-monospace, monospace;
+        --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+      }
 
-    .container { max-width: 1080px; margin: 0 auto; }
+      body {
+        font-family: var(--font-sans);
+        background-color: var(--color-paper);
+        background-image:
+          radial-gradient(ellipse 80% 50% at 50% -15%, rgba(240, 138, 89, 0.08), transparent),
+          radial-gradient(ellipse 60% 40% at 85% 10%, rgba(115, 159, 223, 0.05), transparent),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+          linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+        background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+        min-height: 100vh;
+        color: var(--color-ink);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
 
-    .header { margin-bottom: 2rem; }
+      ::selection {
+        background: var(--color-accent);
+        color: #0b0e14;
+      }
 
-    .header-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--color-muted);
-      margin-bottom: 0.5rem;
-    }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-    h1 {
-      font-family: var(--font-serif);
-      font-size: clamp(2rem, 3.2vw + 1rem, 2.8rem);
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      color: var(--color-ink);
-      margin-bottom: 0.5rem;
-    }
+      :focus-visible {
+        outline: 1px solid var(--color-accent);
+        outline-offset: 3px;
+      }
 
-    .subtitle {
-      font-size: 1rem;
-      color: var(--color-muted);
-      max-width: 65ch;
-      line-height: 1.6;
-    }
+      /* Navigation */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(11, 14, 20, 0.82);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--color-rule);
+      }
 
-    .diagram-container {
-      background: var(--color-paper-2);
-      border: 1px solid var(--color-rule);
-      border-radius: 8px;
-      padding: 1.5rem;
-      overflow-x: auto;
-      margin-bottom: 2rem;
-    }
+      .nav-inner {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-    svg { width: 100%; min-width: 1000px; display: block; }
+      .back-link {
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        color: var(--color-muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: color 0.2s ease, transform 0.2s var(--ease-out-expo);
+      }
 
-    @media print {
-      .diagram-container { overflow-x: visible; }
-      svg { min-width: 0; }
-    }
+      .back-link:hover {
+        color: var(--color-ink);
+      }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.25rem;
-    }
+      .back-arrow {
+        display: inline-block;
+        transition: transform 0.2s var(--ease-out-expo);
+      }
 
-    .card {
-      background: var(--color-paper-2);
-      border: 1px solid var(--color-rule);
-      border-radius: 8px;
-      padding: 1.25rem;
-    }
+      .back-link:hover .back-arrow {
+        transform: translateX(-3px);
+      }
 
-    .card-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--color-accent);
-      margin-bottom: 0.35rem;
-    }
+      .repo-btn {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--color-ink);
+        background: var(--color-surface);
+        border: 1px solid var(--color-rule-solid);
+        padding: 0.35rem 0.75rem;
+        border-radius: 6px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease,
+          background-color 0.2s ease,
+          transform 0.2s var(--ease-out-expo);
+      }
 
-    .card h3 {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: var(--color-ink);
-      margin-bottom: 0.5rem;
-    }
+      .repo-btn:hover {
+        color: var(--color-accent);
+        border-color: var(--color-accent);
+        background: var(--color-surface-raised);
+        transform: translateY(-1px);
+      }
 
-    .card p {
-      font-size: 0.88rem;
-      color: var(--color-muted);
-      line-height: 1.55;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="header">
-      <p class="header-eyebrow">c-infer · Systems Architecture Documentation</p>
-      <h1>Zero-Allocation Neural Inference Runtime</h1>
-      <p class="subtitle">
-        Offline model topology serialization in Python paired with a deterministic, allocation-free execution engine in pure C11.
-      </p>
-    </div>
+      .ext-arrow {
+        display: inline-block;
+        transition: transform 0.2s var(--ease-out-expo);
+      }
 
-    <div class="diagram-container">
-      <svg viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cinfer-title cinfer-desc">
-        <title id="cinfer-title">c-infer Architecture Diagram</title>
-        <desc id="cinfer-desc">Architecture showing PyTorch offline export, C11 static memory arena initialization, forward-pass dispatch engine, and PyTorch parity test gate.</desc>
+      .repo-btn:hover .ext-arrow {
+        transform: translate(2px, -2px);
+      }
 
-        <defs>
-          <pattern id="grid-dots" width="20" height="20" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="0.8" fill="rgba(245,245,245,0.08)"/>
-          </pattern>
-          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#bfc0c0"/>
-          </marker>
-          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-            <polygon points="0 0, 8 3, 0 6" fill="#f08a59"/>
-          </marker>
-        </defs>
+      .container {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 3.5rem 2rem 5rem;
+      }
 
-        <!-- Canvas Background -->
-        <rect width="100%" height="100%" fill="#232738"/>
-        <rect width="100%" height="100%" fill="url(#grid-dots)"/>
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-        <!-- Zones -->
-        <!-- Zone 1: Offline Export -->
-        <rect x="20" y="30" width="260" height="420" rx="8" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8"/>
-        <rect x="36" y="34" width="130" height="14" rx="2" fill="#232738"/>
-        <text x="101" y="44" fill="#949eb2" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.14em">1. OFFLINE EXPORT</text>
+      .anim-fade {
+        opacity: 0;
+        animation: fade-up 0.75s var(--ease-out-expo) forwards;
+      }
 
-        <!-- Zone 2: C11 Runtime Core -->
-        <rect x="310" y="30" width="380" height="420" rx="8" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8"/>
-        <rect x="326" y="34" width="150" height="14" rx="2" fill="#232738"/>
-        <text x="401" y="44" fill="#949eb2" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.14em">2. C11 RUNTIME CORE</text>
+      .delay-1 { animation-delay: 0.05s; }
+      .delay-2 { animation-delay: 0.14s; }
+      .delay-3 { animation-delay: 0.24s; }
 
-        <!-- Zone 3: Parity Verification -->
-        <rect x="720" y="30" width="260" height="420" rx="8" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8"/>
-        <rect x="736" y="34" width="160" height="14" rx="2" fill="#232738"/>
-        <text x="816" y="44" fill="#949eb2" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.14em">3. PARITY VERIFICATION</text>
+      .header {
+        margin-bottom: 2.25rem;
+      }
 
-        <!-- Connectors (drawn before nodes) -->
-        <!-- PyTorch -> Exporter -->
-        <line x1="150" y1="130" x2="150" y2="180" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+      .header-eyebrow {
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--color-accent);
+        margin-bottom: 0.6rem;
+      }
 
-        <!-- Exporter -> .cinf Binary -->
-        <line x1="150" y1="244" x2="150" y2="294" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+      h1 {
+        font-family: var(--font-serif);
+        font-size: clamp(2.2rem, 3.5vw + 1rem, 3.1rem);
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        line-height: 1.08;
+        color: #ffffff;
+        margin-bottom: 0.75rem;
+      }
 
-        <!-- .cinf Binary -> Loader & Arena -->
-        <path d="M 240,330 H 275 Q 285,330 285,310 V 150 Q 285,130 295,130 H 340" fill="none" stroke="#f08a59" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
-        <rect x="250" y="210" width="70" height="14" fill="#232738"/>
-        <text x="285" y="220" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">cinf_load()</text>
+      .subtitle {
+        font-size: 1.04rem;
+        color: var(--color-muted);
+        max-width: 65ch;
+        line-height: 1.65;
+      }
 
-        <!-- Arena -> Tensor Allocation -->
-        <line x1="430" y1="170" x2="430" y2="210" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+      .diagram-container {
+        background: #0d121c;
+        border: 1px solid var(--color-rule);
+        border-radius: 10px;
+        padding: 1.5rem;
+        overflow-x: auto;
+        margin-bottom: 2.25rem;
+        position: relative;
+        transition:
+          border-color 0.3s var(--ease-out-expo),
+          box-shadow 0.3s var(--ease-out-expo);
+      }
 
-        <!-- Tensor -> Forward Engine -->
-        <line x1="430" y1="274" x2="430" y2="314" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
+      .diagram-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 2rem;
+        right: 2rem;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+        opacity: 0.45;
+      }
 
-        <!-- Forward Engine -> Output Tensor -->
-        <path d="M 520,360 H 570 Q 580,360 580,330 V 150 Q 580,120 590,120 H 750" fill="none" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
-        <rect x="548" y="235" width="65" height="14" fill="#232738"/>
-        <text x="580" y="245" fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">float out[]</text>
+      .diagram-container:hover {
+        border-color: var(--color-rule-solid);
+        box-shadow: 0 20px 45px -20px rgba(0, 0, 0, 0.7);
+      }
 
-        <!-- Reference comparison -->
-        <line x1="850" y1="160" x2="850" y2="220" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)"/>
-        <line x1="850" y1="284" x2="850" y2="334" stroke="#f08a59" stroke-width="1.2" marker-end="url(#arrow-accent)"/>
+      svg {
+        width: 100%;
+        min-width: 960px;
+        display: block;
+      }
 
-        <!-- Nodes Zone 1 -->
-        <!-- Node: PyTorch Model -->
-        <rect x="50" y="70" width="200" height="60" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
-        <text x="150" y="96" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">PyTorch Trained Module</text>
-        <text x="150" y="114" fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">torch.nn.Module (Conv2D, Linear)</text>
+      @keyframes flow-dash {
+        to {
+          stroke-dashoffset: -16;
+        }
+      }
 
-        <!-- Node: Exporter -->
-        <rect x="50" y="180" width="200" height="64" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
-        <text x="150" y="206" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">exporter/export.py</text>
-        <text x="150" y="222" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Topology &amp; weight extraction</text>
-        <text x="150" y="234" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Binary packing (little-endian)</text>
+      .flow-line {
+        stroke-dasharray: 5 3;
+        animation: flow-dash 1.2s linear infinite;
+      }
 
-        <!-- Node: .cinf File -->
-        <rect x="60" y="294" width="180" height="64" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
-        <text x="150" y="320" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Binary Model (.cinf)</text>
-        <text x="150" y="336" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Magic header + Layer count</text>
-        <text x="150" y="348" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Float32 tensor weights blob</text>
+      .svg-node-accent {
+        transition: filter 0.25s ease;
+      }
 
-        <!-- Nodes Zone 2 -->
-        <!-- Node: Static Arena (FOCAL NODE 1) -->
-        <rect x="340" y="80" width="180" height="90" rx="6" fill="rgba(240,138,89,0.12)" stroke="#f08a59" stroke-width="1.5"/>
-        <text x="430" y="108" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Static Memory Arena</text>
-        <text x="430" y="126" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="9" font-weight="500" text-anchor="middle">cinf_arena_t (0 heap)</text>
-        <text x="430" y="144" fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Pre-allocated memory pool</text>
-        <text x="430" y="158" fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">All activations fit in footprint</text>
+      .diagram-container:hover .svg-node-accent {
+        filter: drop-shadow(0 0 10px rgba(240, 138, 89, 0.22));
+      }
 
-        <!-- Node: Tensor Buffers -->
-        <rect x="340" y="210" width="180" height="64" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
-        <text x="430" y="235" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Tensor Descriptors</text>
-        <text x="430" y="252" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">cinf_tensor_t (shape, strides)</text>
-        <text x="430" y="264" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Contiguous 1D float pointer</text>
+      @media print {
+        .diagram-container {
+          overflow-x: visible;
+        }
+        svg {
+          min-width: 0;
+        }
+      }
 
-        <!-- Node: Dispatch Engine -->
-        <rect x="340" y="314" width="320" height="100" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1.2"/>
-        <text x="500" y="340" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">C11 Forward Dispatch Loop (cinf_forward)</text>
-        <text x="500" y="358" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Linear · Conv2D · MaxPool2D · Flatten</text>
-        <text x="500" y="372" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">ReLU · Sigmoid · Numerically-Stable Softmax</text>
-        <rect x="360" y="384" width="280" height="20" rx="3" fill="#232738" stroke="rgba(245,245,245,0.1)"/>
-        <text x="500" y="397" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Deterministic sequence · No BLAS · &lt;math.h&gt; only</text>
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: 1.25rem;
+      }
 
-        <!-- Nodes Zone 3 -->
-        <!-- Node: Parity Checker -->
-        <rect x="750" y="90" width="200" height="70" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
-        <text x="850" y="116" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">PyTorch Baseline Feed</text>
-        <text x="850" y="134" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Fixed test vectors &amp; seeds</text>
-        <text x="850" y="146" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Golden float output arrays</text>
+      .card {
+        background: rgba(17, 22, 33, 0.75);
+        border: 1px solid var(--color-rule);
+        border-radius: 10px;
+        padding: 1.4rem;
+        position: relative;
+        transition:
+          border-color 0.25s ease,
+          background-color 0.25s ease,
+          transform 0.25s var(--ease-out-expo);
+      }
 
-        <!-- Node: Tolerance Gate -->
-        <rect x="750" y="220" width="200" height="64" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
-        <text x="850" y="246" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Delta Tolerance Gate</text>
-        <text x="850" y="262" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Linear / Conv2D: &lt; 1e-5 abs</text>
-        <text x="850" y="274" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">MaxPool / Flatten: bit-exact</text>
+      .card:hover {
+        border-color: var(--color-rule-solid);
+        background: var(--color-surface-raised);
+        transform: translateY(-3px);
+      }
 
-        <!-- Node: Verified Status (FOCAL NODE 2) -->
-        <rect x="750" y="334" width="200" height="70" rx="6" fill="rgba(240,138,89,0.12)" stroke="#f08a59" stroke-width="1.5"/>
-        <text x="850" y="360" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Verification Passed</text>
-        <text x="850" y="378" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="9" font-weight="500" text-anchor="middle">ALL 8 TESTS PASS</text>
-        <text x="850" y="392" fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Zero runtime allocation confirmed</text>
-      </svg>
-    </div>
+      .card-eyebrow {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--color-accent);
+        margin-bottom: 0.4rem;
+      }
 
-    <div class="cards">
-      <div class="card">
-        <p class="card-eyebrow">Guarantees</p>
-        <h3>Zero Heap at Runtime</h3>
-        <p>Memory required for activations, layers, and tensor ping-ponging is computed once during initialization. Hot forward passes perform 0 allocations.</p>
+      .card h3 {
+        font-family: var(--font-serif);
+        font-size: 1.35rem;
+        font-weight: 400;
+        color: var(--color-ink);
+        margin-bottom: 0.45rem;
+      }
+
+      .card p {
+        font-size: 0.9rem;
+        color: var(--color-muted);
+        line-height: 1.6;
+      }
+
+      @media (max-width: 640px) {
+        .nav-inner {
+          padding: 0.9rem 1.25rem;
+        }
+        .container {
+          padding: 2.5rem 1.25rem 4rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        .anim-fade {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-inner">
+        <a href="../index.html#proj-cinfer" class="back-link">
+          <span class="back-arrow" aria-hidden="true">←</span>
+          <span>Back to Portfolio</span>
+        </a>
+        <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener" class="repo-btn">
+          <span>github.com/gcpino/c-infer</span>
+          <span class="ext-arrow" aria-hidden="true">↗</span>
+        </a>
       </div>
-      <div class="card">
-        <p class="card-eyebrow">Portability</p>
-        <h3>No Heavy Dependencies</h3>
-        <p>Runs on microcontrollers, RTOS, or POSIX systems with standard C11. Avoids massive BLAS or matrix libraries by implementing vector operations natively.</p>
+    </nav>
+
+    <main class="container">
+      <div class="header anim-fade delay-1">
+        <p class="header-eyebrow">c-infer · Systems Architecture Specification</p>
+        <h1>Zero-Allocation Neural Inference Runtime</h1>
+        <p class="subtitle">
+          Offline model topology serialization in Python paired with a deterministic, allocation-free
+          execution engine in pure C11.
+        </p>
       </div>
-      <div class="card">
-        <p class="card-eyebrow">Rigor</p>
-        <h3>Strict Parity Testing</h3>
-        <p>Every single layer (Linear, Conv2D, MaxPool, activations) is verified against reference PyTorch tensors within 1e-5 floating point deviation.</p>
+
+      <div class="diagram-container anim-fade delay-2">
+        <svg viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cinfer-title cinfer-desc">
+          <title id="cinfer-title">c-infer Architecture Diagram</title>
+          <desc id="cinfer-desc">Architecture showing PyTorch offline export, C11 static memory arena initialization, forward-pass dispatch engine, and PyTorch parity test gate.</desc>
+
+          <defs>
+            <pattern id="grid-dots" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="1" cy="1" r="0.8" fill="rgba(241,245,249,0.06)" />
+            </pattern>
+            <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#bfc0c0" />
+            </marker>
+            <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#f08a59" />
+            </marker>
+          </defs>
+
+          <!-- Canvas Background -->
+          <rect width="100%" height="100%" fill="#0d121c" />
+          <rect width="100%" height="100%" fill="url(#grid-dots)" />
+
+          <!-- Zones -->
+          <!-- Zone 1: Offline Export -->
+          <rect x="20" y="30" width="260" height="420" rx="8" fill="rgba(245,245,245,0.015)" stroke="rgba(245,245,245,0.1)" stroke-width="0.8" />
+          <rect x="36" y="23" width="130" height="14" rx="2" fill="#0d121c" />
+          <text x="101" y="33" fill="#64748b" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.14em">1. OFFLINE EXPORT</text>
+
+          <!-- Zone 2: C11 Runtime Core -->
+          <rect x="310" y="30" width="380" height="420" rx="8" fill="rgba(245,245,245,0.015)" stroke="rgba(245,245,245,0.1)" stroke-width="0.8" />
+          <rect x="326" y="23" width="150" height="14" rx="2" fill="#0d121c" />
+          <text x="401" y="33" fill="#64748b" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.14em">2. C11 RUNTIME CORE</text>
+
+          <!-- Zone 3: Parity Verification -->
+          <rect x="720" y="30" width="260" height="420" rx="8" fill="rgba(245,245,245,0.015)" stroke="rgba(245,245,245,0.1)" stroke-width="0.8" />
+          <rect x="736" y="23" width="160" height="14" rx="2" fill="#0d121c" />
+          <text x="816" y="33" fill="#64748b" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.14em">3. PARITY VERIFICATION</text>
+
+          <!-- Connectors -->
+          <line x1="150" y1="130" x2="150" y2="180" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)" />
+          <line x1="150" y1="244" x2="150" y2="294" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)" />
+
+          <!-- .cinf Binary -> Loader & Arena -->
+          <path class="flow-line" d="M 240,330 H 275 Q 285,330 285,310 V 150 Q 285,130 295,130 H 340" fill="none" stroke="#f08a59" stroke-width="1.3" marker-end="url(#arrow-accent)" />
+          <rect x="250" y="210" width="70" height="14" fill="#0d121c" />
+          <text x="285" y="220" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">cinf_load()</text>
+
+          <!-- Arena -> Tensor Allocation -->
+          <line x1="430" y1="170" x2="430" y2="210" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)" />
+
+          <!-- Tensor -> Forward Engine -->
+          <line x1="430" y1="274" x2="430" y2="314" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)" />
+
+          <!-- Forward Engine -> Output Tensor -->
+          <path class="flow-line" d="M 660,360 H 692 Q 702,360 702,240 V 135 Q 702,125 712,125 H 750" fill="none" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)" />
+          <rect x="668" y="235" width="65" height="14" fill="#0d121c" />
+          <text x="701" y="245" fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">float out[]</text>
+
+          <!-- Reference comparison -->
+          <line x1="850" y1="160" x2="850" y2="220" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#arrow)" />
+          <line class="flow-line" x1="850" y1="284" x2="850" y2="334" stroke="#f08a59" stroke-width="1.3" marker-end="url(#arrow-accent)" />
+
+          <!-- Nodes Zone 1 -->
+          <rect x="50" y="70" width="200" height="60" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
+          <text x="150" y="96" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">PyTorch Trained Module</text>
+          <text x="150" y="114" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">torch.nn.Module (Conv2D, Linear)</text>
+
+          <rect x="50" y="180" width="200" height="64" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
+          <text x="150" y="206" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">exporter/export.py</text>
+          <text x="150" y="222" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Topology &amp; weight extraction</text>
+          <text x="150" y="234" fill="#64748b" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Binary packing (little-endian)</text>
+
+          <rect x="60" y="294" width="180" height="64" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
+          <text x="150" y="320" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Binary Model (.cinf)</text>
+          <text x="150" y="336" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Magic header + Layer count</text>
+          <text x="150" y="348" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Float32 tensor weights blob</text>
+
+          <!-- Nodes Zone 2 -->
+          <rect class="svg-node-accent" x="340" y="80" width="180" height="90" rx="6" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1.4" />
+          <text x="430" y="108" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Static Memory Arena</text>
+          <text x="430" y="126" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="9" font-weight="500" text-anchor="middle">cinf_arena_t (0 heap)</text>
+          <text x="430" y="144" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Pre-allocated memory pool</text>
+          <text x="430" y="158" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">All activations fit in footprint</text>
+
+          <rect x="340" y="210" width="180" height="64" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
+          <text x="430" y="235" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Tensor Descriptors</text>
+          <text x="430" y="252" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">cinf_tensor_t (shape, strides)</text>
+          <text x="430" y="264" fill="#64748b" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Contiguous 1D float pointer</text>
+
+          <rect x="340" y="314" width="320" height="100" rx="6" fill="#141b28" stroke="#334155" stroke-width="1.2" />
+          <text x="500" y="340" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">C11 Forward Dispatch Loop (cinf_forward)</text>
+          <text x="500" y="358" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Linear · Conv2D · MaxPool2D · Flatten</text>
+          <text x="500" y="372" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">ReLU · Sigmoid · Numerically-Stable Softmax</text>
+          <rect x="360" y="384" width="280" height="20" rx="3" fill="#0d121c" stroke="rgba(240,138,89,0.28)" />
+          <text x="500" y="397" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Deterministic sequence · No BLAS · &lt;math.h&gt; only</text>
+
+          <!-- Nodes Zone 3 -->
+          <rect x="750" y="90" width="200" height="70" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
+          <text x="850" y="116" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">PyTorch Baseline Feed</text>
+          <text x="850" y="134" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Fixed test vectors &amp; seeds</text>
+          <text x="850" y="146" fill="#64748b" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Golden float output arrays</text>
+
+          <rect x="750" y="220" width="200" height="64" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
+          <text x="850" y="246" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Delta Tolerance Gate</text>
+          <text x="850" y="262" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Linear / Conv2D: &lt; 1e-5 abs</text>
+          <text x="850" y="274" fill="#64748b" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">MaxPool / Flatten: bit-exact</text>
+
+          <rect class="svg-node-accent" x="750" y="334" width="200" height="70" rx="6" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1.4" />
+          <text x="850" y="360" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Verification Passed</text>
+          <text x="850" y="378" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="9" font-weight="500" text-anchor="middle">ALL 8 TESTS PASS</text>
+          <text x="850" y="392" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Zero runtime allocation confirmed</text>
+        </svg>
       </div>
-    </div>
-  </div>
-</body>
+
+      <div class="cards anim-fade delay-3">
+        <div class="card">
+          <p class="card-eyebrow">Guarantees</p>
+          <h3>Zero Heap at Runtime</h3>
+          <p>
+            Memory required for activations, layers, and tensor ping-ponging is computed once during
+            initialization. Hot forward passes perform 0 allocations.
+          </p>
+        </div>
+        <div class="card">
+          <p class="card-eyebrow">Portability</p>
+          <h3>No Heavy Dependencies</h3>
+          <p>
+            Runs on microcontrollers, RTOS, or POSIX systems with standard C11. Avoids massive BLAS
+            or matrix libraries by implementing vector operations natively.
+          </p>
+        </div>
+        <div class="card">
+          <p class="card-eyebrow">Rigor</p>
+          <h3>Strict Parity Testing</h3>
+          <p>
+            Every single layer (Linear, Conv2D, MaxPool, activations) is verified against reference
+            PyTorch tensors within 1e-5 floating point deviation.
+          </p>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>
