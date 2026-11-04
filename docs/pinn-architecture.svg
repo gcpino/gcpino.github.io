@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pinn-title pinn-desc" id="pinn-architecture-root">
+        <title id="pinn-title">PINN Heat Equation Solver Architecture</title>
+        <desc id="pinn-desc">Architecture showing domain collocation sampling, deep surrogate MLP with automatic differentiation, composite physics loss formulation, and Fourier analytical verification.</desc>
+
+        <defs>
+      <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;family=Noto+Serif:ital@0;1&amp;family=Noto+Sans+KR:wght@400;500;600&amp;family=Noto+Serif+KR:wght@400&amp;family=Noto+Sans+TC:wght@400;500;600&amp;family=Noto+Serif+TC:wght@400&amp;display=swap');
+      #pinn-architecture-root { --color-paper:       #1b1e2b;
+      --color-paper-2:     #232738;
+      --color-ink:         #f5f5f5;
+      --color-muted:       #bfc0c0;
+      --color-soft:        #949eb2;
+      --color-rule:        rgba(245,245,245,0.12);
+      --color-rule-solid:  rgba(191,192,192,0.25);
+      --color-accent:      #f08a59;
+      --color-accent-tint: rgba(240,138,89,0.12);
+      --color-link:        #739fdf;
+      --font-sans:   'Geist', system-ui, sans-serif;
+      --font-serif:  'Instrument Serif', serif;
+      --font-mono:   'Geist Mono', ui-monospace, monospace; }
+      #pinn-architecture-root { font-family: var(--font-sans); color: var(--color-ink); }
+      #pinn-architecture-root .container { max-width: 1080px; margin: 0 auto; }
+      #pinn-architecture-root .header-eyebrow { font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem; }
+      #pinn-architecture-root .subtitle { font-size: 1rem;
+      color: var(--color-muted);
+      max-width: 65ch;
+      line-height: 1.6; }
+      #pinn-architecture-root .diagram-container { background: var(--color-paper-2);
+      border: 1px solid var(--color-rule);
+      border-radius: 8px;
+      padding: 1.5rem;
+      overflow-x: auto;
+      margin-bottom: 2rem; }
+      @media print {
+#pinn-architecture-root .diagram-container { overflow-x: visible; }
+}
+      #pinn-architecture-root .card-eyebrow { font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 0.35rem; }</style>
+          <pattern id="pinn-architecture-pinn-dots" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="0.8" fill="#f5f5f5" fill-opacity="0.08"/>
+          </pattern>
+          <marker id="pinn-architecture-pinn-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#bfc0c0"/>
+          </marker>
+          <marker id="pinn-architecture-pinn-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#f08a59"/>
+          </marker>
+        </defs>
+
+        <!-- Canvas Background -->
+        <rect width="100%" height="100%" fill="#232738"/>
+        <rect width="100%" height="100%" fill="url(#pinn-architecture-pinn-dots)"/>
+
+        <!-- Zones -->
+        <!-- Zone 1: Spatio-Temporal Sampling -->
+        <rect x="20" y="30" width="270" height="420" rx="8" fill="#f5f5f5" stroke="#f5f5f5" stroke-width="0.8" fill-opacity="0.02" stroke-opacity="0.12"/>
+        <rect x="36" y="34" width="160" height="14" rx="2" fill="#232738"/>
+        <text x="116" y="44" fill="#949eb2" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.14em">1. SPATIO-TEMPORAL SAMPLING</text>
+
+        <!-- Zone 2: Surrogate & Autodiff -->
+        <rect x="320" y="30" width="360" height="420" rx="8" fill="#f5f5f5" stroke="#f5f5f5" stroke-width="0.8" fill-opacity="0.02" stroke-opacity="0.12"/>
+        <rect x="336" y="34" width="170" height="14" rx="2" fill="#232738"/>
+        <text x="421" y="44" fill="#949eb2" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.14em">2. SURROGATE &amp; AUTODIFF</text>
+
+        <!-- Zone 3: Composite Loss & Convergence -->
+        <rect x="710" y="30" width="270" height="420" rx="8" fill="#f5f5f5" stroke="#f5f5f5" stroke-width="0.8" fill-opacity="0.02" stroke-opacity="0.12"/>
+        <rect x="726" y="34" width="170" height="14" rx="2" fill="#232738"/>
+        <text x="811" y="44" fill="#949eb2" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.14em">3. COMPOSITE LOSS &amp; PARITY</text>
+
+        <!-- Connectors (drawn before nodes) -->
+        <!-- Samplers -> MLP -->
+        <line x1="260" y1="100" x2="350" y2="100" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#pinn-architecture-pinn-arrow)"/>
+        <path d="M 260,225 H 300 Q 310,225 310,180 V 135 Q 310,120 320,120 H 350" fill="none" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#pinn-architecture-pinn-arrow)"/>
+        <path d="M 260,350 H 310 Q 320,350 320,200 V 150 Q 320,135 335,135 H 350" fill="none" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#pinn-architecture-pinn-arrow)"/>
+
+        <!-- MLP -> Autodiff Engine -->
+        <line x1="500" y1="140" x2="500" y2="210" stroke="#f08a59" stroke-width="1.2" marker-end="url(#pinn-architecture-pinn-arrow-accent)"/>
+        <rect x="460" y="170" width="80" height="14" fill="#232738"/>
+        <text x="500" y="180" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">u(x, t) field</text>
+
+        <!-- Autodiff -> PDE Residual -->
+        <line x1="500" y1="310" x2="500" y2="350" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#pinn-architecture-pinn-arrow)"/>
+
+        <!-- Autodiff / Residual -> Loss Formulation -->
+        <path d="M 640,380 H 680 Q 690,380 690,260 V 160 Q 690,120 700,120 H 740" fill="none" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#pinn-architecture-pinn-arrow)"/>
+        <rect x="655" y="240" width="70" height="14" fill="#232738"/>
+        <text x="690" y="250" fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Residuals</text>
+
+        <!-- Loss -> Optimizer -->
+        <line x1="845" y1="165" x2="845" y2="215" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#pinn-architecture-pinn-arrow)"/>
+
+        <!-- Optimizer -> Analytical Verification -->
+        <line x1="845" y1="285" x2="845" y2="335" stroke="#f08a59" stroke-width="1.2" marker-end="url(#pinn-architecture-pinn-arrow-accent)"/>
+
+        <!-- Nodes Zone 1 -->
+        <!-- Node 1.1: Collocation Points -->
+        <rect x="40" y="70" width="220" height="60" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
+        <text x="150" y="96" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Collocation Interior (x_f, t_f)</text>
+        <text x="150" y="114" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Uniform random in (0, 1) × (0, 1)</text>
+
+        <!-- Node 1.2: Initial Condition -->
+        <rect x="40" y="195" width="220" height="60" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
+        <text x="150" y="221" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Initial State (x_i, t=0)</text>
+        <text x="150" y="239" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">u(x, 0) = sin(π x)</text>
+
+        <!-- Node 1.3: Boundary Conditions -->
+        <rect x="40" y="320" width="220" height="60" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
+        <text x="150" y="346" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Dirichlet Boundaries (x=0, 1)</text>
+        <text x="150" y="364" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">u(0, t) = 0, u(1, t) = 0</text>
+
+        <!-- Nodes Zone 2 -->
+        <!-- Node 2.1: Surrogate MLP -->
+        <rect x="350" y="70" width="300" height="70" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
+        <text x="500" y="96" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Deep Surrogate Network (MLP)</text>
+        <text x="500" y="114" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Input: [x, t] → 3 hidden layers × 32 units (Tanh)</text>
+        <text x="500" y="127" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Output: Scalar prediction u_pred(x, t)</text>
+
+        <!-- Node 2.2: Autodiff Engine (FOCAL NODE 1) -->
+        <rect x="350" y="210" width="300" height="100" rx="6" fill="#f08a59" stroke="#f08a59" stroke-width="1.5" fill-opacity="0.12"/>
+        <text x="500" y="238" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Automatic Differentiation Engine</text>
+        <text x="500" y="256" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="9" font-weight="500" text-anchor="middle">torch.autograd.grad()</text>
+        <text x="500" y="274" fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">∂u/∂t via single backward graph</text>
+        <text x="500" y="288" fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">∂²u/∂x² via second-order Hessian trace</text>
+        <rect x="370" y="293" width="260" height="12" rx="2" fill="#232738"/>
+        <text x="500" y="302" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Exact continuous derivatives without discretization error</text>
+
+        <!-- Node 2.3: PDE Residual -->
+        <rect x="370" y="350" width="260" height="64" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
+        <text x="500" y="375" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Physical Residual Evaluation</text>
+        <text x="500" y="393" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Residual = ∂u/∂t - α · ∂²u/∂x²</text>
+        <text x="500" y="405" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Diffusivity parameter α = 0.01</text>
+
+        <!-- Nodes Zone 3 -->
+        <!-- Node 3.1: Composite Loss Function -->
+        <rect x="740" y="75" width="210" height="90" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
+        <text x="845" y="102" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Composite Loss Function</text>
+        <text x="845" y="120" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">L_total = L_pde + L_ic + L_bc</text>
+        <text x="845" y="136" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">L_pde = mean(Residual²)</text>
+        <text x="845" y="148" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">L_bc = mean(u_left²) + mean(u_right²)</text>
+
+        <!-- Node 3.2: Optimization -->
+        <rect x="740" y="215" width="210" height="70" rx="6" fill="#1b1e2b" stroke="#bfc0c0" stroke-width="1"/>
+        <text x="845" y="242" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Adam Gradient Optimization</text>
+        <text x="845" y="260" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">5,000 Epochs · Learning rate 1e-3</text>
+        <text x="845" y="272" fill="#949eb2" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Unsupervised convergence</text>
+
+        <!-- Node 3.3: Analytical Verification (FOCAL NODE 2) -->
+        <rect x="740" y="335" width="210" height="80" rx="6" fill="#f08a59" stroke="#f08a59" stroke-width="1.5" fill-opacity="0.12"/>
+        <text x="845" y="362" fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Analytical Fourier Parity</text>
+        <text x="845" y="380" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="9" font-weight="500" text-anchor="middle">Rel. L2 Error: 1.6e-3</text>
+        <text x="845" y="394" fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Max pointwise error: ~4e-3</text>
+        <text x="845" y="406" fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Exact mode decay verified</text>
+      </svg>
