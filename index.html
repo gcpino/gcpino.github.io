@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Guillermo Corpas — Systems &amp; Computational Physics</title>
     <meta
       name="description"
       content="Physicist and software engineer focused on low-level C11 systems, mathematical modeling, and physics-informed machine learning."
     />
     <meta name="author" content="Guillermo Corpas" />
-    <meta name="theme-color" content="#0b0e14" />
+    <meta name="theme-color" content="#f7f4ea" />
 
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
@@ -43,22 +43,85 @@
 
     <style>
       :root {
-        --color-paper: #0b0e14;
-        --color-surface: #111621;
-        --color-surface-raised: #161d2b;
-        --color-ink: #f1f5f9;
-        --color-muted: #94a3b8;
-        --color-soft: #64748b;
-        --color-accent: #f08a59;
-        --color-accent-soft: rgba(240, 138, 89, 0.12);
-        --color-accent-glow: rgba(240, 138, 89, 0.24);
-        --color-signal: #739fdf;
-        --color-rule: rgba(241, 245, 249, 0.09);
-        --color-rule-solid: rgba(148, 163, 184, 0.24);
-        --font-serif: "Instrument Serif", Georgia, serif;
+        /* Papyrus & Parchment Substrates */
+        --color-paper: #f7f4ea;
+        --color-paper-warm: #f1ebd9;
+        --color-surface: #fdfbf7;
+        --color-surface-raised: #ffffff;
+        --color-surface-sunken: #ede6d6;
+
+        /* Archival Inks */
+        --color-ink: #26221d;
+        --color-ink-light: #3f3930;
+        --color-muted: #6e6557;
+        --color-soft: #918878;
+
+        /* Technical Drafting Hairlines */
+        --color-rule: #dfd7c5;
+        --color-rule-solid: #c9bfab;
+        --color-rule-strong: #8a7e6b;
+
+        /* Archival Pastel Accents */
+        --color-accent: #b25d3b;             /* Pastel Terracotta / Sanguine */
+        --color-accent-soft: rgba(178, 93, 59, 0.08);
+        --color-accent-wash: #f8ece5;
+        --color-accent-border: #deac98;
+
+        --color-sage: #4f785e;               /* Pastel Sage / Lichen */
+        --color-sage-soft: rgba(79, 120, 94, 0.09);
+        --color-sage-wash: #eaf2ed;
+        --color-sage-border: #a8c4b2;
+
+        --color-slate: #48697a;              /* Pastel Blueprint Slate */
+        --color-slate-soft: rgba(72, 105, 122, 0.09);
+        --color-slate-wash: #e7eff3;
+        --color-slate-border: #a4becc;
+
+        --color-ochre: #9e7534;              /* Pastel Amber Ochre */
+        --color-ochre-soft: rgba(158, 117, 52, 0.08);
+
+        /* Layout & Container Dynamics */
+        --container-max-width: 860px;
+        --content-padding: 1.5rem;
+
+        /* Typography */
+        --font-serif: "Instrument Serif", Georgia, Cambria, serif;
         --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        --font-mono: "Geist Mono", ui-monospace, monospace;
+        --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
         --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      /* Ultrawide Scale Tier 1: 1440px - 1919px */
+      @media (min-width: 1440px) {
+        :root {
+          --container-max-width: 1080px;
+          --content-padding: 2.25rem;
+        }
+        body {
+          font-size: 16px;
+        }
+      }
+
+      /* Ultrawide Scale Tier 2: 1920px - 2559px */
+      @media (min-width: 1920px) {
+        :root {
+          --container-max-width: 1260px;
+          --content-padding: 2.75rem;
+        }
+        body {
+          font-size: 17px;
+        }
+      }
+
+      /* Ultrawide Scale Tier 3: 2560px+ (3440x1440 Ultrawide / 4K / 5K) */
+      @media (min-width: 2560px) {
+        :root {
+          --container-max-width: 1440px;
+          --content-padding: 3.5rem;
+        }
+        body {
+          font-size: 18px;
+        }
       }
 
       *,
@@ -71,28 +134,30 @@
 
       html {
         scroll-behavior: smooth;
+        text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
       }
 
       body {
         font-family: var(--font-sans);
         background-color: var(--color-paper);
         background-image:
-          radial-gradient(ellipse 80% 50% at 50% -15%, rgba(240, 138, 89, 0.08), transparent),
-          radial-gradient(ellipse 60% 40% at 85% 10%, rgba(115, 159, 223, 0.05), transparent),
-          linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-          linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-        background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+          linear-gradient(to right, rgba(82, 70, 58, 0.035) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(82, 70, 58, 0.035) 1px, transparent 1px),
+          radial-gradient(ellipse 90% 60% at 50% -10%, rgba(240, 226, 206, 0.55), transparent 75%),
+          radial-gradient(ellipse 70% 50% at 85% 95%, rgba(235, 219, 195, 0.35), transparent 60%);
+        background-size: 32px 32px, 32px 32px, 100% 100%, 100% 100%;
         background-attachment: scroll;
-        color: var(--color-ink);
-        line-height: 1.65;
+        color: var(--color-ink-light);
+        line-height: 1.68;
         font-size: 15px;
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
       }
 
       ::selection {
-        background: var(--color-accent);
-        color: #0b0e14;
+        background: #edd8c8;
+        color: var(--color-ink);
       }
 
       a {
@@ -101,14 +166,45 @@
       }
 
       :focus-visible {
-        outline: 1px solid var(--color-accent);
+        outline: 1.5px solid var(--color-accent);
         outline-offset: 3px;
       }
 
-      .container {
-        max-width: 840px;
+      /* Folio Banner */
+      .manual-folio-bar {
+        border-bottom: 1px solid var(--color-rule);
+        background: rgba(241, 235, 217, 0.65);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        color: var(--color-muted);
+        letter-spacing: 0.04em;
+      }
+
+      .folio-inner {
+        max-width: var(--container-max-width);
         margin: 0 auto;
-        padding: 0 1.5rem 5rem;
+        padding: 0.35rem var(--content-padding);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .folio-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--color-sage);
+        font-weight: 500;
+      }
+
+      .status-pip {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--color-sage);
+        display: inline-block;
       }
 
       /* Navigation */
@@ -116,17 +212,17 @@
         position: sticky;
         top: 0;
         z-index: 50;
-        background: rgba(11, 14, 20, 0.82);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--color-rule);
+        background: rgba(247, 244, 234, 0.92);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--color-rule-solid);
         transition: border-color 0.25s var(--ease-out-expo);
       }
 
       .nav-inner {
-        max-width: 840px;
+        max-width: var(--container-max-width);
         margin: 0 auto;
-        padding: 1rem 1.5rem;
+        padding: 0.85rem var(--content-padding);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -135,42 +231,41 @@
       .logo {
         font-family: var(--font-mono);
         font-weight: 500;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         letter-spacing: -0.01em;
         color: var(--color-ink);
         display: inline-flex;
         align-items: center;
-        gap: 0.55rem;
+        gap: 0.5rem;
         transition: color 0.2s ease;
       }
 
-      .logo-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: var(--color-accent);
-        box-shadow: 0 0 10px var(--color-accent);
-        animation: pulse-dot 3s ease-in-out infinite;
+      .logo-mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border: 1px solid var(--color-accent-border);
+        background: var(--color-accent-wash);
+        color: var(--color-accent);
+        font-size: 0.72rem;
+        font-family: var(--font-mono);
+        border-radius: 3px;
+        line-height: 1;
       }
 
-      @keyframes pulse-dot {
-        0%, 100% {
-          opacity: 0.85;
-          transform: scale(1);
-        }
-        50% {
-          opacity: 0.4;
-          transform: scale(0.88);
-        }
+      .logo-name-short {
+        display: none;
       }
 
       .nav-links {
         display: flex;
         align-items: center;
-        gap: 1.6rem;
+        gap: 1.4rem;
         list-style: none;
         font-family: var(--font-mono);
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         color: var(--color-muted);
       }
 
@@ -186,11 +281,11 @@
         left: 0;
         bottom: -2px;
         width: 100%;
-        height: 1px;
+        height: 1.5px;
         background: var(--color-accent);
         transform: scaleX(0);
         transform-origin: right;
-        transition: transform 0.3s var(--ease-out-expo);
+        transition: transform 0.25s var(--ease-out-expo);
       }
 
       .nav-links a:hover {
@@ -203,33 +298,43 @@
       }
 
       .term-trigger {
-        background: rgba(255, 255, 255, 0.02);
+        background: var(--color-surface);
         border: 1px solid var(--color-rule-solid);
         color: var(--color-muted);
         font-family: var(--font-mono);
-        font-size: 0.74rem;
+        font-size: 0.72rem;
         padding: 0.25rem 0.6rem;
-        border-radius: 5px;
+        border-radius: 4px;
         cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
         transition:
           border-color 0.2s ease,
           color 0.2s ease,
           background-color 0.2s ease,
-          transform 0.2s var(--ease-out-expo);
+          transform 0.15s ease;
       }
 
       .term-trigger:hover {
         color: var(--color-ink);
         border-color: var(--color-accent);
-        background: var(--color-accent-soft);
+        background: var(--color-accent-wash);
         transform: translateY(-1px);
       }
 
-      /* Entrance & Scroll Reveal Animations */
+      /* Main Container */
+      .container {
+        max-width: var(--container-max-width);
+        margin: 0 auto;
+        padding: 0 var(--content-padding) 5rem;
+      }
+
+      /* Animations */
       @keyframes fade-up {
         from {
           opacity: 0;
-          transform: translateY(16px);
+          transform: translateY(12px);
         }
         to {
           opacity: 1;
@@ -239,20 +344,19 @@
 
       .hero-animate {
         opacity: 0;
-        animation: fade-up 0.75s var(--ease-out-expo) forwards;
+        animation: fade-up 0.65s var(--ease-out-expo) forwards;
       }
 
-      .hero-delay-1 { animation-delay: 0.06s; }
-      .hero-delay-2 { animation-delay: 0.15s; }
-      .hero-delay-3 { animation-delay: 0.24s; }
-      .hero-delay-4 { animation-delay: 0.32s; }
+      .hero-delay-1 { animation-delay: 0.05s; }
+      .hero-delay-2 { animation-delay: 0.14s; }
+      .hero-delay-3 { animation-delay: 0.22s; }
 
       .reveal {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(14px);
         transition:
-          opacity 0.7s var(--ease-out-expo),
-          transform 0.7s var(--ease-out-expo);
+          opacity 0.6s var(--ease-out-expo),
+          transform 0.6s var(--ease-out-expo);
       }
 
       .reveal.visible {
@@ -260,28 +364,28 @@
         transform: translateY(0);
       }
 
-      /* Hero */
+      /* Hero Section (Debloated & Minimal) */
       .hero {
-        padding: 5.25rem 0 3.75rem;
+        padding: 4.75rem 0 3.25rem;
         border-bottom: 1px solid var(--color-rule);
         position: relative;
       }
 
       .hero h1 {
         font-family: var(--font-serif);
-        font-size: clamp(2.75rem, 5vw + 1rem, 4.1rem);
+        font-size: clamp(2.8rem, 5.5vw + 1rem, 4.4rem);
         font-weight: 400;
-        letter-spacing: -0.025em;
-        line-height: 1.04;
-        margin-bottom: 1.25rem;
-        color: #ffffff;
+        letter-spacing: -0.02em;
+        line-height: 1.05;
+        margin-bottom: 1.15rem;
+        color: var(--color-ink);
       }
 
       .hero-statement {
         font-size: 1.14rem;
         color: var(--color-muted);
-        line-height: 1.7;
-        max-width: 60ch;
+        line-height: 1.72;
+        max-width: 62ch;
         margin-bottom: 2rem;
       }
 
@@ -293,9 +397,9 @@
       .hero-links {
         display: flex;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 0.85rem;
         font-family: var(--font-mono);
-        font-size: 0.8rem;
+        font-size: 0.78rem;
       }
 
       .hero-links a {
@@ -305,20 +409,21 @@
         color: var(--color-ink);
         background: var(--color-surface);
         border: 1px solid var(--color-rule-solid);
-        padding: 0.42rem 0.85rem;
-        border-radius: 6px;
+        padding: 0.4rem 0.85rem;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(80, 65, 45, 0.04);
         transition:
           border-color 0.2s ease,
           background-color 0.2s ease,
           color 0.2s ease,
-          transform 0.2s var(--ease-out-expo);
+          transform 0.15s ease;
       }
 
       .hero-links a:hover {
         color: var(--color-accent);
         border-color: var(--color-accent);
-        background: var(--color-surface-raised);
-        transform: translateY(-2px);
+        background: var(--color-accent-wash);
+        transform: translateY(-1px);
       }
 
       .ext-arrow {
@@ -330,9 +435,9 @@
         transform: translate(2px, -2px);
       }
 
-      /* Section Layout */
+      /* Sections */
       section {
-        padding: 4.25rem 0;
+        padding: 3.75rem 0;
         border-bottom: 1px solid var(--color-rule);
       }
 
@@ -346,39 +451,42 @@
         align-items: center;
         flex-wrap: wrap;
         gap: 1rem;
-        margin-bottom: 2.5rem;
+        margin-bottom: 2rem;
+        padding-bottom: 0.65rem;
+        border-bottom: 1px solid var(--color-rule);
       }
 
       h2 {
         font-family: var(--font-serif);
-        font-size: 2rem;
+        font-size: 2.1rem;
         font-weight: 400;
         letter-spacing: -0.015em;
         color: var(--color-ink);
+        line-height: 1.1;
       }
 
+      /* Filter Bar */
       .filter-bar {
         display: flex;
-        gap: 0.25rem;
-        background: var(--color-surface);
-        border: 1px solid var(--color-rule);
-        border-radius: 7px;
-        padding: 0.22rem;
+        gap: 0.3rem;
+        background: var(--color-paper-warm);
+        border: 1px solid var(--color-rule-solid);
+        border-radius: 5px;
+        padding: 0.2rem;
       }
 
       .filter-btn {
         background: transparent;
         border: none;
         font-family: var(--font-mono);
-        font-size: 0.75rem;
+        font-size: 0.74rem;
         color: var(--color-muted);
-        padding: 0.3rem 0.75rem;
-        border-radius: 5px;
+        padding: 0.28rem 0.7rem;
+        border-radius: 3px;
         cursor: pointer;
         transition:
-          color 0.2s ease,
-          background-color 0.2s ease,
-          box-shadow 0.2s ease;
+          color 0.18s ease,
+          background-color 0.18s ease;
       }
 
       .filter-btn:hover {
@@ -387,58 +495,37 @@
 
       .filter-btn.active {
         color: var(--color-ink);
-        background: var(--color-surface-raised);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(240, 138, 89, 0.3);
+        background: var(--color-surface);
+        box-shadow: 0 1px 2px rgba(80, 65, 45, 0.08);
+        border: 1px solid var(--color-rule);
+        font-weight: 500;
       }
 
-      /* Project Case Studies */
+      /* Project Cards (Debloated & Clean) */
       .projects-wrapper {
         display: flex;
         flex-direction: column;
-        gap: 2.75rem;
+        gap: 2.25rem;
       }
 
       .project-block {
         display: flex;
         flex-direction: column;
-        gap: 1.5rem;
-        background: rgba(17, 22, 33, 0.65);
-        border: 1px solid var(--color-rule);
-        border-radius: 10px;
+        gap: 1.35rem;
+        background: var(--color-surface);
+        border: 1px solid var(--color-rule-solid);
+        border-radius: 6px;
         padding: 1.85rem;
         position: relative;
+        box-shadow: 0 2px 6px rgba(90, 75, 55, 0.03);
         transition:
-          border-color 0.3s var(--ease-out-expo),
-          background-color 0.3s var(--ease-out-expo),
-          transform 0.3s var(--ease-out-expo),
-          box-shadow 0.3s var(--ease-out-expo),
-          opacity 0.25s ease;
-      }
-
-      .project-block::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 1.5rem;
-        right: 1.5rem;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
-        opacity: 0;
-        transition: opacity 0.35s ease;
+          border-color 0.25s var(--ease-out-expo),
+          box-shadow 0.25s var(--ease-out-expo);
       }
 
       .project-block:hover {
-        border-color: rgba(148, 163, 184, 0.26);
-        background: rgba(22, 29, 43, 0.75);
-        box-shadow: 0 16px 40px -20px rgba(0, 0, 0, 0.6);
-      }
-
-      .project-block:hover::before {
-        opacity: 0.75;
-      }
-
-      .project-block.hidden-card {
-        display: none;
+        border-color: var(--color-rule-strong);
+        box-shadow: 0 5px 16px rgba(80, 65, 45, 0.06);
       }
 
       .project-title-row {
@@ -446,9 +533,7 @@
         justify-content: space-between;
         align-items: baseline;
         flex-wrap: wrap;
-        gap: 1rem;
-        border-bottom: 1px solid var(--color-rule);
-        padding-bottom: 0.85rem;
+        gap: 0.85rem;
       }
 
       .project-title-group {
@@ -460,9 +545,10 @@
 
       .project-title-row h3 {
         font-family: var(--font-serif);
-        font-size: 1.9rem;
+        font-size: 1.95rem;
         font-weight: 400;
         letter-spacing: -0.01em;
+        color: var(--color-ink);
       }
 
       .project-title-row h3 a {
@@ -473,27 +559,18 @@
         color: var(--color-accent);
       }
 
-      .project-tag {
-        font-family: var(--font-mono);
-        font-size: 0.7rem;
-        color: var(--color-accent);
-        background: var(--color-accent-soft);
-        border: 1px solid rgba(240, 138, 89, 0.22);
-        padding: 0.15rem 0.5rem;
-        border-radius: 4px;
-      }
 
       .project-meta-links {
         display: flex;
         align-items: center;
-        gap: 1.15rem;
+        gap: 1rem;
         font-family: var(--font-mono);
         font-size: 0.78rem;
       }
 
       .doc-link {
         color: var(--color-accent);
-        border-bottom: 1px dashed rgba(240, 138, 89, 0.55);
+        border-bottom: 1px dashed var(--color-accent-border);
         padding-bottom: 1px;
         transition: border-color 0.2s ease, color 0.2s ease;
       }
@@ -514,25 +591,28 @@
 
       .project-lead {
         font-size: 0.98rem;
-        color: var(--color-muted);
+        color: var(--color-ink-light);
         line-height: 1.72;
       }
 
       .project-lead code {
         font-family: var(--font-mono);
-        font-size: 0.88em;
+        font-size: 0.86em;
         color: var(--color-accent);
-        background: var(--color-accent-soft);
+        background: var(--color-paper-warm);
+        border: 1px solid var(--color-rule);
         padding: 0.1rem 0.35rem;
-        border-radius: 4px;
+        border-radius: 3px;
       }
 
-      /* Spec Table */
+      /* Specifications Table */
       .specs-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 0.84rem;
+        font-size: 0.82rem;
         margin: 0.15rem 0;
+        border: 1px solid var(--color-rule);
+        background: var(--color-surface);
       }
 
       .specs-table tr {
@@ -540,58 +620,72 @@
         transition: background-color 0.18s ease;
       }
 
+      .specs-table tr:last-child {
+        border-bottom: none;
+      }
+
       .specs-table tr:hover {
-        background-color: rgba(255, 255, 255, 0.015);
+        background-color: rgba(241, 235, 217, 0.4);
       }
 
       .specs-table td {
-        padding: 0.65rem 0.4rem;
+        padding: 0.65rem 0.85rem;
         vertical-align: top;
       }
 
       .specs-table td:first-child {
         font-family: var(--font-mono);
-        color: var(--color-soft);
-        width: 30%;
-        font-size: 0.75rem;
-        letter-spacing: 0.03em;
+        color: var(--color-muted);
+        background: rgba(241, 235, 217, 0.3);
+        width: 28%;
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        border-right: 1px solid var(--color-rule);
       }
 
       .specs-table td:last-child {
         color: var(--color-ink);
         font-family: var(--font-mono);
-        font-size: 0.82rem;
+        font-size: 0.8rem;
       }
 
-      /* Architecture Visual Container */
+      /* Architecture Schematic Box */
       .diagram-box {
-        background: #0d121c;
-        border: 1px solid var(--color-rule);
-        border-radius: 8px;
-        padding: 1.25rem;
+        background: #fbf9f4;
+        border: 1px solid var(--color-rule-solid);
+        border-radius: 5px;
+        padding: 1.15rem;
         overflow-x: auto;
+        position: relative;
         transition: border-color 0.25s ease;
+        -webkit-overflow-scrolling: touch;
       }
 
       .diagram-box:hover {
-        border-color: var(--color-rule-solid);
+        border-color: var(--color-rule-strong);
       }
 
       .diagram-caption {
         font-family: var(--font-mono);
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         color: var(--color-muted);
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        margin-bottom: 1rem;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.85rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        border-bottom: 1px solid var(--color-rule);
+        padding-bottom: 0.4rem;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+
+      .scroll-hint {
+        display: none;
       }
 
       .diagram-caption a {
         color: var(--color-accent);
-        text-transform: none;
         letter-spacing: 0;
       }
 
@@ -602,7 +696,12 @@
         height: auto;
       }
 
-      /* Subtle Dataflow Animation on SVG Connectors */
+      @media (min-width: 1200px) {
+        .diagram-box svg {
+          min-width: unset;
+        }
+      }
+
       @keyframes flow-dash {
         to {
           stroke-dashoffset: -16;
@@ -611,18 +710,10 @@
 
       .flow-line {
         stroke-dasharray: 5 3;
-        animation: flow-dash 1.2s linear infinite;
+        animation: flow-dash 1.3s linear infinite;
       }
 
-      .svg-node {
-        transition: filter 0.25s ease;
-      }
-
-      .diagram-box:hover .svg-node-accent {
-        filter: drop-shadow(0 0 8px rgba(240, 138, 89, 0.2));
-      }
-
-      /* Smooth Collapsible Output Drawer */
+      /* Collapsible Drawer */
       .output-panel {
         display: flex;
         flex-direction: column;
@@ -633,13 +724,13 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        background: rgba(255, 255, 255, 0.02);
+        background: var(--color-paper-warm);
         border: 1px solid var(--color-rule-solid);
         font-family: var(--font-mono);
-        font-size: 0.75rem;
-        color: var(--color-muted);
-        padding: 0.4rem 0.8rem;
-        border-radius: 5px;
+        font-size: 0.74rem;
+        color: var(--color-ink-light);
+        padding: 0.35rem 0.75rem;
+        border-radius: 4px;
         cursor: pointer;
         transition:
           color 0.2s ease,
@@ -650,13 +741,13 @@
       .out-toggle:hover {
         color: var(--color-ink);
         border-color: var(--color-accent);
-        background: var(--color-accent-soft);
+        background: var(--color-accent-wash);
       }
 
       .out-chevron {
         display: inline-block;
         font-size: 0.68rem;
-        transition: transform 0.3s var(--ease-out-expo);
+        transition: transform 0.25s var(--ease-out-expo);
       }
 
       .out-toggle[aria-expanded="true"] .out-chevron {
@@ -669,9 +760,9 @@
         grid-template-rows: 0fr;
         opacity: 0;
         transition:
-          grid-template-rows 0.38s var(--ease-out-expo),
-          opacity 0.3s ease,
-          margin-top 0.3s var(--ease-out-expo);
+          grid-template-rows 0.35s var(--ease-out-expo),
+          opacity 0.25s ease,
+          margin-top 0.25s var(--ease-out-expo);
         margin-top: 0;
       }
 
@@ -686,22 +777,23 @@
       }
 
       pre.console {
-        background: #070a10;
-        border: 1px solid var(--color-rule);
-        border-radius: 6px;
+        background: #f1ebd9;
+        border: 1px solid var(--color-rule-solid);
+        border-radius: 4px;
         padding: 1.1rem;
         font-family: var(--font-mono);
         font-size: 0.78rem;
-        line-height: 1.65;
-        color: var(--color-signal);
+        line-height: 1.68;
+        color: #2e353f;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
       }
 
       .plot-image-wrapper {
-        border: 1px solid var(--color-rule);
-        border-radius: 6px;
+        border: 1px solid var(--color-rule-solid);
+        border-radius: 5px;
         overflow: hidden;
-        background: #070a10;
+        background: #ffffff;
       }
 
       .plot-image-wrapper img {
@@ -712,11 +804,11 @@
 
       .plot-legend {
         font-family: var(--font-mono);
-        font-size: 0.74rem;
+        font-size: 0.72rem;
         color: var(--color-muted);
         text-align: center;
-        padding: 0.6rem 0.75rem;
-        background: var(--color-surface);
+        padding: 0.6rem 0.85rem;
+        background: var(--color-paper-warm);
         border-top: 1px solid var(--color-rule);
       }
 
@@ -727,13 +819,26 @@
         gap: 2rem;
       }
 
+      @media (min-width: 1440px) {
+        .about-grid {
+          grid-template-columns: 1.15fr 1fr;
+          gap: 2.75rem;
+          align-items: start;
+        }
+        .pillars-row {
+          grid-template-columns: 1fr !important;
+          gap: 1rem !important;
+          margin-top: 0 !important;
+        }
+      }
+
       .about-prose {
         display: flex;
         flex-direction: column;
-        gap: 1.2rem;
+        gap: 1.15rem;
         font-size: 1.02rem;
-        line-height: 1.75;
-        color: var(--color-muted);
+        line-height: 1.76;
+        color: var(--color-ink-light);
       }
 
       .about-prose p strong {
@@ -743,37 +848,49 @@
 
       .pillars-row {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 1.15rem;
         margin-top: 0.5rem;
       }
 
+      /* Debloated Pillar Cards */
       .pillar-card {
         background: var(--color-surface);
-        border: 1px solid var(--color-rule);
-        border-radius: 8px;
-        padding: 1.1rem 1.2rem;
+        border: 1px solid var(--color-rule-solid);
+        border-left: 3px solid var(--color-accent);
+        border-radius: 4px;
+        padding: 1.15rem 1.25rem;
         transition:
           border-color 0.25s ease,
-          transform 0.25s var(--ease-out-expo);
+          transform 0.2s var(--ease-out-expo),
+          box-shadow 0.2s ease;
+      }
+
+      .pillar-card.pillar-slate {
+        border-left-color: var(--color-slate);
+      }
+
+      .pillar-card.pillar-sage {
+        border-left-color: var(--color-sage);
       }
 
       .pillar-card:hover {
-        border-color: var(--color-rule-solid);
         transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(80, 65, 45, 0.06);
       }
 
       .pillar-title {
         font-family: var(--font-mono);
-        font-size: 0.78rem;
-        color: var(--color-accent);
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--color-ink);
         margin-bottom: 0.35rem;
       }
 
       .pillar-desc {
         font-size: 0.86rem;
         color: var(--color-muted);
-        line-height: 1.55;
+        line-height: 1.58;
       }
 
       /* Contact Section */
@@ -784,21 +901,16 @@
         flex-wrap: wrap;
         gap: 1.5rem;
         background: var(--color-surface);
-        border: 1px solid var(--color-rule);
-        border-radius: 10px;
-        padding: 1.75rem 2rem;
-        transition: border-color 0.25s ease;
-      }
-
-      .contact-strip:hover {
-        border-color: var(--color-rule-solid);
+        border: 1px solid var(--color-rule-solid);
+        border-radius: 6px;
+        padding: 1.65rem 1.85rem;
       }
 
       .contact-strip a.email {
         font-family: var(--font-mono);
         font-size: 1.02rem;
         color: var(--color-ink);
-        border-bottom: 1px solid var(--color-rule-solid);
+        border-bottom: 1px dashed var(--color-rule-strong);
         padding-bottom: 2px;
         transition: color 0.2s ease, border-color 0.2s ease;
       }
@@ -806,13 +918,14 @@
       .contact-strip a.email:hover {
         color: var(--color-accent);
         border-color: var(--color-accent);
+        border-bottom-style: solid;
       }
 
       .social-row {
         display: flex;
         gap: 1.5rem;
         font-family: var(--font-mono);
-        font-size: 0.84rem;
+        font-size: 0.82rem;
         color: var(--color-muted);
       }
 
@@ -824,27 +937,33 @@
         color: var(--color-ink);
       }
 
+      /* Colophon Footer */
       footer {
-        padding-top: 3rem;
+        padding-top: 3.5rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
         font-family: var(--font-mono);
-        font-size: 0.78rem;
+        font-size: 0.74rem;
         color: var(--color-soft);
+        border-top: 1px solid var(--color-rule);
+        margin-top: 2rem;
       }
 
       .footer-hint {
         cursor: pointer;
-        padding: 0.2rem 0.5rem;
-        border-radius: 4px;
-        border: 1px solid transparent;
+        padding: 0.25rem 0.55rem;
+        border-radius: 3px;
+        background: var(--color-paper-warm);
+        border: 1px solid var(--color-rule);
         transition: color 0.2s ease, border-color 0.2s ease;
       }
 
       .footer-hint:hover {
         color: var(--color-ink);
-        border-color: var(--color-rule-solid);
+        border-color: var(--color-accent);
       }
 
       /* Terminal Overlay */
@@ -852,7 +971,7 @@
         position: fixed;
         inset: 0;
         z-index: 100;
-        background: rgba(5, 7, 11, 0.8);
+        background: rgba(38, 34, 29, 0.55);
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
         display: flex;
@@ -874,14 +993,14 @@
       }
 
       .terminal-window {
-        background: #0b0f17;
-        border: 1px solid var(--color-rule-solid);
-        border-radius: 8px;
+        background: #f7f3e8;
+        border: 1.5px solid var(--color-rule-strong);
+        border-radius: 6px;
         width: 100%;
         max-width: 660px;
         overflow: hidden;
-        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
-        transform: scale(0.96) translateY(8px);
+        box-shadow: 0 16px 45px rgba(50, 42, 32, 0.22);
+        transform: scale(0.97) translateY(6px);
         transition: transform 0.25s var(--ease-out-expo);
       }
 
@@ -890,15 +1009,16 @@
       }
 
       .terminal-header {
-        background: #121826;
+        background: #eae2ce;
         padding: 0.65rem 1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid var(--color-rule);
+        border-bottom: 1px solid var(--color-rule-solid);
         font-family: var(--font-mono);
-        font-size: 0.75rem;
-        color: var(--color-muted);
+        font-size: 0.74rem;
+        color: var(--color-ink-light);
+        font-weight: 500;
       }
 
       .terminal-close {
@@ -907,11 +1027,14 @@
         font-family: var(--font-mono);
         color: var(--color-muted);
         cursor: pointer;
-        transition: color 0.15s ease;
+        padding: 0.2rem 0.5rem;
+        border-radius: 3px;
+        transition: color 0.15s ease, background 0.15s ease;
       }
 
       .terminal-close:hover {
         color: var(--color-accent);
+        background: rgba(178, 93, 59, 0.08);
       }
 
       .terminal-body {
@@ -922,15 +1045,19 @@
         max-height: 380px;
         overflow-y: auto;
         color: var(--color-ink);
-        line-height: 1.6;
+        line-height: 1.62;
+        background: #fbf9f2;
       }
 
       .terminal-line {
         margin-bottom: 0.35rem;
       }
+
       .terminal-prompt {
         color: var(--color-accent);
+        font-weight: 600;
       }
+
       .terminal-cursor {
         display: inline-block;
         width: 7px;
@@ -946,33 +1073,229 @@
           opacity: 0;
         }
       }
+
       .info {
-        color: var(--color-signal);
+        color: var(--color-slate);
       }
       .err {
-        color: #f87171;
+        color: #b84a44;
       }
       .succ {
-        color: var(--color-accent);
+        color: var(--color-sage);
       }
+
       #term-mobile-input {
         position: absolute;
         opacity: 0;
         pointer-events: none;
       }
 
+      /* Mobile Responsive (< 640px and < 480px) */
       @media (max-width: 640px) {
+        .container {
+          padding: 0 1rem 4rem;
+        }
+
+        .folio-inner {
+          padding: 0.3rem 1rem;
+          font-size: 0.64rem;
+        }
+
+        .folio-desc {
+          display: none;
+        }
+
+        .nav-inner {
+          padding: 0.75rem 1rem;
+        }
+
+        .nav-links {
+          gap: 0.85rem;
+          font-size: 0.74rem;
+        }
+
+        .term-trigger {
+          padding: 0.22rem 0.45rem;
+          font-size: 0.7rem;
+        }
+
         .hero {
-          padding: 3.5rem 0 2.75rem;
+          padding: 2.75rem 0 2.25rem;
         }
+
+        .hero h1 {
+          font-size: clamp(2.3rem, 8.5vw, 3.2rem);
+          margin-bottom: 0.85rem;
+        }
+
+        .hero-statement {
+          font-size: 1.02rem;
+          line-height: 1.62;
+          margin-bottom: 1.5rem;
+        }
+
+        .hero-links {
+          gap: 0.6rem;
+        }
+
+        .hero-links a {
+          width: 100%;
+          justify-content: space-between;
+          padding: 0.48rem 0.75rem;
+        }
+
+        section {
+          padding: 2.75rem 0;
+        }
+
+        .section-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.85rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .filter-bar {
+          width: 100%;
+        }
+
+        .filter-btn {
+          flex: 1;
+          text-align: center;
+          padding: 0.38rem 0.45rem;
+        }
+
         .project-block {
-          padding: 1.35rem;
+          padding: 1.25rem 1rem;
+          gap: 1.15rem;
         }
-        .specs-table td:first-child {
-          width: 38%;
+
+        .project-title-row {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
         }
+
+        .project-title-row h3 {
+          font-size: 1.75rem;
+        }
+
+        .project-meta-links {
+          width: 100%;
+          justify-content: space-between;
+          padding-top: 0.45rem;
+          border-top: 1px dashed var(--color-rule);
+        }
+
+        .diagram-box {
+          padding: 0.85rem;
+        }
+
+        .scroll-hint {
+          display: inline-block !important;
+          font-size: 0.62rem;
+          color: var(--color-accent);
+          background: var(--color-accent-wash);
+          border: 1px solid var(--color-accent-border);
+          padding: 0.1rem 0.35rem;
+          border-radius: 3px;
+        }
+
+        pre.console {
+          font-size: 0.72rem;
+          padding: 0.85rem;
+        }
+
         .contact-strip {
-          padding: 1.35rem;
+          padding: 1.35rem 1.15rem;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 1.25rem;
+        }
+
+        .contact-strip a.email {
+          width: 100%;
+          font-size: 0.95rem;
+          word-break: break-all;
+        }
+
+        .social-row {
+          width: 100%;
+          justify-content: flex-start;
+          gap: 1.75rem;
+        }
+
+        footer {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.85rem;
+          padding-top: 2.5rem;
+        }
+
+        #terminal-overlay {
+          padding: 0.5rem;
+          align-items: flex-end;
+        }
+
+        .terminal-window {
+          max-height: 85dvh;
+          border-radius: 8px 8px 0 0;
+        }
+
+        .terminal-body {
+          min-height: 220px;
+          max-height: 55dvh;
+          font-size: 0.78rem;
+          padding: 0.85rem;
+        }
+      }
+
+      /* Stacked Specifications Table on Narrow Mobile (< 540px) */
+      @media (max-width: 540px) {
+        .specs-table,
+        .specs-table tbody,
+        .specs-table tr,
+        .specs-table td {
+          display: block;
+          width: 100% !important;
+        }
+
+        .specs-table tr {
+          padding: 0.65rem 0.75rem;
+          border-bottom: 1px solid var(--color-rule);
+        }
+
+        .specs-table td {
+          padding: 0;
+          border: none !important;
+          background: transparent !important;
+        }
+
+        .specs-table td:first-child {
+          font-size: 0.66rem;
+          color: var(--color-muted);
+          letter-spacing: 0.06em;
+          margin-bottom: 0.25rem;
+          font-weight: 600;
+        }
+
+        .specs-table td:last-child {
+          font-size: 0.8rem;
+          color: var(--color-ink);
+          line-height: 1.5;
+        }
+      }
+
+      @media (max-width: 440px) {
+        .logo-name-full {
+          display: none;
+        }
+        .logo-name-short {
+          display: inline;
+        }
+        .nav-links {
+          gap: 0.65rem;
+          font-size: 0.72rem;
         }
       }
 
@@ -995,12 +1318,22 @@
   </head>
 
   <body>
+    <!-- Folio Banner -->
+    <aside class="manual-folio-bar" aria-label="Document Metadata">
+      <div class="folio-inner">
+        <span>Guillermo Corpas</span>
+        <span class="folio-desc">Low-Level Systems &amp; Computational Physics</span>
+        <span class="folio-status"><span class="status-pip"></span> Portfolio</span>
+      </div>
+    </aside>
+
     <!-- Navigation -->
     <nav>
       <div class="nav-inner">
         <a href="#hero" class="logo">
-          <span class="logo-dot" aria-hidden="true"></span>
-          <span>Guillermo</span>
+          <span class="logo-mark" aria-hidden="true">&sect;</span>
+          <span class="logo-name-full">Guillermo Corpas</span>
+          <span class="logo-name-short">Guillermo</span>
         </a>
         <ul class="nav-links">
           <li><a href="#projects">Projects</a></li>
@@ -1013,7 +1346,7 @@
               onclick="openTerminal()"
               title="Interactive Terminal (~)"
             >
-              ~ term
+              <span>~ term</span>
             </button>
           </li>
         </ul>
@@ -1021,21 +1354,22 @@
     </nav>
 
     <main class="container">
-      <!-- Hero -->
+      <!-- Hero (Clean & Minimal) -->
       <section class="hero" id="hero">
         <h1 class="hero-animate hero-delay-1">Guillermo Corpas</h1>
         <p class="hero-statement hero-animate hero-delay-2">
           <strong>Physicist and software engineer</strong> building deterministic low-level systems,
           mathematical models, and machine learning runtimes from first principles.
         </p>
+
         <div class="hero-links hero-animate hero-delay-3">
           <a href="https://github.com/gcpino" target="_blank" rel="noopener">
             <span>github.com/gcpino</span>
-            <span class="ext-arrow" aria-hidden="true">↗</span>
+            <span class="ext-arrow" aria-hidden="true">&nearr;</span>
           </a>
           <a href="https://linkedin.com/in/gcorpas" target="_blank" rel="noopener">
             <span>linkedin.com/in/gcorpas</span>
-            <span class="ext-arrow" aria-hidden="true">↗</span>
+            <span class="ext-arrow" aria-hidden="true">&nearr;</span>
           </a>
           <a href="mailto:guicorpasp@gmail.com">
             <span>guicorpasp@gmail.com</span>
@@ -1046,7 +1380,7 @@
       <!-- Projects Section -->
       <section id="projects" class="reveal">
         <div class="section-header">
-          <h2>Featured Projects</h2>
+          <h2>Projects</h2>
           <div class="filter-bar" role="tablist" aria-label="Filter projects">
             <button type="button" class="filter-btn active" data-filter="all">all</button>
             <button type="button" class="filter-btn" data-filter="c11">c11</button>
@@ -1058,20 +1392,17 @@
           <!-- 1. c-infer -->
           <article class="project-block" id="proj-cinfer" data-category="c11">
             <div class="project-title-row">
-              <div class="project-title-group">
-                <h3>
-                  <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">
-                    c-infer
-                  </a>
-                </h3>
-                <span class="project-tag">C11 · Zero-Alloc Runtime</span>
-              </div>
+              <h3>
+                <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">
+                  c-infer
+                </a>
+              </h3>
               <div class="project-meta-links">
                 <a href="docs/cinfer-architecture.html" class="doc-link" target="_blank">
-                  Full Architecture Spec <span class="ext-arrow" aria-hidden="true">↗</span>
+                  Spec <span class="ext-arrow" aria-hidden="true">&nearr;</span>
                 </a>
                 <a href="https://github.com/gcpino/c-infer" class="source-link" target="_blank" rel="noopener">
-                  Source <span class="ext-arrow" aria-hidden="true">↗</span>
+                  Source <span class="ext-arrow" aria-hidden="true">&nearr;</span>
                 </a>
               </div>
             </div>
@@ -1086,7 +1417,7 @@
             <table class="specs-table">
               <tr>
                 <td>CORE CONSTRAINTS</td>
-                <td>Zero malloc/free during forward pass · Static memory arena initialization</td>
+                <td>Zero malloc/free during forward pass &middot; Static memory arena initialization</td>
               </tr>
               <tr>
                 <td>SUPPORTED LAYERS</td>
@@ -1098,74 +1429,73 @@
               </tr>
             </table>
 
-            <!-- Editorial Architecture Diagram -->
             <div class="diagram-box">
               <div class="diagram-caption">
-                <span>Architecture Diagram · Dataflow &amp; Memory Isolation</span>
+                <span>Dataflow &amp; Memory Layout <span class="scroll-hint" aria-hidden="true">swipe &rarr;</span></span>
                 <a href="docs/cinfer-architecture.html" target="_blank">
-                  Expand <span class="ext-arrow" aria-hidden="true">↗</span>
+                  Expand <span class="ext-arrow" aria-hidden="true">&nearr;</span>
                 </a>
               </div>
               <svg viewBox="0 0 760 170" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="c-infer Architecture flow">
                 <defs>
                   <marker id="arr" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
-                    <polygon points="0 0, 7 2.5, 0 5" fill="#bfc0c0" />
+                    <polygon points="0 0, 7 2.5, 0 5" fill="#8a7e6b" />
                   </marker>
                   <marker id="arr-acc" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
-                    <polygon points="0 0, 7 2.5, 0 5" fill="#f08a59" />
+                    <polygon points="0 0, 7 2.5, 0 5" fill="#b25d3b" />
                   </marker>
                 </defs>
 
                 <!-- Zone 1 -->
-                <rect x="10" y="15" width="180" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8" />
-                <text x="100" y="32" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.12em">OFFLINE PYTHON</text>
-                <rect x="25" y="45" width="150" height="42" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
-                <text x="100" y="64" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">PyTorch Model</text>
-                <text x="100" y="78" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">export.py serialization</text>
-                <rect x="35" y="98" width="130" height="36" rx="4" fill="#10141f" stroke="#334155" stroke-width="0.8" />
-                <text x="100" y="117" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle">model.cinf (binary)</text>
-                <line x1="100" y1="87" x2="100" y2="98" stroke="#bfc0c0" stroke-width="1" marker-end="url(#arr)" />
+                <rect x="10" y="15" width="180" height="140" rx="4" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
+                <text x="100" y="32" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.12em">OFFLINE PYTHON</text>
+                <rect x="25" y="45" width="150" height="42" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
+                <text x="100" y="64" fill="#26221d" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">PyTorch Model</text>
+                <text x="100" y="78" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">export.py serialization</text>
+                <rect x="35" y="98" width="130" height="36" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
+                <text x="100" y="117" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="8.5" font-weight="600" text-anchor="middle">model.cinf (binary)</text>
+                <line x1="100" y1="87" x2="100" y2="98" stroke="#8a7e6b" stroke-width="1" marker-end="url(#arr)" />
 
                 <!-- Connector 1->2 -->
-                <line class="flow-line" x1="190" y1="116" x2="230" y2="116" stroke="#f08a59" stroke-width="1.3" marker-end="url(#arr-acc)" />
+                <line class="flow-line" x1="190" y1="116" x2="230" y2="116" stroke="#b25d3b" stroke-width="1.3" marker-end="url(#arr-acc)" />
 
                 <!-- Zone 2 -->
-                <rect x="235" y="15" width="315" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8" />
-                <text x="392" y="32" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.12em">C11 RUNTIME CORE</text>
+                <rect x="235" y="15" width="315" height="140" rx="4" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
+                <text x="392" y="32" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.12em">C11 RUNTIME CORE</text>
 
-                <rect class="svg-node svg-node-accent" x="250" y="45" width="135" height="92" rx="4" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1.2" />
-                <text x="317" y="68" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">Static Arena</text>
-                <text x="317" y="84" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">cinf_arena_t</text>
-                <text x="317" y="104" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Zero heap during fwd</text>
-                <text x="317" y="118" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Fixed buffer footprint</text>
+                <rect class="svg-node svg-node-accent" x="250" y="45" width="135" height="92" rx="3" fill="#fbf0e8" stroke="#b25d3b" stroke-width="1.2" />
+                <text x="317" y="68" fill="#26221d" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">Static Arena</text>
+                <text x="317" y="84" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" text-anchor="middle">cinf_arena_t</text>
+                <text x="317" y="104" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Zero heap during fwd</text>
+                <text x="317" y="118" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Fixed buffer footprint</text>
 
                 <!-- Connector into engine -->
-                <line x1="385" y1="91" x2="405" y2="91" stroke="#bfc0c0" stroke-width="1" marker-end="url(#arr)" />
+                <line x1="385" y1="91" x2="405" y2="91" stroke="#8a7e6b" stroke-width="1" marker-end="url(#arr)" />
 
-                <rect x="410" y="45" width="125" height="92" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
-                <text x="472" y="68" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">Dispatch Loop</text>
-                <text x="472" y="84" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">cinf_forward()</text>
-                <text x="472" y="102" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">Conv2D · Linear</text>
-                <text x="472" y="116" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">MaxPool · Softmax</text>
+                <rect x="410" y="45" width="125" height="92" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
+                <text x="472" y="68" fill="#26221d" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">Dispatch Loop</text>
+                <text x="472" y="84" fill="#48697a" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle">cinf_forward()</text>
+                <text x="472" y="102" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">Conv2D &middot; Linear</text>
+                <text x="472" y="116" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">MaxPool &middot; Softmax</text>
 
                 <!-- Connector 2->3 -->
-                <line class="flow-line" x1="550" y1="91" x2="585" y2="91" stroke="#bfc0c0" stroke-width="1.1" marker-end="url(#arr)" />
+                <line class="flow-line" x1="550" y1="91" x2="585" y2="91" stroke="#8a7e6b" stroke-width="1.1" marker-end="url(#arr)" />
 
                 <!-- Zone 3 -->
-                <rect x="590" y="15" width="160" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8" />
-                <text x="670" y="32" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.12em">VERIFICATION</text>
-                <rect x="605" y="45" width="130" height="42" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
-                <text x="670" y="64" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">PyTorch Parity</text>
-                <text x="670" y="78" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Delta &lt; 1e-5 abs</text>
-                <rect class="svg-node svg-node-accent" x="605" y="98" width="130" height="36" rx="4" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1" />
-                <text x="670" y="116" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8.5" font-weight="600" text-anchor="middle">All Tests Pass</text>
-                <line x1="670" y1="87" x2="670" y2="98" stroke="#f08a59" stroke-width="1" marker-end="url(#arr-acc)" />
+                <rect x="590" y="15" width="160" height="140" rx="4" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
+                <text x="670" y="32" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.12em">VERIFICATION</text>
+                <rect x="605" y="45" width="130" height="42" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
+                <text x="670" y="64" fill="#26221d" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">PyTorch Parity</text>
+                <text x="670" y="78" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Delta &lt; 1e-5 abs</text>
+                <rect class="svg-node svg-node-accent" x="605" y="98" width="130" height="36" rx="3" fill="#ebf2ed" stroke="#4f785e" stroke-width="1.1" />
+                <text x="670" y="116" fill="#4f785e" font-family="'Geist Mono', monospace" font-size="8.5" font-weight="600" text-anchor="middle">&check; All Tests Pass</text>
+                <line x1="670" y1="87" x2="670" y2="98" stroke="#4f785e" stroke-width="1" marker-end="url(#arr-acc)" />
               </svg>
             </div>
 
             <div class="output-panel">
               <button type="button" class="out-toggle" aria-expanded="false">
-                <span class="out-chevron" aria-hidden="true">▸</span>
+                <span class="out-chevron" aria-hidden="true">&#9656;</span>
                 <span class="out-label">View test suite verification</span>
               </button>
               <div class="pcard-output">
@@ -1188,20 +1518,17 @@ ALL TESTS PASSED (8/8)</pre>
           <!-- 2. PINN -->
           <article class="project-block" id="proj-pinn" data-category="ml">
             <div class="project-title-row">
-              <div class="project-title-group">
-                <h3>
-                  <a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener">
-                    PINN
-                  </a>
-                </h3>
-                <span class="project-tag">PyTorch · PDE Solver</span>
-              </div>
+              <h3>
+                <a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener">
+                  PINN
+                </a>
+              </h3>
               <div class="project-meta-links">
                 <a href="docs/pinn-architecture.html" class="doc-link" target="_blank">
-                  Full Architecture Spec <span class="ext-arrow" aria-hidden="true">↗</span>
+                  Spec <span class="ext-arrow" aria-hidden="true">&nearr;</span>
                 </a>
                 <a href="https://github.com/gcpino/PINN" class="source-link" target="_blank" rel="noopener">
-                  Source <span class="ext-arrow" aria-hidden="true">↗</span>
+                  Source <span class="ext-arrow" aria-hidden="true">&nearr;</span>
                 </a>
               </div>
             </div>
@@ -1216,7 +1543,7 @@ ALL TESTS PASSED (8/8)</pre>
             <table class="specs-table">
               <tr>
                 <td>DOMAIN &amp; CONDITIONS</td>
-                <td>Domain: (x, t) &in; [0, 1]&sup2; · IC: u(x, 0) = sin(&pi;x) · BC: u(0, t) = u(1, t) = 0</td>
+                <td>Domain: (x, t) &in; [0, 1]&sup2; &middot; IC: u(x, 0) = sin(&pi;x) &middot; BC: u(0, t) = u(1, t) = 0</td>
               </tr>
               <tr>
                 <td>NETWORK ARCHITECTURE</td>
@@ -1228,65 +1555,73 @@ ALL TESTS PASSED (8/8)</pre>
               </tr>
             </table>
 
-            <!-- Editorial Architecture Diagram -->
             <div class="diagram-box">
               <div class="diagram-caption">
-                <span>Architecture Diagram · PDE Loss Formulation &amp; Autodiff</span>
+                <span>Architecture &amp; Residual Loss <span class="scroll-hint" aria-hidden="true">swipe &rarr;</span></span>
                 <a href="docs/pinn-architecture.html" target="_blank">
-                  Expand <span class="ext-arrow" aria-hidden="true">↗</span>
+                  Expand <span class="ext-arrow" aria-hidden="true">&nearr;</span>
                 </a>
               </div>
               <svg viewBox="0 0 760 170" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PINN Architecture flow">
+                <defs>
+                  <marker id="arr2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+                    <polygon points="0 0, 7 2.5, 0 5" fill="#8a7e6b" />
+                  </marker>
+                  <marker id="arr-acc2" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+                    <polygon points="0 0, 7 2.5, 0 5" fill="#48697a" />
+                  </marker>
+                </defs>
+
                 <!-- Zone 1 -->
-                <rect x="10" y="15" width="180" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8" />
-                <text x="100" y="32" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.12em">SAMPLING DOMAIN</text>
-                <rect x="25" y="45" width="150" height="42" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
-                <text x="100" y="64" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">Interior Grid (x, t)</text>
-                <text x="100" y="78" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Random Collocation</text>
-                <rect x="25" y="98" width="150" height="36" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
-                <text x="100" y="116" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">IC: sin(&pi;x) · BC: u=0</text>
+                <rect x="10" y="15" width="180" height="140" rx="4" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
+                <text x="100" y="32" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.12em">SAMPLING DOMAIN</text>
+                <rect x="25" y="45" width="150" height="42" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
+                <text x="100" y="64" fill="#26221d" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">Interior Grid (x, t)</text>
+                <text x="100" y="78" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Random Collocation</text>
+                <rect x="25" y="98" width="150" height="36" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
+                <text x="100" y="116" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">IC: sin(&pi;x) &middot; BC: u=0</text>
 
                 <!-- Connector 1->2 -->
-                <line class="flow-line" x1="190" y1="88" x2="230" y2="88" stroke="#bfc0c0" stroke-width="1.1" marker-end="url(#arr)" />
+                <line class="flow-line" x1="190" y1="88" x2="230" y2="88" stroke="#8a7e6b" stroke-width="1.1" marker-end="url(#arr2)" />
 
                 <!-- Zone 2 -->
-                <rect x="235" y="15" width="315" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8" />
-                <text x="392" y="32" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.12em">SURROGATE &amp; AUTODIFF</text>
+                <rect x="235" y="15" width="315" height="140" rx="4" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
+                <text x="392" y="32" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.12em">SURROGATE &amp; AUTODIFF</text>
 
-                <rect x="250" y="45" width="125" height="92" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
-                <text x="312" y="68" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">Surrogate MLP</text>
-                <text x="312" y="84" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">3 layers &times; 32 units</text>
-                <text x="312" y="104" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">Output field</text>
-                <text x="312" y="118" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">u_pred(x, t)</text>
+                <rect x="250" y="45" width="125" height="92" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
+                <text x="312" y="68" fill="#26221d" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">Surrogate MLP</text>
+                <text x="312" y="84" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">3 layers &times; 32 units</text>
+                <text x="312" y="104" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Output field</text>
+                <text x="312" y="118" fill="#48697a" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" text-anchor="middle">u_pred(x, t)</text>
 
                 <!-- Connector into autodiff -->
-                <line class="flow-line" x1="375" y1="91" x2="395" y2="91" stroke="#f08a59" stroke-width="1.3" marker-end="url(#arr-acc)" />
+                <line class="flow-line" x1="375" y1="91" x2="395" y2="91" stroke="#48697a" stroke-width="1.3" marker-end="url(#arr-acc2)" />
 
-                <rect class="svg-node svg-node-accent" x="400" y="45" width="135" height="92" rx="4" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1.2" />
-                <text x="467" y="68" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">PyTorch Autodiff</text>
-                <text x="467" y="84" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">torch.autograd.grad()</text>
-                <text x="467" y="102" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">&part;u/&part;t (1st order)</text>
-                <text x="467" y="116" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">&part;&sup2;u/&part;x&sup2; (2nd order)</text>
+                <rect class="svg-node svg-node-accent" x="400" y="45" width="135" height="92" rx="3" fill="#e7eff3" stroke="#48697a" stroke-width="1.2" />
+                <text x="467" y="68" fill="#26221d" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">PyTorch Autodiff</text>
+                <text x="467" y="84" fill="#48697a" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle">torch.autograd.grad()</text>
+                <text x="467" y="102" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">&part;u/&part;t (1st order)</text>
+                <text x="467" y="116" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">&part;&sup2;u/&part;x&sup2; (2nd order)</text>
 
                 <!-- Connector 2->3 -->
-                <line class="flow-line" x1="550" y1="91" x2="585" y2="91" stroke="#bfc0c0" stroke-width="1.1" marker-end="url(#arr)" />
+                <line class="flow-line" x1="550" y1="91" x2="585" y2="91" stroke="#8a7e6b" stroke-width="1.1" marker-end="url(#arr2)" />
 
                 <!-- Zone 3 -->
-                <rect x="590" y="15" width="160" height="140" rx="6" fill="rgba(245,245,245,0.02)" stroke="rgba(245,245,245,0.12)" stroke-width="0.8" />
-                <text x="670" y="32" fill="#64748b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle" letter-spacing="0.12em">RESIDUAL LOSS</text>
-                <rect x="605" y="45" width="130" height="42" rx="4" fill="#182030" stroke="#334155" stroke-width="0.8" />
-                <text x="670" y="64" fill="#f8fafc" font-family="'Geist', sans-serif" font-size="9.5" font-weight="600" text-anchor="middle">PDE Residual Loss</text>
-                <text x="670" y="78" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">mean( (u_t - &alpha;u_xx)&sup2; )</text>
-                <rect class="svg-node svg-node-accent" x="605" y="98" width="130" height="36" rx="4" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1" />
-                <text x="670" y="114" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" text-anchor="middle">Rel L2: 1.6e-3</text>
-                <text x="670" y="126" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="6.5" text-anchor="middle">Exact Mode Decay</text>
-                <line x1="670" y1="87" x2="670" y2="98" stroke="#f08a59" stroke-width="1" marker-end="url(#arr-acc)" />
+                <rect x="590" y="15" width="160" height="140" rx="4" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
+                <text x="670" y="32" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.12em">RESIDUAL LOSS</text>
+                <rect x="605" y="45" width="130" height="42" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
+                <text x="670" y="64" fill="#26221d" font-family="'Geist', sans-serif" font-size="9.5" font-weight="600" text-anchor="middle">PDE Residual Loss</text>
+                <text x="670" y="78" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">mean( (u_t - &alpha;u_xx)&sup2; )</text>
+                <rect class="svg-node svg-node-accent" x="605" y="98" width="130" height="36" rx="3" fill="#ebf2ed" stroke="#4f785e" stroke-width="1.1" />
+                <text x="670" y="114" fill="#4f785e" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" text-anchor="middle">Rel L2: 1.6e-3</text>
+                <text x="670" y="126" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="6.5" text-anchor="middle">Exact Mode Decay</text>
+                <line x1="670" y1="87" x2="670" y2="98" stroke="#4f785e" stroke-width="1" marker-end="url(#arr2)" />
               </svg>
             </div>
 
             <div class="output-panel">
               <button type="button" class="out-toggle" aria-expanded="false">
-                <span class="out-chevron" aria-hidden="true">▸</span>
+                <span class="out-chevron" aria-hidden="true">&#9656;</span>
                 <span class="out-label">View simulation vs analytical plot</span>
               </button>
               <div class="pcard-output">
@@ -1300,7 +1635,7 @@ ALL TESTS PASSED (8/8)</pre>
                       loading="lazy"
                     />
                     <div class="plot-legend">
-                      Figure 1: Neural network predicted field (left) vs analytical Fourier solution (center) and pointwise residual error (right).
+                      Figure: Neural network predicted field (left) vs analytical Fourier solution (center) and pointwise residual error (right).
                     </div>
                   </div>
                 </div>
@@ -1335,13 +1670,13 @@ ALL TESTS PASSED (8/8)</pre>
                 Zero-allocation hot paths, static memory arenas, and dependency-free runtimes.
               </div>
             </div>
-            <div class="pillar-card">
+            <div class="pillar-card pillar-slate">
               <div class="pillar-title">Computational Physics</div>
               <div class="pillar-desc">
                 Differential equations, numerical stability, and analytical benchmark validation.
               </div>
             </div>
-            <div class="pillar-card">
+            <div class="pillar-card pillar-sage">
               <div class="pillar-title">Scientific ML</div>
               <div class="pillar-desc">
                 Physics-informed neural networks, custom binary weight serialization, and parity testing.
@@ -1360,16 +1695,16 @@ ALL TESTS PASSED (8/8)</pre>
           <a href="mailto:guicorpasp@gmail.com" class="email">guicorpasp@gmail.com</a>
           <div class="social-row">
             <a href="https://github.com/gcpino" target="_blank" rel="noopener">
-              GitHub <span class="ext-arrow" aria-hidden="true">↗</span>
+              GitHub <span class="ext-arrow" aria-hidden="true">&nearr;</span>
             </a>
             <a href="https://linkedin.com/in/gcorpas" target="_blank" rel="noopener">
-              LinkedIn <span class="ext-arrow" aria-hidden="true">↗</span>
+              LinkedIn <span class="ext-arrow" aria-hidden="true">&nearr;</span>
             </a>
           </div>
         </div>
       </section>
 
-      <!-- Footer -->
+      <!-- Colophon Footer -->
       <footer>
         <span>Guillermo Corpas &copy; 2026</span>
         <span class="footer-hint" id="terminal-hint" role="button" tabindex="0">press ~ for terminal</span>
@@ -1380,8 +1715,8 @@ ALL TESTS PASSED (8/8)</pre>
     <div id="terminal-overlay" aria-hidden="true">
       <div class="terminal-window" role="dialog" aria-label="Interactive Systems Terminal">
         <div class="terminal-header">
-          <span>guillermo@portfolio: bash</span>
-          <button type="button" class="terminal-close" onclick="closeTerminal()">[esc]</button>
+          <span>guillermo@terminal: bash</span>
+          <button type="button" class="terminal-close" onclick="closeTerminal()" aria-label="Close terminal">[esc]</button>
         </div>
         <div class="terminal-body" id="terminal-body">
           <div class="terminal-line">
@@ -1415,7 +1750,7 @@ ALL TESTS PASSED (8/8)</pre>
             filterBtns.forEach((b) => b.classList.toggle("active", b === btn));
             cards.forEach((card) => {
               const match = f === "all" || card.dataset.category === f;
-              card.classList.toggle("hidden-card", !match);
+              card.style.display = match ? "flex" : "none";
             });
           });
         });
@@ -1677,6 +2012,15 @@ ALL TESTS PASSED (8/8)</pre>
       terminalOverlay.addEventListener("click", (e) => {
         if (e.target === terminalOverlay) closeTerminal();
       });
+
+      const termWindow = document.querySelector(".terminal-window");
+      if (termWindow) {
+        termWindow.addEventListener("click", () => {
+          if (isTouchDevice && terminalOpen) {
+            termInput.focus();
+          }
+        });
+      }
     </script>
   </body>
 </html>

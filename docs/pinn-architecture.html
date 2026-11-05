@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PINN Heat Equation Solver Architecture — Guillermo Corpas</title>
-    <meta name="theme-color" content="#0b0e14" />
+    <meta name="theme-color" content="#f7f4ea" />
     <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,41 +22,70 @@
       }
 
       :root {
-        --color-paper: #0b0e14;
-        --color-surface: #111621;
-        --color-surface-raised: #161d2b;
-        --color-ink: #f1f5f9;
-        --color-muted: #94a3b8;
-        --color-soft: #64748b;
-        --color-accent: #f08a59;
-        --color-accent-soft: rgba(240, 138, 89, 0.12);
-        --color-signal: #739fdf;
-        --color-rule: rgba(241, 245, 249, 0.09);
-        --color-rule-solid: rgba(148, 163, 184, 0.24);
+        --color-paper: #f7f4ea;
+        --color-paper-warm: #f1ebd9;
+        --color-surface: #fdfbf7;
+        --color-surface-raised: #ffffff;
+        --color-ink: #26221d;
+        --color-ink-light: #3f3930;
+        --color-muted: #6e6557;
+        --color-soft: #918878;
+        --color-accent: #b25d3b;
+        --color-accent-soft: rgba(178, 93, 59, 0.08);
+        --color-accent-wash: #f8ece5;
+        --color-accent-border: #deac98;
+        --color-sage: #4f785e;
+        --color-sage-wash: #eaf2ed;
+        --color-slate: #48697a;
+        --color-slate-wash: #e7eff3;
+        --color-rule: #dfd7c5;
+        --color-rule-solid: #c9bfab;
+        --color-rule-strong: #8a7e6b;
+        --container-max-width: 1080px;
         --font-serif: "Instrument Serif", Georgia, serif;
         --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        --font-mono: "Geist Mono", ui-monospace, monospace;
+        --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
         --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      @media (min-width: 1440px) {
+        :root {
+          --container-max-width: 1240px;
+        }
+        body { font-size: 16px; }
+      }
+
+      @media (min-width: 1920px) {
+        :root {
+          --container-max-width: 1400px;
+        }
+        body { font-size: 17px; }
+      }
+
+      @media (min-width: 2560px) {
+        :root {
+          --container-max-width: 1580px;
+        }
+        body { font-size: 18px; }
       }
 
       body {
         font-family: var(--font-sans);
         background-color: var(--color-paper);
         background-image:
-          radial-gradient(ellipse 80% 50% at 50% -15%, rgba(240, 138, 89, 0.08), transparent),
-          radial-gradient(ellipse 60% 40% at 85% 10%, rgba(115, 159, 223, 0.05), transparent),
-          linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-          linear-gradient(to right, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-        background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+          linear-gradient(to right, rgba(82, 70, 58, 0.035) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(82, 70, 58, 0.035) 1px, transparent 1px),
+          radial-gradient(ellipse 90% 60% at 50% -10%, rgba(240, 226, 206, 0.55), transparent 75%);
+        background-size: 32px 32px, 32px 32px, 100% 100%;
         min-height: 100vh;
-        color: var(--color-ink);
-        line-height: 1.6;
+        color: var(--color-ink-light);
+        line-height: 1.68;
         -webkit-font-smoothing: antialiased;
       }
 
       ::selection {
-        background: var(--color-accent);
-        color: #0b0e14;
+        background: #edd8c8;
+        color: var(--color-ink);
       }
 
       a {
@@ -65,25 +94,24 @@
       }
 
       :focus-visible {
-        outline: 1px solid var(--color-accent);
+        outline: 1.5px solid var(--color-accent);
         outline-offset: 3px;
       }
 
-      /* Navigation */
       nav {
         position: sticky;
         top: 0;
         z-index: 50;
-        background: rgba(11, 14, 20, 0.82);
+        background: rgba(247, 244, 234, 0.88);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--color-rule);
+        border-bottom: 1px solid var(--color-rule-solid);
       }
 
       .nav-inner {
-        max-width: 1080px;
+        max-width: var(--container-max-width);
         margin: 0 auto;
-        padding: 1rem 2rem;
+        padding: 0.85rem 2rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -91,12 +119,12 @@
 
       .back-link {
         font-family: var(--font-mono);
-        font-size: 0.82rem;
+        font-size: 0.8rem;
         color: var(--color-muted);
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        transition: color 0.2s ease, transform 0.2s var(--ease-out-expo);
+        gap: 0.45rem;
+        transition: color 0.2s ease;
       }
 
       .back-link:hover {
@@ -119,7 +147,7 @@
         background: var(--color-surface);
         border: 1px solid var(--color-rule-solid);
         padding: 0.35rem 0.75rem;
-        border-radius: 6px;
+        border-radius: 4px;
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
@@ -127,13 +155,13 @@
           color 0.2s ease,
           border-color 0.2s ease,
           background-color 0.2s ease,
-          transform 0.2s var(--ease-out-expo);
+          transform 0.15s ease;
       }
 
       .repo-btn:hover {
         color: var(--color-accent);
         border-color: var(--color-accent);
-        background: var(--color-surface-raised);
+        background: var(--color-accent-wash);
         transform: translateY(-1px);
       }
 
@@ -147,7 +175,7 @@
       }
 
       .container {
-        max-width: 1080px;
+        max-width: var(--container-max-width);
         margin: 0 auto;
         padding: 3.5rem 2rem 5rem;
       }
@@ -155,7 +183,7 @@
       @keyframes fade-up {
         from {
           opacity: 0;
-          transform: translateY(16px);
+          transform: translateY(14px);
         }
         to {
           opacity: 1;
@@ -165,71 +193,63 @@
 
       .anim-fade {
         opacity: 0;
-        animation: fade-up 0.75s var(--ease-out-expo) forwards;
+        animation: fade-up 0.7s var(--ease-out-expo) forwards;
       }
 
       .delay-1 { animation-delay: 0.05s; }
       .delay-2 { animation-delay: 0.14s; }
-      .delay-3 { animation-delay: 0.24s; }
+      .delay-3 { animation-delay: 0.22s; }
 
       .header {
         margin-bottom: 2.25rem;
+        border-bottom: 3px double var(--color-rule-solid);
+        padding-bottom: 1.5rem;
       }
 
       .header-eyebrow {
         font-family: var(--font-mono);
-        font-size: 0.74rem;
-        font-weight: 500;
-        letter-spacing: 0.14em;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: var(--color-accent);
-        margin-bottom: 0.6rem;
+        color: var(--color-slate);
+        margin-bottom: 0.5rem;
       }
 
       h1 {
         font-family: var(--font-serif);
-        font-size: clamp(2.2rem, 3.5vw + 1rem, 3.1rem);
+        font-size: clamp(2.2rem, 3.5vw + 1rem, 3.2rem);
         font-weight: 400;
         letter-spacing: -0.02em;
         line-height: 1.08;
-        color: #ffffff;
+        color: var(--color-ink);
         margin-bottom: 0.75rem;
       }
 
       .subtitle {
-        font-size: 1.04rem;
+        font-size: 1.05rem;
         color: var(--color-muted);
         max-width: 65ch;
-        line-height: 1.65;
+        line-height: 1.68;
       }
 
       .diagram-container {
-        background: #0d121c;
-        border: 1px solid var(--color-rule);
-        border-radius: 10px;
+        background: #fbf9f4;
+        border: 1px solid var(--color-rule-solid);
+        border-radius: 6px;
         padding: 1.5rem;
         overflow-x: auto;
         margin-bottom: 2.25rem;
         position: relative;
+        box-shadow: 0 2px 8px rgba(80, 65, 45, 0.04);
         transition:
-          border-color 0.3s var(--ease-out-expo),
-          box-shadow 0.3s var(--ease-out-expo);
-      }
-
-      .diagram-container::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 2rem;
-        right: 2rem;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
-        opacity: 0.45;
+          border-color 0.25s var(--ease-out-expo),
+          box-shadow 0.25s var(--ease-out-expo);
       }
 
       .diagram-container:hover {
-        border-color: var(--color-rule-solid);
-        box-shadow: 0 20px 45px -20px rgba(0, 0, 0, 0.7);
+        border-color: var(--color-rule-strong);
+        box-shadow: 0 6px 18px rgba(80, 65, 45, 0.07);
       }
 
       svg {
@@ -246,15 +266,7 @@
 
       .flow-line {
         stroke-dasharray: 5 3;
-        animation: flow-dash 1.2s linear infinite;
-      }
-
-      .svg-node-accent {
-        transition: filter 0.25s ease;
-      }
-
-      .diagram-container:hover .svg-node-accent {
-        filter: drop-shadow(0 0 10px rgba(240, 138, 89, 0.22));
+        animation: flow-dash 1.3s linear infinite;
       }
 
       @media print {
@@ -273,52 +285,71 @@
       }
 
       .card {
-        background: rgba(17, 22, 33, 0.75);
-        border: 1px solid var(--color-rule);
-        border-radius: 10px;
+        background: var(--color-surface);
+        border: 1px solid var(--color-rule-solid);
+        border-top: 3px solid var(--color-slate);
+        border-radius: 4px;
         padding: 1.4rem;
         position: relative;
         transition:
           border-color 0.25s ease,
-          background-color 0.25s ease,
-          transform 0.25s var(--ease-out-expo);
+          transform 0.2s var(--ease-out-expo),
+          box-shadow 0.2s ease;
+      }
+
+      .card:nth-child(2) {
+        border-top-color: var(--color-accent);
+      }
+
+      .card:nth-child(3) {
+        border-top-color: var(--color-sage);
       }
 
       .card:hover {
-        border-color: var(--color-rule-solid);
-        background: var(--color-surface-raised);
-        transform: translateY(-3px);
+        border-color: var(--color-rule-strong);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(80, 65, 45, 0.06);
       }
 
       .card-eyebrow {
         font-family: var(--font-mono);
-        font-size: 0.7rem;
-        letter-spacing: 0.14em;
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: var(--color-accent);
+        color: var(--color-muted);
         margin-bottom: 0.4rem;
       }
 
       .card h3 {
         font-family: var(--font-serif);
-        font-size: 1.35rem;
+        font-size: 1.45rem;
         font-weight: 400;
         color: var(--color-ink);
         margin-bottom: 0.45rem;
       }
 
       .card p {
-        font-size: 0.9rem;
+        font-size: 0.92rem;
         color: var(--color-muted);
-        line-height: 1.6;
+        line-height: 1.62;
       }
 
       @media (max-width: 640px) {
         .nav-inner {
-          padding: 0.9rem 1.25rem;
+          padding: 0.75rem 1rem;
         }
         .container {
-          padding: 2.5rem 1.25rem 4rem;
+          padding: 2.25rem 1rem 3.5rem;
+        }
+        .header {
+          margin-bottom: 1.5rem;
+        }
+        .diagram-container {
+          padding: 0.75rem;
+          -webkit-overflow-scrolling: touch;
+        }
+        .cards {
+          grid-template-columns: 1fr;
         }
       }
 
@@ -341,19 +372,19 @@
     <nav>
       <div class="nav-inner">
         <a href="../index.html#proj-pinn" class="back-link">
-          <span class="back-arrow" aria-hidden="true">←</span>
+          <span class="back-arrow" aria-hidden="true">&larr;</span>
           <span>Back to Portfolio</span>
         </a>
         <a href="https://github.com/gcpino/PINN" target="_blank" rel="noopener" class="repo-btn">
           <span>github.com/gcpino/PINN</span>
-          <span class="ext-arrow" aria-hidden="true">↗</span>
+          <span class="ext-arrow" aria-hidden="true">&nearr;</span>
         </a>
       </div>
     </nav>
 
     <main class="container">
       <div class="header anim-fade delay-1">
-        <p class="header-eyebrow">PINN · Computational Physics Architecture</p>
+        <p class="header-eyebrow">PINN &middot; Architecture Specification</p>
         <h1>Physics-Informed Neural PDE Solver</h1>
         <p class="subtitle">
           Direct unsupervised integration of the 1D parabolic heat diffusion equation using PyTorch
@@ -368,106 +399,106 @@
 
           <defs>
             <pattern id="pinn-dots" width="20" height="20" patternUnits="userSpaceOnUse">
-              <circle cx="1" cy="1" r="0.8" fill="rgba(241,245,249,0.06)" />
+              <circle cx="1" cy="1" r="0.8" fill="rgba(90,75,55,0.08)" />
             </pattern>
             <marker id="pinn-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-              <polygon points="0 0, 8 3, 0 6" fill="#bfc0c0" />
+              <polygon points="0 0, 8 3, 0 6" fill="#8a7e6b" />
             </marker>
             <marker id="pinn-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-              <polygon points="0 0, 8 3, 0 6" fill="#f08a59" />
+              <polygon points="0 0, 8 3, 0 6" fill="#48697a" />
             </marker>
           </defs>
 
           <!-- Canvas Background -->
-          <rect width="100%" height="100%" fill="#0d121c" />
+          <rect width="100%" height="100%" fill="#faf7f0" />
           <rect width="100%" height="100%" fill="url(#pinn-dots)" />
 
           <!-- Zones -->
-          <rect x="20" y="30" width="270" height="420" rx="8" fill="rgba(245,245,245,0.015)" stroke="rgba(245,245,245,0.1)" stroke-width="0.8" />
-          <rect x="36" y="23" width="160" height="14" rx="2" fill="#0d121c" />
-          <text x="116" y="33" fill="#64748b" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.14em">1. SPATIO-TEMPORAL SAMPLING</text>
+          <rect x="20" y="30" width="270" height="420" rx="6" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
+          <rect x="36" y="23" width="160" height="15" rx="2" fill="#eae2ce" stroke="#d5cbba" stroke-width="0.7" />
+          <text x="116" y="34" fill="#6e6557" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="600" text-anchor="middle" letter-spacing="0.14em">1. SPATIO-TEMPORAL SAMPLING</text>
 
-          <rect x="320" y="30" width="360" height="420" rx="8" fill="rgba(245,245,245,0.015)" stroke="rgba(245,245,245,0.1)" stroke-width="0.8" />
-          <rect x="336" y="23" width="170" height="14" rx="2" fill="#0d121c" />
-          <text x="421" y="33" fill="#64748b" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.14em">2. SURROGATE &amp; AUTODIFF</text>
+          <rect x="320" y="30" width="360" height="420" rx="6" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
+          <rect x="336" y="23" width="170" height="15" rx="2" fill="#eae2ce" stroke="#d5cbba" stroke-width="0.7" />
+          <text x="421" y="34" fill="#6e6557" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="600" text-anchor="middle" letter-spacing="0.14em">2. SURROGATE &amp; AUTODIFF</text>
 
-          <rect x="710" y="30" width="270" height="420" rx="8" fill="rgba(245,245,245,0.015)" stroke="rgba(245,245,245,0.1)" stroke-width="0.8" />
-          <rect x="726" y="23" width="170" height="14" rx="2" fill="#0d121c" />
-          <text x="811" y="33" fill="#64748b" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="500" text-anchor="middle" letter-spacing="0.14em">3. COMPOSITE LOSS &amp; PARITY</text>
+          <rect x="710" y="30" width="270" height="420" rx="6" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
+          <rect x="726" y="23" width="170" height="15" rx="2" fill="#eae2ce" stroke="#d5cbba" stroke-width="0.7" />
+          <text x="811" y="34" fill="#6e6557" font-size="7.5" font-family="'Geist Mono', monospace" font-weight="600" text-anchor="middle" letter-spacing="0.14em">3. COMPOSITE LOSS &amp; PARITY</text>
 
           <!-- Connectors -->
-          <line class="flow-line" x1="260" y1="100" x2="350" y2="100" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#pinn-arrow)" />
-          <path d="M 260,225 H 300 Q 310,225 310,180 V 135 Q 310,120 320,120 H 350" fill="none" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#pinn-arrow)" />
-          <path d="M 260,350 H 310 Q 320,350 320,200 V 150 Q 320,135 335,135 H 350" fill="none" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#pinn-arrow)" />
+          <line class="flow-line" x1="260" y1="100" x2="350" y2="100" stroke="#8a7e6b" stroke-width="1.2" marker-end="url(#pinn-arrow)" />
+          <path d="M 260,225 H 300 Q 310,225 310,180 V 135 Q 310,120 320,120 H 350" fill="none" stroke="#8a7e6b" stroke-width="1.2" marker-end="url(#pinn-arrow)" />
+          <path d="M 260,350 H 310 Q 320,350 320,200 V 150 Q 320,135 335,135 H 350" fill="none" stroke="#8a7e6b" stroke-width="1.2" marker-end="url(#pinn-arrow)" />
 
           <!-- MLP -> Autodiff Engine -->
-          <line class="flow-line" x1="500" y1="140" x2="500" y2="210" stroke="#f08a59" stroke-width="1.3" marker-end="url(#pinn-arrow-accent)" />
-          <rect x="460" y="168" width="80" height="14" fill="#0d121c" />
-          <text x="500" y="178" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">u(x, t) field</text>
+          <line class="flow-line" x1="500" y1="140" x2="500" y2="210" stroke="#48697a" stroke-width="1.3" marker-end="url(#pinn-arrow-accent)" />
+          <rect x="460" y="168" width="80" height="16" rx="2" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.8" />
+          <text x="500" y="179" fill="#48697a" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle">u(x, t) field</text>
 
           <!-- Autodiff -> PDE Residual -->
-          <line x1="500" y1="310" x2="500" y2="350" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#pinn-arrow)" />
+          <line x1="500" y1="310" x2="500" y2="350" stroke="#8a7e6b" stroke-width="1.2" marker-end="url(#pinn-arrow)" />
 
           <!-- Autodiff / Residual -> Loss Formulation -->
-          <path class="flow-line" d="M 630,380 H 685 Q 695,380 695,260 V 130 Q 695,120 705,120 H 740" fill="none" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#pinn-arrow)" />
-          <rect x="660" y="240" width="70" height="14" fill="#0d121c" />
-          <text x="695" y="250" fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Residuals</text>
+          <path class="flow-line" d="M 630,380 H 685 Q 695,380 695,260 V 130 Q 695,120 705,120 H 740" fill="none" stroke="#8a7e6b" stroke-width="1.2" marker-end="url(#pinn-arrow)" />
+          <rect x="660" y="240" width="70" height="16" rx="2" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.8" />
+          <text x="695" y="251" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle">Residuals</text>
 
           <!-- Loss -> Optimizer -->
-          <line x1="845" y1="165" x2="845" y2="215" stroke="#bfc0c0" stroke-width="1.2" marker-end="url(#pinn-arrow)" />
+          <line x1="845" y1="165" x2="845" y2="215" stroke="#8a7e6b" stroke-width="1.2" marker-end="url(#pinn-arrow)" />
 
           <!-- Optimizer -> Analytical Verification -->
-          <line class="flow-line" x1="845" y1="285" x2="845" y2="335" stroke="#f08a59" stroke-width="1.3" marker-end="url(#pinn-arrow-accent)" />
+          <line class="flow-line" x1="845" y1="285" x2="845" y2="335" stroke="#4f785e" stroke-width="1.3" marker-end="url(#pinn-arrow-accent)" />
 
           <!-- Nodes Zone 1 -->
-          <rect x="40" y="70" width="220" height="60" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
-          <text x="150" y="96" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Collocation Interior (x_f, t_f)</text>
-          <text x="150" y="114" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Uniform random in (0, 1) × (0, 1)</text>
+          <rect x="40" y="70" width="220" height="60" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="150" y="96" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Collocation Interior (x_f, t_f)</text>
+          <text x="150" y="114" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Uniform random in (0, 1) &times; (0, 1)</text>
 
-          <rect x="40" y="195" width="220" height="60" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
-          <text x="150" y="221" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Initial State (x_i, t=0)</text>
-          <text x="150" y="239" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">u(x, 0) = sin(π x)</text>
+          <rect x="40" y="195" width="220" height="60" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="150" y="221" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Initial State (x_i, t=0)</text>
+          <text x="150" y="239" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">u(x, 0) = sin(&pi; x)</text>
 
-          <rect x="40" y="320" width="220" height="60" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
-          <text x="150" y="346" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Dirichlet Boundaries (x=0, 1)</text>
-          <text x="150" y="364" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">u(0, t) = 0, u(1, t) = 0</text>
+          <rect x="40" y="320" width="220" height="60" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="150" y="346" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Dirichlet Boundaries (x=0, 1)</text>
+          <text x="150" y="364" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">u(0, t) = 0, u(1, t) = 0</text>
 
           <!-- Nodes Zone 2 -->
-          <rect x="350" y="70" width="300" height="70" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
-          <text x="500" y="96" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Deep Surrogate Network (MLP)</text>
-          <text x="500" y="114" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Input: [x, t] → 3 hidden layers × 32 units (Tanh)</text>
-          <text x="500" y="127" fill="#64748b" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Output: Scalar prediction u_pred(x, t)</text>
+          <rect x="350" y="70" width="300" height="70" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="500" y="96" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Deep Surrogate Network (MLP)</text>
+          <text x="500" y="114" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Input: [x, t] &rarr; 3 hidden layers &times; 32 units (Tanh)</text>
+          <text x="500" y="127" fill="#918878" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Output: Scalar prediction u_pred(x, t)</text>
 
-          <rect class="svg-node-accent" x="350" y="210" width="300" height="100" rx="6" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1.4" />
-          <text x="500" y="236" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Automatic Differentiation Engine</text>
-          <text x="500" y="254" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="9" font-weight="500" text-anchor="middle">torch.autograd.grad()</text>
-          <text x="500" y="271" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">∂u/∂t via single backward graph</text>
-          <text x="500" y="284" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">∂²u/∂x² via second-order Hessian trace</text>
-          <rect x="370" y="291" width="260" height="14" rx="2" fill="#0d121c" stroke="rgba(240,138,89,0.28)" />
-          <text x="500" y="301" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Exact continuous derivatives without discretization error</text>
+          <rect class="svg-node-accent" x="350" y="210" width="300" height="100" rx="4" fill="#e7eff3" stroke="#48697a" stroke-width="1.3" />
+          <text x="500" y="236" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Automatic Differentiation Engine</text>
+          <text x="500" y="254" fill="#48697a" font-family="'Geist Mono', monospace" font-size="9" font-weight="600" text-anchor="middle">torch.autograd.grad()</text>
+          <text x="500" y="271" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">&part;u/&part;t via single backward graph</text>
+          <text x="500" y="284" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">&part;&sup2;u/&part;x&sup2; via second-order Hessian trace</text>
+          <rect x="370" y="291" width="260" height="15" rx="2" fill="#f4ebd9" stroke="#d5cbba" />
+          <text x="500" y="301" fill="#48697a" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="500" text-anchor="middle">Exact continuous derivatives without discretization error</text>
 
-          <rect x="370" y="350" width="260" height="64" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
-          <text x="500" y="375" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Physical Residual Evaluation</text>
-          <text x="500" y="393" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Residual = ∂u/∂t - α · ∂²u/∂x²</text>
-          <text x="500" y="405" fill="#64748b" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Diffusivity parameter α = 0.01</text>
+          <rect x="370" y="350" width="260" height="64" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="500" y="375" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Physical Residual Evaluation</text>
+          <text x="500" y="393" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Residual = &part;u/&part;t - &alpha; &middot; &part;&sup2;u/&part;x&sup2;</text>
+          <text x="500" y="405" fill="#918878" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Diffusivity parameter &alpha; = 0.01</text>
 
           <!-- Nodes Zone 3 -->
-          <rect x="740" y="75" width="210" height="90" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
-          <text x="845" y="102" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Composite Loss Function</text>
-          <text x="845" y="120" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">L_total = L_pde + L_ic + L_bc</text>
-          <text x="845" y="136" fill="#64748b" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">L_pde = mean(Residual²)</text>
-          <text x="845" y="148" fill="#64748b" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">L_bc = mean(u_left²) + mean(u_right²)</text>
+          <rect x="740" y="75" width="210" height="90" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="845" y="102" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Composite Loss Function</text>
+          <text x="845" y="120" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">L_total = L_pde + L_ic + L_bc</text>
+          <text x="845" y="136" fill="#918878" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">L_pde = mean(Residual&sup2;)</text>
+          <text x="845" y="148" fill="#918878" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">L_bc = mean(u_left&sup2;) + mean(u_right&sup2;)</text>
 
-          <rect x="740" y="215" width="210" height="70" rx="6" fill="#141b28" stroke="#334155" stroke-width="1" />
-          <text x="845" y="242" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Adam Gradient Optimization</text>
-          <text x="845" y="260" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">5,000 Epochs · Learning rate 1e-3</text>
-          <text x="845" y="272" fill="#64748b" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Unsupervised convergence</text>
+          <rect x="740" y="215" width="210" height="70" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="845" y="242" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Adam Gradient Optimization</text>
+          <text x="845" y="260" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">5,000 Epochs &middot; Learning rate 1e-3</text>
+          <text x="845" y="272" fill="#918878" font-family="'Geist Mono', monospace" font-size="8.5" text-anchor="middle">Unsupervised convergence</text>
 
-          <rect class="svg-node-accent" x="740" y="335" width="210" height="80" rx="6" fill="rgba(240,138,89,0.1)" stroke="#f08a59" stroke-width="1.4" />
-          <text x="845" y="362" fill="#f1f5f9" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Analytical Fourier Parity</text>
-          <text x="845" y="380" fill="#f08a59" font-family="'Geist Mono', monospace" font-size="9" font-weight="500" text-anchor="middle">Rel. L2 Error: 1.6e-3</text>
-          <text x="845" y="394" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Max pointwise error: ~4e-3</text>
-          <text x="845" y="406" fill="#94a3b8" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Exact mode decay verified</text>
+          <rect class="svg-node-accent" x="740" y="335" width="210" height="80" rx="4" fill="#ebf2ed" stroke="#4f785e" stroke-width="1.3" />
+          <text x="845" y="362" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Analytical Fourier Parity</text>
+          <text x="845" y="380" fill="#4f785e" font-family="'Geist Mono', monospace" font-size="9" font-weight="600" text-anchor="middle">&check; Rel. L2 Error: 1.6e-3</text>
+          <text x="845" y="394" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Max pointwise error: ~4e-3</text>
+          <text x="845" y="406" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Exact mode decay verified</text>
         </svg>
       </div>
 
@@ -485,15 +516,15 @@
           <h3>Exact Differential Operators</h3>
           <p>
             Uses PyTorch's computational graph to obtain analytical-grade spatial and temporal
-            partial derivatives (∂u/∂t and ∂²u/∂x²), entirely eliminating mesh truncation errors.
+            partial derivatives (&part;u/&part;t and &part;&sup2;u/&part;x&sup2;), entirely eliminating mesh truncation errors.
           </p>
         </div>
         <div class="card">
           <p class="card-eyebrow">Validation</p>
           <h3>Analytical Benchmark</h3>
           <p>
-            Benchmarked on an 80×80 space-time grid against the Fourier analytical solution u(x, t) =
-            exp(-α π² t) sin(π x), achieving relative L2 error of 1.6e-3.
+            Benchmarked on an 80&times;80 space-time grid against the Fourier analytical solution u(x, t) =
+            exp(-&alpha; &pi;&sup2; t) sin(&pi; x), achieving relative L2 error of 1.6e-3.
           </p>
         </div>
       </div>
