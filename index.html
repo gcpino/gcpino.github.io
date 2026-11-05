@@ -1383,14 +1383,14 @@
           <h2>Projects</h2>
           <div class="filter-bar" role="tablist" aria-label="Filter projects">
             <button type="button" class="filter-btn active" data-filter="all">all</button>
-            <button type="button" class="filter-btn" data-filter="systems">systems</button>
+            <button type="button" class="filter-btn" data-filter="c11">c11</button>
             <button type="button" class="filter-btn" data-filter="ml">physics &amp; ml</button>
           </div>
         </div>
 
         <div class="projects-wrapper">
           <!-- 1. c-infer -->
-          <article class="project-block" id="proj-cinfer" data-category="systems">
+          <article class="project-block" id="proj-cinfer" data-category="c11">
             <div class="project-title-row">
               <h3>
                 <a href="https://github.com/gcpino/c-infer" target="_blank" rel="noopener">
@@ -1642,124 +1642,6 @@ ALL TESTS PASSED (8/8)</pre>
               </div>
             </div>
           </article>
-
-          <!-- 3. dag-agent -->
-          <article class="project-block" id="proj-dag-agent" data-category="systems">
-            <div class="project-title-row">
-              <h3>
-                <a href="https://github.com/gcpino/dag-agent" target="_blank" rel="noopener">
-                  dag-agent
-                </a>
-              </h3>
-              <div class="project-meta-links">
-                <a href="docs/dag-agent-architecture.html" class="doc-link" target="_blank">
-                  Spec <span class="ext-arrow" aria-hidden="true">&nearr;</span>
-                </a>
-                <a href="https://github.com/gcpino/dag-agent" class="source-link" target="_blank" rel="noopener">
-                  Source <span class="ext-arrow" aria-hidden="true">&nearr;</span>
-                </a>
-              </div>
-            </div>
-
-            <p class="project-lead">
-              A deterministic multi-agent workflow runtime implemented in pure Rust with zero
-              external dependencies. Models autonomous workflows as a Bounded Colored Petri Net
-              (<code>N = (P, T, F, &Sigma;, C, G, B&#8320;)</code>) backed by a FIPS 180-4 SHA-256
-              append-only event log (<code>.dagtrace</code>) and sub-millisecond branching
-              time-travel replay.
-            </p>
-
-            <table class="specs-table">
-              <tr>
-                <td>FORMAL MODEL</td>
-                <td>Colored Petri Net &middot; Bipartite schema check &middot; Static DFS cycle guard verification</td>
-              </tr>
-              <tr>
-                <td>SAFETY INVARIANTS</td>
-                <td>Strict k-bounded place capacities &middot; Monotonic budget circuit breaker (tokens, steps, depth)</td>
-              </tr>
-              <tr>
-                <td>VERIFICATION GATE</td>
-                <td>8/8 invariant gates &middot; Bit-exact 256-bit state reconstruction in 2.51 &micro;s/replay (0 API calls)</td>
-              </tr>
-            </table>
-
-            <div class="diagram-box">
-              <div class="diagram-caption">
-                <span>Bounded Petri Net &amp; Event-Sourced Replay <span class="scroll-hint" aria-hidden="true">swipe &rarr;</span></span>
-                <a href="docs/dag-agent-architecture.html" target="_blank">
-                  Expand <span class="ext-arrow" aria-hidden="true">&nearr;</span>
-                </a>
-              </div>
-              <svg viewBox="0 0 760 170" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="dag-agent Architecture flow">
-                <!-- Zone 1 -->
-                <rect x="10" y="15" width="180" height="140" rx="4" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
-                <text x="100" y="32" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.12em">STATIC VERIFIER</text>
-                <rect x="25" y="45" width="150" height="42" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
-                <text x="100" y="64" fill="#26221d" font-family="'Geist', sans-serif" font-size="10.5" font-weight="600" text-anchor="middle">CPN Topology</text>
-                <text x="100" y="78" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Schema &amp; cycle DFS pass</text>
-                <rect x="35" y="98" width="130" height="36" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
-                <text x="100" y="117" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="8.5" font-weight="600" text-anchor="middle">compile(N, B&#8320;)</text>
-                <line x1="100" y1="87" x2="100" y2="98" stroke="#8a7e6b" stroke-width="1" marker-end="url(#arr)" />
-
-                <!-- Connector 1->2 -->
-                <line class="flow-line" x1="190" y1="116" x2="230" y2="116" stroke="#b25d3b" stroke-width="1.3" marker-end="url(#arr-acc)" />
-
-                <!-- Zone 2 -->
-                <rect x="235" y="15" width="315" height="140" rx="4" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
-                <text x="392" y="32" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.12em">RUST EVENT-SOURCED ENGINE</text>
-
-                <rect class="svg-node svg-node-accent" x="250" y="45" width="135" height="92" rx="3" fill="#fbf0e8" stroke="#b25d3b" stroke-width="1.2" />
-                <text x="317" y="68" fill="#26221d" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">k-Bounded Marking</text>
-                <text x="317" y="84" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle">fold(&delta;, M&#8320;, L[0..k])</text>
-                <text x="317" y="104" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Monotonic budget gate</text>
-                <text x="317" y="118" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">Guarded refinement loops</text>
-
-                <!-- Connector into log -->
-                <line x1="385" y1="91" x2="405" y2="91" stroke="#8a7e6b" stroke-width="1" marker-end="url(#arr)" />
-
-                <rect x="410" y="45" width="125" height="92" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
-                <text x="472" y="68" fill="#26221d" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">Append-Only Log</text>
-                <text x="472" y="84" fill="#48697a" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle">SHA-256 (.dagtrace)</text>
-                <text x="472" y="102" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">Agent &middot; Tool &middot; Gate</text>
-                <text x="472" y="116" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7" text-anchor="middle">Causal token lineage</text>
-
-                <!-- Connector 2->3 -->
-                <line class="flow-line" x1="550" y1="91" x2="585" y2="91" stroke="#8a7e6b" stroke-width="1.1" marker-end="url(#arr)" />
-
-                <!-- Zone 3 -->
-                <rect x="590" y="15" width="160" height="140" rx="4" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
-                <text x="670" y="32" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.12em">TIME-TRAVEL GATE</text>
-                <rect x="605" y="45" width="130" height="42" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
-                <text x="670" y="64" fill="#26221d" font-family="'Geist', sans-serif" font-size="9.5" font-weight="600" text-anchor="middle">Checkout &amp; Fork</text>
-                <text x="670" y="78" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" text-anchor="middle">2.51 &micro;s zero-API fold</text>
-                <rect class="svg-node svg-node-accent" x="605" y="98" width="130" height="36" rx="3" fill="#ebf2ed" stroke="#4f785e" stroke-width="1.1" />
-                <text x="670" y="116" fill="#4f785e" font-family="'Geist Mono', monospace" font-size="8.5" font-weight="600" text-anchor="middle">&check; All 8 Gates Pass</text>
-                <line x1="670" y1="87" x2="670" y2="98" stroke="#4f785e" stroke-width="1" marker-end="url(#arr-acc)" />
-              </svg>
-            </div>
-
-            <div class="output-panel">
-              <button type="button" class="out-toggle" aria-expanded="false">
-                <span class="out-chevron" aria-hidden="true">▸</span>
-                <span class="out-label">View test suite &amp; replay verification</span>
-              </button>
-              <div class="pcard-output">
-                <div class="pcard-output-inner">
-                  <pre class="console">$ cargo test &amp;&amp; cargo run --release
-==> test_bipartite_schema_validation   static color mismatch rejection      [compile]: OK
-==> test_unguarded_cycle_detection     static DFS unguarded loop rejection  [compile]: OK
-==> test_k_bounded_place_overflow      strict capacity invariant |M(p)|<=k  [runtime]: OK
-==> test_self_healing_refinement_loop  guarded cyclic convergence (depth=1) [runtime]: OK
-==> test_budget_circuit_breaker        monotonic token/step/depth halt      [runtime]: OK
-==> test_bit_exact_event_replay        1,000 SHA-256 left-fold replays      [2.51 us]: OK
-==> test_time_travel_branch_fork       rewind to step k &amp; fork lineage      [bit-exact]: OK
-==> test_concurrent_diamond_dag        fan-out / join barrier determinism   [runtime]: OK
-ALL TESTS PASSED (8/8) · state_digest=a56c37d77fc8e904</pre>
-                </div>
-              </div>
-            </div>
-          </article>
         </div>
       </section>
 
@@ -1783,9 +1665,9 @@ ALL TESTS PASSED (8/8) · state_digest=a56c37d77fc8e904</pre>
           </div>
           <div class="pillars-row">
             <div class="pillar-card">
-              <div class="pillar-title">Systems C11 / Rust</div>
+              <div class="pillar-title">Systems C / C11</div>
               <div class="pillar-desc">
-                Zero-allocation hot paths, static memory arenas, and deterministic event-sourced runtimes.
+                Zero-allocation hot paths, static memory arenas, and dependency-free runtimes.
               </div>
             </div>
             <div class="pillar-card pillar-slate">
@@ -1937,12 +1819,6 @@ ALL TESTS PASSED (8/8) · state_digest=a56c37d77fc8e904</pre>
           stats: "Python · PyTorch · rel. L2 1.6e-3",
           url: "https://github.com/gcpino/PINN",
         },
-        "dag-agent": {
-          desc: "bounded Colored Petri Net & event-sourced multi-agent runtime",
-          body: "Compiles agent workflows as Colored Petri Nets with static cycle/schema checks, monotonic resource budgets, and SHA-256 event-sourced time-travel replay.",
-          stats: "Rust · 0 deps · 2.51 us replay · 8/8 invariant gates",
-          url: "https://github.com/gcpino/dag-agent",
-        },
       };
 
       function openTerminal() {
@@ -2020,7 +1896,6 @@ ALL TESTS PASSED (8/8) · state_digest=a56c37d77fc8e904</pre>
           case "ls":
             printLine("c-infer/       pure C11 zero-alloc neural inference engine", "succ");
             printLine("pinn/          physics-informed neural network (1D heat PDE)", "succ");
-            printLine("dag-agent/     bounded Petri Net & event-sourced agent runtime", "succ");
             break;
           case "cat": {
             const name = (args[1] || "").replace(/\/$/, "");
@@ -2045,9 +1920,9 @@ ALL TESTS PASSED (8/8) · state_digest=a56c37d77fc8e904</pre>
             printLine("Practice: Bounded execution, deterministic, zero-alloc");
             break;
           case "skills":
-            printLine("C11 / Rust    Bare-metal, Memory Arenas, Event-Sourced Runtimes", "info");
+            printLine("C / C11       Bare-metal, Memory Arenas, Deterministic Execution", "info");
             printLine("ML / PINNs    PyTorch, PDE Autodiff, Scientific Computing", "info");
-            printLine("Automata      Colored Petri Nets, Static Cycle Verification", "info");
+            printLine("Physics       Differential Equations, Mathematical Modeling", "info");
             printLine("Verification  Parity test suites vs PyTorch, Analytical tests", "info");
             break;
           case "contact":
