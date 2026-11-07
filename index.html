@@ -1409,24 +1409,26 @@
 
             <p class="project-lead">
               A standalone, zero-allocation, Sans-IO IPsec Encapsulating Security Payload (ESP)
-              data-plane and Security Association (SA) lifecycle engine implemented in freestanding
-              C11. Encapsulates and authenticates packets in place using RFC 4303 framing, RFC 7634
-              ChaCha20-Poly1305 AEAD, 64-bit Extended Sequence Numbers, and a two-phase RFC 6479
-              1024-bit anti-replay bitmap with make-before-break SA rollover.
+              data-plane, Security Association (SA) lifecycle, and RFC 4301 Security Policy Database
+              (SPD) engine implemented in freestanding C11. Encapsulates and authenticates packets in
+              place using RFC 4303 framing, dual constant-time AEAD backends (RFC 7634
+              ChaCha20-Poly1305 at 6.81 cpb and table-free RFC 4106 AES-256-GCM), 64-bit Extended
+              Sequence Numbers, and a two-phase RFC 6479 1024-bit anti-replay bitmap with
+              make-before-break SA rollover.
             </p>
 
             <table class="specs-table">
               <tr>
                 <td>CORE CONSTRAINTS</td>
-                <td>Pure C11 (freestanding) &middot; Sans-IO &middot; 1,944 B total context (&le; 4 KB budget) &middot; Zero malloc/free</td>
+                <td>Pure C11 (freestanding) &middot; Sans-IO &middot; 1,944 B context + 516 B SPD &middot; Zero malloc/free</td>
               </tr>
               <tr>
                 <td>PROTOCOL &amp; CRYPTO</td>
-                <td>RFC 4303 ESP &middot; RFC 7634 ChaCha20-Poly1305 AEAD &middot; 64-bit ESN &middot; O(1) rx_sa_ring[4] rollover</td>
+                <td>RFC 4303 ESP &middot; RFC 7634 ChaCha20-Poly1305 (6.81 cpb) + RFC 4106 AES-256-GCM &middot; RFC 4301 5-tuple SPD &middot; RFC 3948 UDP-ESP</td>
               </tr>
               <tr>
                 <td>VERIFICATION GATE</td>
-                <td>Two-phase RFC 6479 1024-bit anti-replay &middot; dudect constant-time (|t| &le; 0.42) &middot; Gilbert-Elliott channel sim</td>
+                <td>Two-phase RFC 6479 1024-bit anti-replay &middot; dudect (|t| &le; 1.95) + Valgrind ctgrind taint &middot; Clang libFuzzer + Gilbert-Elliott sim</td>
               </tr>
             </table>
 
@@ -1454,7 +1456,8 @@
                 <text x="100" y="64" fill="#26221d" font-family="'Geist', sans-serif" font-size="10.2" font-weight="600" text-anchor="middle">RFC 4303 + 7634</text>
                 <text x="100" y="78" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.3" text-anchor="middle">16B Hdr + Payload + 16B ICV</text>
                 <rect x="30" y="98" width="140" height="36" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
-                <text x="100" y="117" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" text-anchor="middle">ChaCha20-Poly1305</text>
+                <text x="100" y="114" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="7.6" font-weight="600" text-anchor="middle">ChaCha20 / AES-GCM</text>
+                <text x="100" y="126" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="6.8" text-anchor="middle">RFC 7634 &amp; RFC 4106</text>
                 <line x1="100" y1="87" x2="100" y2="98" stroke="#8a7e6b" stroke-width="1" marker-end="url(#arr-cesp)" />
 
                 <!-- Connector 1->2 -->
@@ -1462,13 +1465,13 @@
 
                 <!-- Zone 2 -->
                 <rect x="235" y="15" width="315" height="140" rx="4" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
-                <text x="392" y="32" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.12em">SANS-IO ESP ENGINE (1,944 B)</text>
+                <text x="392" y="32" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.12em">SANS-IO ESP + SPD ENGINE</text>
 
                 <rect class="svg-node svg-node-accent" x="250" y="45" width="135" height="92" rx="3" fill="#fbf0e8" stroke="#b25d3b" stroke-width="1.2" />
-                <text x="317" y="66" fill="#26221d" font-family="'Geist', sans-serif" font-size="10.2" font-weight="600" text-anchor="middle">O(1) SA Rollover</text>
-                <text x="317" y="82" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="7.8" font-weight="600" text-anchor="middle">rx_sa_ring[4]</text>
+                <text x="317" y="66" fill="#26221d" font-family="'Geist', sans-serif" font-size="10.2" font-weight="600" text-anchor="middle">SA &amp; SPD Engine</text>
+                <text x="317" y="82" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="7.8" font-weight="600" text-anchor="middle">rx_sa_ring[4] + SPD</text>
                 <text x="317" y="100" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.2" text-anchor="middle">Make-before-break</text>
-                <text x="317" y="114" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.2" text-anchor="middle">RFC 4301 lifetimes</text>
+                <text x="317" y="114" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.2" text-anchor="middle">RFC 4301 5-tuple rules</text>
 
                 <line x1="385" y1="91" x2="405" y2="91" stroke="#8a7e6b" stroke-width="1" marker-end="url(#arr-cesp)" />
 
@@ -1485,10 +1488,10 @@
                 <rect x="590" y="15" width="160" height="140" rx="4" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
                 <text x="670" y="32" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.12em">VERIFICATION</text>
                 <rect x="605" y="45" width="130" height="42" rx="3" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.9" />
-                <text x="670" y="64" fill="#26221d" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">dudect &amp; RFC 7634</text>
-                <text x="670" y="78" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.3" text-anchor="middle">|t| &le; 0.42 &middot; 0.04% drop</text>
+                <text x="670" y="64" fill="#26221d" font-family="'Geist', sans-serif" font-size="10" font-weight="600" text-anchor="middle">dudect &amp; ctgrind</text>
+                <text x="670" y="78" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.3" text-anchor="middle">6.81 cpb &middot; 0.04% drop</text>
                 <rect class="svg-node svg-node-accent" x="605" y="98" width="130" height="36" rx="3" fill="#ebf2ed" stroke="#4f785e" stroke-width="1.1" />
-                <text x="670" y="116" fill="#4f785e" font-family="'Geist Mono', monospace" font-size="8.2" font-weight="600" text-anchor="middle">&check; All 5 Gates Pass</text>
+                <text x="670" y="116" fill="#4f785e" font-family="'Geist Mono', monospace" font-size="8.2" font-weight="600" text-anchor="middle">&check; All 6 Gates Pass</text>
                 <line x1="670" y1="87" x2="670" y2="98" stroke="#4f785e" stroke-width="1" marker-end="url(#arr-acc-cesp)" />
               </svg>
             </div>
@@ -1500,12 +1503,13 @@
               </button>
               <div class="out-body">
                 <pre class="console"><span class="dim">$ make all test symbol-check ct-check benchmark</span>
-<span class="pass">[PASS]</span> test_rfc_vectors: RFC 8439 &sect;2.8.2, RFC 7634 Appendix A, and session framing verified.
+<span class="pass">[PASS]</span> test_rfc_vectors: RFC 8439 &sect;2.8.2, RFC 7634 App A, NIST AES-256-GCM (RFC 4106) &amp; framing verified.
 <span class="pass">[PASS]</span> test_replay_esn: RFC 6479 1024-bit window, 64-bit ESN wrap, and binary trace verified.
 <span class="pass">[PASS]</span> test_rekey_fsm: SA lifetimes, colliding SPI fallback, rollover, and key wipe verified.
+<span class="pass">[PASS]</span> test_spd: RFC 4301 &sect;4.4.1 Security Policy Database 5-tuple selector engine verified.
 <span class="pass">[PASS]</span> Zero heap/OS symbols in build/libcesp.a
-<span class="info">[DUDECT]</span> Poly1305 tag memeq   : |t| = 0.42 (threshold &lt;= 4.5, N = 100,000, cropped 95%)
-<span class="info">[DUDECT]</span> RFC 4303 pad window  : |t| = 0.08 (threshold &lt;= 4.5, N = 100,000, cropped 95%)
+<span class="info">[DUDECT]</span> Poly1305 / Pad / AES-GCM : |t| &lt;= 1.95 (threshold &lt;= 4.5) &middot; <span class="pass">[CTGRIND]</span> 0 secret branches
+<span class="info">[BENCH]</span>  1400 B MTU Throughput   : <span class="pass">6.81 cpb</span> (RFC 7634 ChaCha20-Poly1305)
 <span class="dim">------------------------------------------------------------------------------------</span>
 <span class="dim"> Reorder Jitter | Legacy 64-Bit Win | Legacy 256-Bit Win | c-esp RFC 6479 (1024-Bit)</span>
 <span class="dim">----------------+-------------------+--------------------+--------------------------</span>
