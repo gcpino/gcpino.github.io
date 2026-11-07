@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>c-esp Architecture — Guillermo Corpas</title>
+    <meta name="theme-color" content="#f7f4ea" />
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --color-paper: #f7f4ea;
+        --color-paper-warm: #f1ebd9;
+        --color-surface: #fdfbf7;
+        --color-surface-raised: #ffffff;
+        --color-ink: #26221d;
+        --color-ink-light: #3f3930;
+        --color-muted: #6e6557;
+        --color-soft: #918878;
+        --color-accent: #b25d3b;
+        --color-accent-soft: rgba(178, 93, 59, 0.08);
+        --color-accent-wash: #f8ece5;
+        --color-accent-border: #deac98;
+        --color-sage: #4f785e;
+        --color-sage-wash: #eaf2ed;
+        --color-slate: #48697a;
+        --color-slate-wash: #e7eff3;
+        --color-rule: #dfd7c5;
+        --color-rule-solid: #c9bfab;
+        --color-rule-strong: #8a7e6b;
+        --container-max-width: 1080px;
+        --font-serif: "Instrument Serif", Georgia, serif;
+        --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
+        --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      @media (min-width: 1440px) {
+        :root {
+          --container-max-width: 1240px;
+        }
+        body { font-size: 16px; }
+      }
+
+      @media (min-width: 1920px) {
+        :root {
+          --container-max-width: 1400px;
+        }
+        body { font-size: 17px; }
+      }
+
+      @media (min-width: 2560px) {
+        :root {
+          --container-max-width: 1580px;
+        }
+        body { font-size: 18px; }
+      }
+
+      body {
+        font-family: var(--font-sans);
+        background-color: var(--color-paper);
+        background-image:
+          linear-gradient(to right, rgba(82, 70, 58, 0.035) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(82, 70, 58, 0.035) 1px, transparent 1px),
+          radial-gradient(ellipse 90% 60% at 50% -10%, rgba(240, 226, 206, 0.55), transparent 75%);
+        background-size: 32px 32px, 32px 32px, 100% 100%;
+        min-height: 100vh;
+        color: var(--color-ink-light);
+        line-height: 1.68;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      ::selection {
+        background: #edd8c8;
+        color: var(--color-ink);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      :focus-visible {
+        outline: 1.5px solid var(--color-accent);
+        outline-offset: 3px;
+      }
+
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(247, 244, 234, 0.88);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--color-rule-solid);
+      }
+
+      .nav-inner {
+        max-width: var(--container-max-width);
+        margin: 0 auto;
+        padding: 0.85rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .back-link {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--color-muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        transition: color 0.2s ease;
+      }
+
+      .back-link:hover {
+        color: var(--color-ink);
+      }
+
+      .back-arrow {
+        display: inline-block;
+        transition: transform 0.2s var(--ease-out-expo);
+      }
+
+      .back-link:hover .back-arrow {
+        transform: translateX(-3px);
+      }
+
+      .repo-btn {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--color-ink);
+        background: var(--color-surface);
+        border: 1px solid var(--color-rule-solid);
+        padding: 0.35rem 0.75rem;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease,
+          background-color 0.2s ease,
+          transform 0.15s ease;
+      }
+
+      .repo-btn:hover {
+        color: var(--color-accent);
+        border-color: var(--color-accent);
+        background: var(--color-accent-wash);
+        transform: translateY(-1px);
+      }
+
+      .ext-arrow {
+        display: inline-block;
+        transition: transform 0.2s var(--ease-out-expo);
+      }
+
+      .repo-btn:hover .ext-arrow {
+        transform: translate(2px, -2px);
+      }
+
+      .container {
+        max-width: var(--container-max-width);
+        margin: 0 auto;
+        padding: 3.5rem 2rem 5rem;
+      }
+
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .anim-fade {
+        opacity: 0;
+        animation: fade-up 0.7s var(--ease-out-expo) forwards;
+      }
+
+      .delay-1 { animation-delay: 0.05s; }
+      .delay-2 { animation-delay: 0.14s; }
+      .delay-3 { animation-delay: 0.22s; }
+
+      .header {
+        margin-bottom: 2.25rem;
+        border-bottom: 3px double var(--color-rule-solid);
+        padding-bottom: 1.5rem;
+      }
+
+      .header-eyebrow {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--color-accent);
+        margin-bottom: 0.5rem;
+      }
+
+      h1 {
+        font-family: var(--font-serif);
+        font-size: clamp(2.2rem, 3.5vw + 1rem, 3.2rem);
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        line-height: 1.08;
+        color: var(--color-ink);
+        margin-bottom: 0.75rem;
+      }
+
+      .subtitle {
+        font-size: 1.05rem;
+        color: var(--color-muted);
+        max-width: 68ch;
+        line-height: 1.68;
+      }
+
+      .diagram-container {
+        background: #fbf9f4;
+        border: 1px solid var(--color-rule-solid);
+        border-radius: 6px;
+        padding: 1.5rem;
+        overflow-x: auto;
+        margin-bottom: 2.25rem;
+        position: relative;
+        box-shadow: 0 2px 8px rgba(80, 65, 45, 0.04);
+        transition:
+          border-color 0.25s var(--ease-out-expo),
+          box-shadow 0.25s var(--ease-out-expo);
+      }
+
+      .diagram-container:hover {
+        border-color: var(--color-rule-strong);
+        box-shadow: 0 6px 18px rgba(80, 65, 45, 0.07);
+      }
+
+      svg {
+        width: 100%;
+        min-width: 960px;
+        display: block;
+      }
+
+      @keyframes flow-dash {
+        to {
+          stroke-dashoffset: -16;
+        }
+      }
+
+      .flow-line {
+        stroke-dasharray: 5 3;
+        animation: flow-dash 1.3s linear infinite;
+      }
+
+      @media print {
+        .diagram-container {
+          overflow-x: visible;
+        }
+        svg {
+          min-width: 0;
+        }
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+        gap: 1.25rem;
+      }
+
+      .card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-rule-solid);
+        border-top: 3px solid var(--color-accent);
+        border-radius: 4px;
+        padding: 1.4rem;
+        position: relative;
+        transition:
+          border-color 0.25s ease,
+          transform 0.2s var(--ease-out-expo),
+          box-shadow 0.2s ease;
+      }
+
+      .card:nth-child(2) {
+        border-top-color: var(--color-slate);
+      }
+
+      .card:nth-child(3) {
+        border-top-color: var(--color-sage);
+      }
+
+      .card:hover {
+        border-color: var(--color-rule-strong);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(80, 65, 45, 0.06);
+      }
+
+      .card-eyebrow {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-muted);
+        margin-bottom: 0.4rem;
+      }
+
+      .card h3 {
+        font-family: var(--font-serif);
+        font-size: 1.45rem;
+        font-weight: 400;
+        color: var(--color-ink);
+        margin-bottom: 0.45rem;
+      }
+
+      .card p {
+        font-size: 0.92rem;
+        color: var(--color-muted);
+        line-height: 1.62;
+      }
+
+      @media (max-width: 640px) {
+        .nav-inner {
+          padding: 0.75rem 1rem;
+        }
+        .container {
+          padding: 2.25rem 1rem 3.5rem;
+        }
+        .header {
+          margin-bottom: 1.5rem;
+        }
+        .diagram-container {
+          padding: 0.75rem;
+          -webkit-overflow-scrolling: touch;
+        }
+        .cards {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        .anim-fade {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-inner">
+        <a href="../index.html#proj-cesp" class="back-link">
+          <span class="back-arrow" aria-hidden="true">&larr;</span>
+          <span>Back to Portfolio</span>
+        </a>
+        <a href="https://github.com/gcpino/c-esp" target="_blank" rel="noopener" class="repo-btn">
+          <span>github.com/gcpino/c-esp</span>
+          <span class="ext-arrow" aria-hidden="true">&nearr;</span>
+        </a>
+      </div>
+    </nav>
+
+    <main class="container">
+      <div class="header anim-fade delay-1">
+        <p class="header-eyebrow">c-esp &middot; Architecture Specification</p>
+        <h1>Zero-Allocation Sans-IO IPsec ESP Data-Plane Engine</h1>
+        <p class="subtitle">
+          In-place RFC 4303 &amp; RFC 7634 ChaCha20-Poly1305 packet framing, two-phase RFC 6479
+          1024-bit anti-replay with 64-bit ESN, and deterministic make-before-break SA rollover in
+          freestanding C11.
+        </p>
+      </div>
+
+      <div class="diagram-container anim-fade delay-2">
+        <svg viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cesp-title cesp-desc">
+          <title id="cesp-title">c-esp Architecture Diagram</title>
+          <desc id="cesp-desc">Architecture showing in-place RFC 4303 / RFC 7634 ESP frame layout, two-phase RFC 6479 1024-bit ESN anti-replay and rx_sa_ring[4] rollover engine, and constant-time dudect and channel verification gate.</desc>
+
+          <defs>
+            <pattern id="grid-dots" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="1" cy="1" r="0.8" fill="rgba(90,75,55,0.08)" />
+            </pattern>
+            <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#8a7e6b" />
+            </marker>
+            <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#b25d3b" />
+            </marker>
+          </defs>
+
+          <!-- Canvas Background -->
+          <rect width="100%" height="100%" fill="#faf7f0" />
+          <rect width="100%" height="100%" fill="url(#grid-dots)" />
+
+          <!-- Zone 1: In-Place RFC 4303 / 7634 Frame Engine -->
+          <rect x="20" y="30" width="265" height="420" rx="6" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
+          <rect x="34" y="23" width="225" height="15" rx="2" fill="#eae2ce" stroke="#d5cbba" stroke-width="0.7" />
+          <text x="146" y="34" fill="#6e6557" font-size="7.2" font-family="'Geist Mono', monospace" font-weight="600" text-anchor="middle" letter-spacing="0.11em">1. IN-PLACE RFC 4303 / 7634 FRAME ENGINE</text>
+
+          <!-- Zone 2: Two-Phase RFC 6479 1024-Bit ESN Anti-Replay & RX_SA_RING[4] -->
+          <rect x="310" y="30" width="380" height="420" rx="6" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
+          <rect x="324" y="23" width="340" height="15" rx="2" fill="#eae2ce" stroke="#d5cbba" stroke-width="0.7" />
+          <text x="494" y="34" fill="#6e6557" font-size="7.2" font-family="'Geist Mono', monospace" font-weight="600" text-anchor="middle" letter-spacing="0.11em">2. TWO-PHASE RFC 6479 1024-BIT ESN ANTI-REPLAY &amp; RX_SA_RING[4]</text>
+
+          <!-- Zone 3: Constant-Time & Channel Verification Gate -->
+          <rect x="715" y="30" width="265" height="420" rx="6" fill="#f4ebd9" stroke="#d5cbba" stroke-width="0.9" />
+          <rect x="729" y="23" width="235" height="15" rx="2" fill="#eae2ce" stroke="#d5cbba" stroke-width="0.7" />
+          <text x="846" y="34" fill="#6e6557" font-size="7.2" font-family="'Geist Mono', monospace" font-weight="600" text-anchor="middle" letter-spacing="0.11em">3. CONSTANT-TIME &amp; CHANNEL GATE</text>
+
+          <!-- Connectors -->
+          <line x1="152" y1="138" x2="152" y2="180" stroke="#8a7e6b" stroke-width="1.2" marker-end="url(#arrow)" />
+          <line x1="152" y1="258" x2="152" y2="300" stroke="#8a7e6b" stroke-width="1.2" marker-end="url(#arrow)" />
+
+          <!-- Wire Frame -> SA Ring & Replay Precheck -->
+          <path class="flow-line" d="M 255,340 H 285 Q 295,340 295,220 V 125 Q 295,115 305,115 H 335" fill="none" stroke="#b25d3b" stroke-width="1.3" marker-end="url(#arrow-accent)" />
+          <rect x="260" y="212" width="74" height="16" rx="2" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.8" />
+          <text x="297" y="223" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="7.2" font-weight="600" text-anchor="middle">spi &amp; 0x3u</text>
+
+          <!-- SA Ring -> Phase 1 Precheck -> AEAD + Phase 2 Commit -->
+          <line x1="500" y1="168" x2="500" y2="202" stroke="#8a7e6b" stroke-width="1.2" marker-end="url(#arrow)" />
+          <line x1="500" y1="286" x2="500" y2="318" stroke="#8a7e6b" stroke-width="1.2" marker-end="url(#arrow)" />
+
+          <!-- Phase 2 Commit -> Verification Gate -->
+          <path class="flow-line" d="M 665,368 H 692 Q 702,368 702,240 V 125 Q 702,115 712,115 H 745" fill="none" stroke="#8a7e6b" stroke-width="1.2" marker-end="url(#arrow)" />
+          <rect x="668" y="232" width="66" height="16" rx="2" fill="#fcfbfa" stroke="#c9bfab" stroke-width="0.8" />
+          <text x="701" y="243" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="7.2" font-weight="600" text-anchor="middle">0 allocs</text>
+
+          <line x1="847" y1="162" x2="847" y2="212" stroke="#8a7e6b" stroke-width="1.2" marker-end="url(#arrow)" />
+          <line class="flow-line" x1="847" y1="292" x2="847" y2="334" stroke="#4f785e" stroke-width="1.3" marker-end="url(#arrow-accent)" />
+
+          <!-- Zone 1 Nodes -->
+          <rect x="48" y="68" width="208" height="70" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="152" y="92" fill="#26221d" font-family="'Geist', sans-serif" font-size="11.5" font-weight="600" text-anchor="middle">Caller In-Place Arena Buffer</text>
+          <text x="152" y="110" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.2" text-anchor="middle">[16B Headroom][Payload][34B Tail]</text>
+          <text x="152" y="124" fill="#918878" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">Tunnel (IP-in-IP) or Transport Mode</text>
+
+          <rect x="48" y="180" width="208" height="78" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="152" y="204" fill="#26221d" font-family="'Geist', sans-serif" font-size="11.5" font-weight="600" text-anchor="middle">RFC 7634 ChaCha20-Poly1305</text>
+          <text x="152" y="221" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.2" text-anchor="middle">96b Nonce: Salt(32b) || IV(64b)</text>
+          <text x="152" y="235" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.2" text-anchor="middle">96b ESN AAD: SPI || SeqH || SeqL</text>
+          <text x="152" y="248" fill="#918878" font-family="'Geist Mono', monospace" font-size="7.8" text-anchor="middle">Pluggable esp_crypto_vtable_t</text>
+
+          <rect x="48" y="300" width="208" height="86" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="152" y="324" fill="#26221d" font-family="'Geist', sans-serif" font-size="11.5" font-weight="600" text-anchor="middle">RFC 4303 Wire Frame</text>
+          <text x="152" y="341" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="8.2" font-weight="600" text-anchor="middle">SPI(4B) | SeqLow(4B) | IV(8B)</text>
+          <text x="152" y="356" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.2" text-anchor="middle">Ciphertext + Pad(1..N) + PadLen + NH</text>
+          <text x="152" y="371" fill="#48697a" font-family="'Geist Mono', monospace" font-size="8.2" font-weight="600" text-anchor="middle">128-Bit Poly1305 ICV Tag (16B)</text>
+
+          <!-- Zone 2 Nodes -->
+          <rect x="335" y="68" width="330" height="100" rx="4" fill="#fbf0e8" stroke="#b25d3b" stroke-width="1.3" />
+          <text x="500" y="93" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Static Context &amp; O(1) SA Rollover Ring</text>
+          <text x="500" y="111" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="8.8" font-weight="600" text-anchor="middle">sizeof(esp_context_t) == 1944 B (&lt;= 4096 B)</text>
+          <text x="500" y="128" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.2" text-anchor="middle">tx_sa (Outbound) + rx_sa_ring[4] (Make-Before-Break Overlap)</text>
+          <text x="500" y="143" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">RFC 4301 Soft/Hard Byte, Packet &amp; Monotonic Time Lifetimes</text>
+          <text x="500" y="157" fill="#918878" font-family="'Geist Mono', monospace" font-size="7.8" text-anchor="middle">528B Binary Flight Recorder (esp_trace_ring_t, 32 x 16B)</text>
+
+          <rect x="335" y="202" width="330" height="84" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="500" y="226" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Phase 1: Read-Only ESN &amp; Bitmap Precheck</text>
+          <text x="500" y="244" fill="#48697a" font-family="'Geist Mono', monospace" font-size="8.3" font-weight="500" text-anchor="middle">Signed 32b Modular Offset: delta = (int32_t)(seq_low - H_low)</text>
+          <text x="500" y="259" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.2" text-anchor="middle">Inspects uint64_t bitmap[16] (960-pkt span) without mutation</text>
+          <text x="500" y="274" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" text-anchor="middle">Spoofed high-seq frames cannot advance highest_seq</text>
+
+          <rect x="335" y="318" width="330" height="98" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1.1" />
+          <text x="500" y="342" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Phase 2: Constant-Time Verify &amp; RFC 6479 Commit</text>
+          <text x="500" y="359" fill="#48697a" font-family="'Geist Mono', monospace" font-size="8.3" font-weight="500" text-anchor="middle">esp_ct_memeq(tag, icv, 16) &rarr; ChaCha20 Decrypt In-Place</text>
+          <text x="500" y="374" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.2" text-anchor="middle">Fixed-Window (16B) Branchless Padding Scan (esp_ct_select_u32)</text>
+          <rect x="355" y="386" width="290" height="20" rx="3" fill="#f4ebd9" stroke="#d5cbba" />
+          <text x="500" y="399" fill="#b25d3b" font-family="'Geist Mono', monospace" font-size="7.9" font-weight="600" text-anchor="middle">O(1) Block Shift (seq64 &gt;&gt; 6) + DSE-Hardened esp_secure_zero()</text>
+
+          <!-- Zone 3 Nodes -->
+          <rect x="745" y="68" width="205" height="94" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="847" y="92" fill="#26221d" font-family="'Geist', sans-serif" font-size="11.5" font-weight="600" text-anchor="middle">IETF Vector &amp; Symbol Gate</text>
+          <text x="847" y="110" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.2" text-anchor="middle">RFC 8439 &sect;2.8.2 + RFC 7634 App A</text>
+          <text x="847" y="125" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.2" text-anchor="middle">nm -u libcesp.a: 0 heap/OS syms</text>
+          <text x="847" y="140" fill="#918878" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">DLT_RAW IPv4/ESP PCAP output</text>
+
+          <rect x="745" y="212" width="205" height="80" rx="4" fill="#fcfbfa" stroke="#c9bfab" stroke-width="1" />
+          <text x="847" y="236" fill="#26221d" font-family="'Geist', sans-serif" font-size="11.5" font-weight="600" text-anchor="middle">Constant-Time &amp; Channel Sim</text>
+          <text x="847" y="253" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.2" text-anchor="middle">dudect Welch t-test: |t| &le; 0.42</text>
+          <text x="847" y="268" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8.2" text-anchor="middle">Gilbert-Elliott + Gamma Jitter</text>
+          <text x="847" y="281" fill="#918878" font-family="'Geist Mono', monospace" font-size="7.8" text-anchor="middle">0.04% drop at &sigma;=128 (vs 68.5% W=64)</text>
+
+          <rect x="745" y="334" width="205" height="76" rx="4" fill="#ebf2ed" stroke="#4f785e" stroke-width="1.3" />
+          <text x="847" y="359" fill="#26221d" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle">Verification Passed</text>
+          <text x="847" y="377" fill="#4f785e" font-family="'Geist Mono', monospace" font-size="9" font-weight="600" text-anchor="middle">&check; ALL 5 CI GATES PASS</text>
+          <text x="847" y="393" fill="#6e6557" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle">DO-178C Traceability Matrix Linked</text>
+        </svg>
+      </div>
+
+      <div class="cards anim-fade delay-3">
+        <div class="card">
+          <p class="card-eyebrow">Guarantees</p>
+          <h3>Two-Phase Anti-Replay &amp; Zero Heap</h3>
+          <p>
+            All state fits in a 1,944-byte caller-allocated struct with zero dynamic allocation.
+            RFC 6479 1024-bit bitmap blocks advance strictly after Poly1305 authentication succeeds.
+          </p>
+        </div>
+        <div class="card">
+          <p class="card-eyebrow">Portability</p>
+          <h3>Strict Sans-IO Freestanding C11</h3>
+          <p>
+            Compiles with zero OS, socket, or stdio dependencies inside the library core. Runs
+            identically across bare-metal Cortex-M/Zynq targets and Linux userspace UDP/TUN loops.
+          </p>
+        </div>
+        <div class="card">
+          <p class="card-eyebrow">Rigor</p>
+          <h3>Constant-Time &amp; Channel Verified</h3>
+          <p>
+            Verified against RFC 8439 and RFC 7634 Appendix A test vectors, dudect timing analysis
+            (|t| &le; 4.5), and Gilbert-Elliott burst-loss reordering simulations.
+          </p>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
