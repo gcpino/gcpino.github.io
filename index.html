@@ -1501,8 +1501,9 @@
                 <span class="out-chevron" aria-hidden="true">&#9656;</span>
                 <span class="out-label">View verification &amp; channel benchmark</span>
               </button>
-              <div class="out-body">
-                <pre class="console"><span class="dim">$ make all test symbol-check ct-check benchmark</span>
+              <div class="pcard-output">
+                <div class="pcard-output-inner">
+                  <pre class="console"><span class="dim">$ make all test symbol-check ct-check benchmark</span>
 <span class="pass">[PASS]</span> test_rfc_vectors: RFC 8439 &sect;2.8.2, RFC 7634 App A, NIST AES-256-GCM (RFC 4106) &amp; framing verified.
 <span class="pass">[PASS]</span> test_replay_esn: RFC 6479 1024-bit window, 64-bit ESN wrap, and binary trace verified.
 <span class="pass">[PASS]</span> test_rekey_fsm: SA lifetimes, colliding SPI fallback, rollover, and key wipe verified.
@@ -1517,6 +1518,7 @@
  sigma =  32.0  |  13.64% ( 680)    |   0.00% (   0)     |   <span class="pass">0.00% (   0)</span>
  sigma = 128.0  |  68.52% (3422)    |  14.80% ( 739)     |   <span class="pass">0.04% (   2)</span>
  sigma = 384.0  |  88.64% (4426)    |  58.94% (2943)     |   <span class="pass">6.45% ( 322)</span></pre>
+                </div>
               </div>
             </div>
           </article>
